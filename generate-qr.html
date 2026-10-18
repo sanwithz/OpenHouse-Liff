@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องมือสร้าง QR Code สำหรับบูธกิจกรรม Open House</title>
+    
+    <!-- Tailwind CSS 3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        prompt: ['Prompt', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        * { font-family: 'Prompt', sans-serif; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .print-card { 
+                break-inside: avoid; 
+                page-break-inside: avoid; 
+                border: 2px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                margin-bottom: 1.5rem !important;
+            }
+            .grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 1rem !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <div class="bg-white rounded-3xl shadow-sm p-6 no-print border border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fas fa-qrcode text-indigo-600"></i>
+                        เครื่องมือสร้าง QR Code ประจำบูธกิจกรรม
+                    </h1>
+                    <p class="text-sm text-slate-500 mt-1">ใช้พิมพ์ตั้งไว้ที่โต๊ะประจำบูธให้นักเรียน/ผู้เข้าร่วมงานสแกนสะสมคะแนนผ่านระบบ LINE LIFF</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="syncBoothsFromSheet(true)" class="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl font-medium text-sm transition-all flex items-center gap-2 border border-emerald-200">
+                        <i class="fas fa-arrows-rotate"></i>
+                        <span>ซิงค์จาก Google Sheets</span>
+                    </button>
+                    <button onclick="window.print()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                        <i class="fas fa-print"></i>
+                        <span>พิมพ์การ์ดทั้งหมด (Print)</span>
+                    </button>
+                    <a href="index.html" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium text-sm transition-all flex items-center gap-2">
+                        <i class="fas fa-mobile-screen"></i>
+                        <span>กลับไปหน้าแอป</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool: เพิ่มบูธกิจกรรมใหม่ -->
+        <div class="bg-white rounded-3xl shadow-sm p-6 no-print border border-slate-200">
+            <div class="mb-4">
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fas fa-plus-circle text-emerald-600"></i>
+                    เพิ่มบูธกิจกรรมใหม่
+                </h2>
+            </div>
+
+            <form id="addBoothForm" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อบูธ / กิจกรรม <span class="text-red-500">*</span></label>
+                    <input type="text" id="boothName" required placeholder="เช่น บูธหุ่นยนต์และปัญญาประดิษฐ์ AI" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">รหัสกิจกรรม (Code)</label>
+                    <input type="text" id="boothCode" placeholder="เช่น AI01 (หรือเว้นว่าง)" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm uppercase font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">คะแนนที่ได้รับ <span class="text-red-500">*</span></label>
+                    <input type="number" id="boothPoints" required value="20" min="1" max="100" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">วันที่จัดกิจกรรม <span class="text-red-500">*</span></label>
+                    <input type="date" id="boothDate" required class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div class="sm:col-span-2 md:col-span-5 flex justify-between items-center pt-2">
+                    <span class="text-xs text-slate-400">ระบบจะสร้าง Payload แบบ JSON อัตโนมัติ พร้อมรหัสสำหรับกรอกด้วยตนเอง</span>
+                    <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-md transition-all flex items-center gap-2">
+                        <i class="fas fa-plus"></i>
+                        <span>สร้างการ์ด QR Code</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- รายการ QR Code ที่พร้อมพิมพ์ -->
+        <div>
+            <div class="flex items-center justify-between mb-4 px-1 no-print">
+                <h3 class="text-sm font-bold text-slate-700">การ์ด QR Code ทั้งหมด (<span id="boothCount">0</span> บูธ)</h3>
+                <span class="text-xs text-slate-500">ภาพ QR สร้างด้วย QuickChart API (ความละเอียดสูง คมชัดเวลาพิมพ์ A4)</span>
+            </div>
+
+            <div id="boothCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('boothDate').value = todayStr;
+
+        // รายชื่อบูธกิจกรรมมาตรฐาน (ซิงค์ตรงกับ index.html)
+        const DEFAULT_BOOTHS = [
+            { code: "AI01", name: "บูธปัญญาประดิษฐ์และหุ่นยนต์ AI", points: 25, date: todayStr },
+            { code: "SCI02", name: "บูธวิทยาศาสตร์และเทคโนโลยี", points: 20, date: todayStr },
+            { code: "ASTRO03", name: "บูธดาราศาสตร์และอวกาศ", points: 20, date: todayStr },
+            { code: "CHEM04", name: "บูธเคมีและการทดลองสุดว้าว", points: 15, date: todayStr },
+            { code: "BIO05", name: "บูธชีววิทยาและความหลากหลายทางชีวภาพ", points: 15, date: todayStr },
+            { code: "MATH06", name: "บูธคณิตศาสตร์และการคิดคำนวณ", points: 15, date: todayStr },
+            { code: "PSU26", name: "บูธแนะนำหลักสูตร PSU Phuket", points: 20, date: todayStr },
+            { code: "WELCOME", name: "บูธต้อนรับ Open House 2026", points: 10, date: todayStr }
+        ];
+
+        const API_URL = "https://script.google.com/macros/s/AKfycbwAyWTJ4rSqweGfTbtzQhNPJJ3ge2ISXUr2OX6NT1Yk4Mt45qnv0J5a2dBXFqPb9hW-/exec";
+
+        let booths = (() => {
+            try {
+                const stored = localStorage.getItem('openhouse_booths');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {}
+            return DEFAULT_BOOTHS;
+        })();
+
+        function saveBoothsToStorage() {
+            try {
+                localStorage.setItem('openhouse_booths', JSON.stringify(booths));
+            } catch(e) {}
+        }
+
+        /**
+         * ซิงค์ข้อมูลบูธกิจกรรมจาก Google Sheets แท็บ 'Booths' แบบสดๆ
+         */
+        async function syncBoothsFromSheet(showNotification = false) {
+            try {
+                if (showNotification) {
+                    Swal.fire({
+                        title: 'กำลังเชื่อมต่อ...',
+                        text: 'กำลังดึงรายชื่อบูธล่าสุดจาก Google Sheets',
+                        allowOutsideClick: false,
+                        didOpen: () => Swal.showLoading()
+                    });
+                }
+                const res = await fetch(`${API_URL}?action=getBooths`);
+                const data = await res.json();
+                if (data.status === 'success' && Array.isArray(data.booths) && data.booths.length > 0) {
+                    booths = data.booths.map(b => ({
+                        code: b.code,
+                        name: b.name,
+                        points: b.points,
+                        date: todayStr
+                    }));
+                    saveBoothsToStorage();
+                    renderBooths();
+
+                    if (showNotification) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ซิงค์สำเร็จ!',
+                            text: `อัปเดตข้อมูลทั้งหมด ${booths.length} บูธ เรียบร้อยแล้ว`,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                } else if (showNotification) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'ไม่พบข้อมูลใหม่',
+                        text: 'ใช้รายชื่อบูธกิจกรรมปัจจุบัน'
+                    });
+                }
+            } catch (err) {
+                console.warn('Sync booths error:', err);
+                if (showNotification) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'การเชื่อมต่อขัดข้อง',
+                        text: 'ไม่สามารถเชื่อมต่อ Google Sheets ได้ในขณะนี้'
+                    });
+                }
+            }
+        }
+
+        /**
+         * ฟังก์ชันสร้าง URL รูปภาพ QR Code จาก QuickChart API แบบมาตรฐาน (ไม่มีโลโก้ตรงกลาง)
+         * เอกสารอ้างอิง: https://quickchart.io/documentation/qr-codes/
+         */
+        function buildQuickChartQrUrl(text, options = {}) {
+            const size = options.size || 350;
+            const ecLevel = options.ecLevel || 'H'; // ระดับ Error Correction (L, M, Q, H) แนะนำ H สำหรับพิมพ์
+            const margin = options.margin !== undefined ? options.margin : 2;
+            const dark = options.dark || '0f172a'; // สีกรมท่าเข้ม Slate-900 คมชัด สวยงาม
+            const light = options.light || 'ffffff';
+
+            return `https://quickchart.io/qr?text=${encodeURIComponent(text)}&size=${size}&ecLevel=${ecLevel}&margin=${margin}&dark=${dark}&light=${light}&format=png`;
+        }
+
+        /**
+         * วาดการ์ด QR Code ทั้งหมด
+         */
+        function renderBooths() {
+            const container = document.getElementById('boothCardsGrid');
+            const boothCountEl = document.getElementById('boothCount');
+
+            container.innerHTML = '';
+            boothCountEl.textContent = booths.length;
+
+            booths.forEach((booth, index) => {
+                const card = document.createElement('div');
+                card.className = "print-card bg-white rounded-3xl p-6 shadow-sm hover:shadow-md border-2 border-indigo-100 flex flex-col items-center text-center relative overflow-hidden transition-all";
+                
+                // รูปแบบ Payload JSON ตามที่ index.html คาดหวัง
+                const qrPayload = JSON.stringify({
+                    code: booth.code || ('B0' + (index + 1)),
+                    event: booth.name,
+                    points: booth.points,
+                    date: booth.date
+                });
+
+                // สร้าง URL ด้วย QuickChart API (QR มาตรฐาน ไม่มีโลโก้ตรงกลาง สแกนติดง่ายและเร็ว)
+                const qrImageUrl = buildQuickChartQrUrl(qrPayload, {
+                    size: 350,
+                    ecLevel: 'H',
+                    margin: 2,
+                    dark: '1e1b4b' // สี Indigo-950 คมชัด
+                });
+
+                card.innerHTML = `
+                    <!-- ปุ่มลบ (ไม่แสดงเวลาพิมพ์) -->
+                    <button onclick="removeBooth(${index})" title="ลบบูธนี้" class="no-print absolute top-3 right-3 text-slate-300 hover:text-red-500 p-1.5 rounded-lg transition-colors text-sm">
+                        <i class="fas fa-trash-can"></i>
+                    </button>
+
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 mb-1">
+                        Open House กิจกรรมเปิดบ้าน
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-base mb-2 px-2 leading-snug line-clamp-2 min-h-[44px] flex items-center justify-center">
+                        ${booth.name}
+                    </h3>
+                    
+                    <div class="inline-block px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold mb-2 border border-emerald-200">
+                        +${booth.points} คะแนนสะสม
+                    </div>
+
+                    <!-- รหัสกิจกรรมสำหรับกรอกด้วยตนเอง (Manual Code) -->
+                    <div class="mb-3 flex items-center justify-center gap-1.5 text-xs text-slate-600 bg-slate-50 px-3 py-1 rounded-xl border border-slate-200">
+                        <span>รหัสกรอกแทนสแกน:</span>
+                        <span class="font-mono font-bold text-indigo-700 bg-white px-2 py-0.5 rounded border border-indigo-200 tracking-wider">${booth.code || ('B0' + (index + 1))}</span>
+                    </div>
+                    
+                    <!-- กรอบแสดงรูป QR Code จาก QuickChart -->
+                    <div class="p-2 bg-white rounded-2xl shadow-inner border border-slate-200 mb-3 flex items-center justify-center w-[190px] h-[190px] relative">
+                        <img 
+                            src="${qrImageUrl}" 
+                            alt="${booth.name}" 
+                            loading="lazy" 
+                            class="w-full h-full object-contain rounded-xl"
+                        />
+                    </div>
+
+                    <div class="text-[11px] text-slate-400 mt-auto flex items-center justify-center gap-1.5">
+                        <i class="far fa-calendar-alt"></i>
+                        <span>${booth.date}</span> • <span>สแกนรับแต้มผ่าน LINE</span>
+                    </div>
+
+                    <!-- ปุ่มดาวน์โหลดรูป QR เฉพาะบูธนี้ (ไม่แสดงเวลาพิมพ์) -->
+                    <div class="no-print mt-3 pt-3 border-t border-slate-100 w-full flex justify-center">
+                        <a 
+                            href="${qrImageUrl}" 
+                            target="_blank" 
+                            download="QR_${booth.name}.png" 
+                            class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1.5"
+                        >
+                            <i class="fas fa-download"></i>
+                            <span>บันทึกรูป QR Code</span>
+                        </a>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function removeBooth(index) {
+            Swal.fire({
+                title: 'ยืนยันการลบ?',
+                text: `คุณต้องการลบ "${booths[index].name}" หรือไม่?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'ลบรายการ',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    booths.splice(index, 1);
+                    saveBoothsToStorage();
+                    renderBooths();
+                }
+            });
+        }
+
+        // เมื่อส่งฟอร์มเพิ่มบูธ
+        document.getElementById('addBoothForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('boothName').value.trim();
+            const codeInput = document.getElementById('boothCode');
+            const code = codeInput ? codeInput.value.trim().toUpperCase() : '';
+            const points = parseInt(document.getElementById('boothPoints').value, 10);
+            const date = document.getElementById('boothDate').value;
+
+            if (name && points) {
+                const newBooth = { 
+                    code: code || ('B0' + (booths.length + 1)), 
+                    name, 
+                    points, 
+                    date 
+                };
+                booths.unshift(newBooth);
+                saveBoothsToStorage();
+                renderBooths();
+                document.getElementById('boothName').value = '';
+                if (codeInput) codeInput.value = '';
+                
+                // ส่งข้อมูลบูธใหม่ไปบันทึกบน Google Sheets แท็บ 'Booths' อัตโนมัติ
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'addBooth',
+                        code: newBooth.code,
+                        name: newBooth.name,
+                        points: newBooth.points,
+                        status: 'Active'
+                    })
+                }).catch(err => console.warn('Auto-save booth to Google Sheets warning:', err));
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สร้าง QR Code สำเร็จ!',
+                    text: 'บันทึกข้อมูลและพร้อมสำหรับพิมพ์/สแกนแล้ว',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        });
+
+        // เริ่มต้นเรนเดอร์ครั้งแรก
+        renderBooths();
+
+        // ดึงข้อมูลบูธล่าสุดจาก Google Sheets แบบอัตโนมัติ
+        syncBoothsFromSheet(false);
+    </script>
+</body>
+</html>

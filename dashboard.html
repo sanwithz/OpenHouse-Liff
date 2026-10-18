@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open House Analytics Dashboard | แดชบอร์ดวิเคราะห์ผู้เข้าร่วมงาน</title>
+    
+    <!-- Google Fonts: Prompt & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Southern Schools Data -->
+    <script src="schools-data.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#0284c7',
+                            600: '#0062b8',
+                            700: '#004e8c',
+                            800: '#0a335c',
+                            900: '#082544'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .stat-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px -8px rgba(15, 23, 42, 0.08), 0 6px 12px -4px rgba(15, 23, 42, 0.04);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 flex flex-col">
+
+    <!-- TOP NAVIGATION / HEADER -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Title -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-700 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-brand-700/20">
+                        <i class="fas fa-chart-pie text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight">
+                                Open House Analytics
+                            </h1>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span> Live
+                            </span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-500">แดชบอร์ดวิเคราะห์กลุ่มผู้เข้าร่วมงานตามจังหวัด โรงเรียน และระดับชั้น</p>
+                    </div>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Status indicator & Last updated -->
+                    <div class="hidden md:flex flex-col text-right text-[11px] text-slate-500">
+                        <span>อัปเดตล่าสุด: <b id="lastUpdatedTime" class="text-slate-700 font-mono">-</b></span>
+                        <span id="dataStatusIndicator" class="text-emerald-600 font-medium">● เชื่อมต่อฐานข้อมูล</span>
+                    </div>
+
+                    <!-- Refresh Button -->
+                    <button id="refreshBtn" title="รีเฟรชข้อมูลล่าสุด" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs transition-all flex items-center gap-1.5 active:scale-95">
+                        <i id="refreshIcon" class="fas fa-arrows-rotate text-brand-600"></i>
+                        <span class="hidden sm:inline">รีเฟรช</span>
+                    </button>
+
+                    <!-- Export CSV Button -->
+                    <button id="exportCsvBtn" title="ดาวน์โหลดเป็นไฟล์ CSV" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-all flex items-center gap-1.5 active:scale-95">
+                        <i class="fas fa-file-csv"></i>
+                        <span class="hidden sm:inline">ส่งออก CSV</span>
+                    </button>
+
+                    <!-- Quick Links Menu -->
+                    <div class="relative">
+                        <a href="index.html" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-semibold border border-brand-200/80 transition-all flex items-center gap-1.5 active:scale-95">
+                            <i class="fas fa-mobile-screen-button"></i>
+                            <span class="hidden md:inline">เปิดแอป LIFF</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- SECTION 1: 5 KEY PERFORMANCE METRICS (สรุปตัวเลขหลัก 5 มิติ) -->
+        <!-- ============================================================== -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            
+            <!-- Metric 1: Total Registered Users -->
+            <div class="stat-card bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">ผู้ลงทะเบียนทั้งหมด</p>
+                        <h3 id="statTotalUsers" class="text-3xl font-extrabold text-slate-900 mt-1 font-outfit">0</h3>
+                        <p id="statStudentsCount" class="text-xs text-slate-500 mt-1 font-medium">นักเรียน 0 คน</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0062b8] flex items-center justify-center text-xl shadow-inner">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>ครู: <b id="statTeachersCount" class="text-slate-700">0</b></span>
+                    <span>ทั่วไป: <b id="statOthersCount" class="text-slate-700">0</b></span>
+                </div>
+            </div>
+
+            <!-- Metric 2: Actual Attendees (นับจาก Unique UID ในชีท Scans) -->
+            <div class="stat-card bg-gradient-to-br from-white to-emerald-50/40 rounded-2xl p-5 border border-emerald-200/80 shadow-xs relative overflow-hidden ring-1 ring-emerald-500/10">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <p class="text-xs font-bold text-emerald-800 uppercase tracking-wider">ผู้มาร่วมงานจริง</p>
+                        </div>
+                        <h3 id="statTotalAttendees" class="text-3xl font-extrabold text-emerald-600 mt-1 font-outfit">0</h3>
+                        <p id="statAttendanceRate" class="text-xs text-emerald-700 mt-1 font-semibold">คิดเป็น 0% ของผู้ลงทะเบียน</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl shadow-inner">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-emerald-100/80 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>ยอดสแกนสะสม</span>
+                    <b id="statTotalScans" class="text-emerald-700 font-outfit font-bold">0 ครั้ง</b>
+                </div>
+            </div>
+
+            <!-- Metric 3: Top Province -->
+            <div class="stat-card bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">จังหวัดสูงสุด</p>
+                        <h3 id="statTopProvince" class="text-2xl font-bold text-slate-900 mt-1 truncate max-w-[140px]">-</h3>
+                        <p id="statTopProvinceCount" class="text-xs text-brand-600 font-semibold mt-1">0 คน (0%)</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-sky-50 text-brand-600 flex items-center justify-center text-xl shadow-inner">
+                        <i class="fas fa-map-location-dot"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>จังหวัดทั้งหมด</span>
+                    <b id="statTotalProvinces" class="text-slate-700 font-outfit">0 จังหวัด</b>
+                </div>
+            </div>
+
+            <!-- Metric 4: Top School -->
+            <div class="stat-card bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">โรงเรียนสูงสุด</p>
+                        <h3 id="statTopSchool" class="text-xl font-bold text-slate-900 mt-1 truncate max-w-[140px] leading-snug" title="-">-</h3>
+                        <p id="statTopSchoolCount" class="text-xs text-indigo-600 font-semibold mt-1">0 คน</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shadow-inner">
+                        <i class="fas fa-school"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>โรงเรียนทั้งหมด</span>
+                    <b id="statTotalSchools" class="text-slate-700 font-outfit">0 แห่ง</b>
+                </div>
+            </div>
+
+            <!-- Metric 5: Top Grade Level -->
+            <div class="stat-card bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">ระดับชั้นยอดนิยม</p>
+                        <h3 id="statTopGradeLevel" class="text-xl font-bold text-slate-900 mt-1 truncate max-w-[140px]">-</h3>
+                        <p id="statTopGradeLevelPercent" class="text-xs text-amber-600 font-semibold mt-1">0% ของนักเรียน</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-inner">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>กลุ่มหลัก</span>
+                    <b id="statGradeSubText" class="text-slate-700 font-medium">ม.ปลาย / ปวช.</b>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- SECTION 2: INTERACTIVE FILTER TOOLBAR -->
+        <!-- ============================================================== -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                
+                <!-- Search input -->
+                <div class="relative flex-1">
+                    <i class="fas fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="ค้นหาชื่อ, โรงเรียน, จังหวัด..." 
+                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition-all"
+                    >
+                </div>
+
+                <!-- Filters -->
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 flex-shrink-0">
+                    
+                    <!-- Filter: Attendance Status -->
+                    <select id="filterAttendance" class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-medium focus:outline-none focus:border-brand-500 focus:bg-white transition-all">
+                        <option value="">ทุกสถานะร่วมงาน</option>
+                        <option value="attended">มาร่วมงานแล้ว (สแกนแล้ว)</option>
+                        <option value="not_attended">ยังไม่มาร่วมงาน</option>
+                    </select>
+
+                    <!-- Filter: Province -->
+                    <select id="filterProvince" class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-medium focus:outline-none focus:border-brand-500 focus:bg-white transition-all">
+                        <option value="">ทุกจังหวัด</option>
+                    </select>
+
+                    <!-- Filter: Grade Level -->
+                    <select id="filterGradeLevel" class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-medium focus:outline-none focus:border-brand-500 focus:bg-white transition-all">
+                        <option value="">ทุกระดับชั้น</option>
+                        <option value="มัธยมศึกษาตอนต้น">มัธยมศึกษาตอนต้น</option>
+                        <option value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</option>
+                        <option value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</option>
+                        <option value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</option>
+                        <option value="ปวช. 1">ปวช. 1</option>
+                        <option value="ปวช. 2">ปวช. 2</option>
+                        <option value="ปวช. 3">ปวช. 3</option>
+                    </select>
+
+                    <!-- Filter: Role -->
+                    <select id="filterRole" class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-medium focus:outline-none focus:border-brand-500 focus:bg-white transition-all">
+                        <option value="">ทุกประเภท</option>
+                        <option value="นักเรียน">นักเรียน</option>
+                        <option value="ครู">ครู</option>
+                        <option value="ผู้ปกครอง">ผู้ปกครอง</option>
+                        <option value="บุคคลทั่วไป">บุคคลทั่วไป</option>
+                    </select>
+
+                    <!-- Reset Filter Button -->
+                    <button id="resetFilterBtn" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold transition-all flex items-center justify-center gap-1 active:scale-95">
+                        <i class="fas fa-rotate-left"></i>
+                        <span>รีเซ็ตตัวกรอง</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active filter chips -->
+            <div id="activeFilterTags" class="hidden mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
+                <span class="text-slate-400 text-[11px]">ตัวกรองที่เลือก:</span>
+                <!-- Dynamic tags inserted here -->
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- SECTION 3: 3 CORE ANALYTIC CHARTS (กราฟวิเคราะห์ 3 มิติหลัก) -->
+        <!-- ============================================================== -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- CHART 1: PROVINCES RANKING (ผู้เข้าร่วมงานมาจากจังหวัดไหนมากที่สุด) -->
+            <div class="lg:col-span-2 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+                            <i class="fas fa-map-pin"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base">จังหวัดที่มีผู้เข้าร่วมงานมากที่สุด</h3>
+                            <p class="text-[11px] text-slate-400">จัดอันดับตามจำนวนผู้ลงทะเบียนเข้าร่วมกิจกรรม</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-xs">
+                        <button id="btnTop5Prov" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium text-[11px]">Top 5</button>
+                        <button id="btnTop10Prov" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-medium text-[11px]">Top 10</button>
+                    </div>
+                </div>
+
+                <!-- Canvas Chart -->
+                <div class="relative w-full h-[320px]">
+                    <canvas id="provincesChart"></canvas>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span>💡 แตะที่แท่งกราฟเพื่อกรองข้อมูลตามจังหวัดนั้นๆ</span>
+                    <span id="provStatsSummary" class="font-medium text-slate-700">ทั้งหมด 0 จังหวัด</span>
+                </div>
+            </div>
+
+            <!-- CHART 2: GRADE LEVEL DISTRIBUTION (ระดับชั้นไหนสนใจเข้าร่วมมากที่สุด) -->
+            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base">ระดับชั้นที่สนใจเข้าร่วมงาน</h3>
+                            <p class="text-[11px] text-slate-400">สัดส่วนตามระดับการศึกษาของผู้เข้าร่วม</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Chart -->
+                <div class="relative w-full h-[260px] flex items-center justify-center">
+                    <canvas id="gradeLevelChart"></canvas>
+                </div>
+
+                <!-- Grade Breakdown Legend List -->
+                <div id="gradeLevelLegend" class="mt-3 pt-3 border-t border-slate-100 space-y-1.5 max-h-[120px] overflow-y-auto">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- SECTION 4: SCHOOLS RANKING LEADERBOARD & TIMELINE -->
+        <!-- ============================================================== -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Top Schools Horizontal Leaderboard -->
+            <div class="lg:col-span-2 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm">
+                            <i class="fas fa-ranking-star"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base">โรงเรียน / วิทยาลัย ที่มีผู้เข้าร่วมมากที่สุด</h3>
+                            <p class="text-[11px] text-slate-400">โรงเรียนที่มีจำนวนนักเรียนและครูให้ความสนใจสูงสุด</p>
+                        </div>
+                    </div>
+                    <span id="schoolCountBadge" class="text-xs px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-100">
+                        Top 10 สถาบัน
+                    </span>
+                </div>
+
+                <!-- Chart Canvas -->
+                <div class="relative w-full h-[320px]">
+                    <canvas id="schoolsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Role & Participation Overview Card -->
+            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-700 flex items-center justify-center text-sm">
+                            <i class="fas fa-id-badge"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base">ประเภทผู้เข้าร่วมงาน</h3>
+                            <p class="text-[11px] text-slate-400">สัดส่วนผู้เข้าร่วมตามบทบาท</p>
+                        </div>
+                    </div>
+
+                    <div class="relative w-full h-[210px] flex items-center justify-center">
+                        <canvas id="rolesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Fast Insights Box -->
+                <div class="mt-4 p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2 text-xs">
+                    <div class="font-bold text-slate-800 flex items-center gap-1.5">
+                        <i class="fas fa-sparkles text-amber-500"></i>
+                        <span>สรุปข้อมูลเชิงลึก (Key Insights)</span>
+                    </div>
+                    <ul id="keyInsightsList" class="space-y-1.5 text-slate-600 text-[11px] leading-relaxed">
+                        <li>กำลังประมวลผลข้อมูล...</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- SECTION 5: DETAILED PARTICIPANTS DATA TABLE -->
+        <!-- ============================================================== -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+            <!-- Table Header -->
+            <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fas fa-table-list text-brand-600"></i>
+                        <span>รายชื่อผู้เข้าร่วมงาน (Participants Record)</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        แสดงข้อมูลผู้ลงทะเบียนจาก Google Sheet (ตรงตามตัวกรองที่เลือก)
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="text-slate-500">แสดงผล:</span>
+                    <select id="pageSizeSelect" class="px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 font-medium text-slate-700">
+                        <option value="10">10 รายการ</option>
+                        <option value="25" selected>25 รายการ</option>
+                        <option value="50">50 รายการ</option>
+                        <option value="100">100 รายการ</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50 text-slate-500 font-semibold uppercase text-[11px] border-b border-slate-100">
+                        <tr>
+                            <th class="py-3 px-4 w-12 text-center">#</th>
+                            <th class="py-3 px-4">ชื่อ - นามสกุล</th>
+                            <th class="py-3 px-4 text-center">การมาร่วมงาน</th>
+                            <th class="py-3 px-4">ประเภท</th>
+                            <th class="py-3 px-4">จังหวัด</th>
+                            <th class="py-3 px-4">โรงเรียน / สถาบัน</th>
+                            <th class="py-3 px-4">ระดับชั้น</th>
+                            <th class="py-3 px-4 text-right">เวลาลงทะเบียน</th>
+                        </tr>
+                    </thead>
+                    <tbody id="participantsTableBody" class="divide-y divide-slate-100">
+                        <!-- Populated dynamically -->
+                        <tr>
+                            <td colspan="8" class="py-12 text-center text-slate-400">
+                                <i class="fas fa-spinner fa-spin text-2xl mb-2 text-brand-600"></i>
+                                <p>กำลังโหลดข้อมูลผู้เข้าร่วมงาน...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Pagination & Counter Footer -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+                <div id="tableRecordCountText">
+                    แสดง 0 ถึง 0 จากทั้งหมด 0 รายการ
+                </div>
+                <div class="flex items-center gap-1.5" id="paginationControls">
+                    <button id="prevPageBtn" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i class="fas fa-chevron-left mr-1"></i> ก่อนหน้า
+                    </button>
+                    <span id="currentPageIndicator" class="px-3 py-1.5 font-bold text-slate-800">1 / 1</span>
+                    <button id="nextPageBtn" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed">
+                        ถัดไป <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200/80 py-6 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>
+                &copy; 2026 Open House Analytics System &bull; มหาวิทยาลัยสงขลานครินทร์ (PSU Phuket)
+            </div>
+            <div class="flex items-center gap-4 text-slate-500">
+                <a href="index.html" class="hover:text-brand-600">หน้าหลัก LIFF</a>
+                <span>&bull;</span>
+                <a href="generate-qr.html" class="hover:text-brand-600">เครื่องมือสร้าง QR บูธ</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT ANALYTICS LOGIC -->
+    <script>
+        // -------------------------------------------------------------------------
+        // 🌐 CONFIGURATION & STATE
+        // -------------------------------------------------------------------------
+        const API_URL = "https://script.google.com/macros/s/AKfycbwAyWTJ4rSqweGfTbtzQhNPJJ3ge2ISXUr2OX6NT1Yk4Mt45qnv0J5a2dBXFqPb9hW-/exec";
+        
+        let allUsersData = [];
+        let filteredUsersData = [];
+        let serverTotalAttendees = 0;
+        let serverTotalScans = 0;
+        
+        let provincesChartInstance = null;
+        let gradeLevelChartInstance = null;
+        let schoolsChartInstance = null;
+        let rolesChartInstance = null;
+
+        let provDisplayLimit = 10;
+        let currentPage = 1;
+        let pageSize = 25;
+
+        // -------------------------------------------------------------------------
+        // 🚀 SEED / SAMPLE DATA (Fallback กรณีออฟไลน์ หรือยังไม่ได้ลงทะเบียนใน Sheet)
+        // มีตัวอย่าง "พัทลุง | ตะโหมด | มัธยมศึกษาปีที่ 6" พร้อมสถานะมาร่วมงานจริง (Scans)
+        // -------------------------------------------------------------------------
+        const SAMPLE_SEED_DATA = [
+            { uid: 'U1001', name: 'นายวรภพ กลิ่นเกสร', role: 'นักเรียน', province: 'พัทลุง', school: 'ตะโหมด', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-18 07:15', hasAttended: true, scanCount: 4 },
+            { uid: 'U1002', name: 'นางสาวศิริพร ชัยชนะ', role: 'นักเรียน', province: 'พัทลุง', school: 'ตะโหมด', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-18 07:20', hasAttended: true, scanCount: 5 },
+            { uid: 'U1003', name: 'นายธนกฤต มโนธรรม', role: 'นักเรียน', province: 'พัทลุง', school: 'พัทลุง', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 14:10', hasAttended: true, scanCount: 3 },
+            { uid: 'U1004', name: 'นางสาวพิมพ์มาดา วงศ์สุวรรณ', role: 'นักเรียน', province: 'พัทลุง', school: 'ตะโหมด', gradeLevel: 'มัธยมศึกษาปีที่ 5', registeredAt: '2026-10-17 15:45', hasAttended: true, scanCount: 2 },
+            { uid: 'U1005', name: 'ครูสมปอง สุวรรณรัตน์', role: 'ครู', province: 'พัทลุง', school: 'ตะโหมด', gradeLevel: '-', registeredAt: '2026-10-17 11:20', hasAttended: true, scanCount: 6 },
+            { uid: 'U1006', name: 'นายภานุวัฒน์ รักษ์ดี', role: 'นักเรียน', province: 'สงขลา', school: 'หาดใหญ่วิทยาลัย', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 16:30', hasAttended: true, scanCount: 3 },
+            { uid: 'U1007', name: 'นางสาวกานต์พิชชา พรหมช่วย', role: 'นักเรียน', province: 'สงขลา', school: 'หาดใหญ่วิทยาลัย', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 16:40', hasAttended: true, scanCount: 4 },
+            { uid: 'U1008', name: 'นายจิรายุ สมบูรณ์', role: 'นักเรียน', province: 'สงขลา', school: 'หาดใหญ่วิทยาลัยสมบูรณ์กุลกันยา', gradeLevel: 'มัธยมศึกษาปีที่ 5', registeredAt: '2026-10-17 17:05', hasAttended: false, scanCount: 0 },
+            { uid: 'U1009', name: 'นายธนาคาร เจริญสุข', role: 'นักเรียน', province: 'สงขลา', school: 'มหาวชิราวุธ จังหวัดสงขลา', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 18:22', hasAttended: true, scanCount: 3 },
+            { uid: 'U1010', name: 'นางสาวนภัสสร บุญเรือง', role: 'นักเรียน', province: 'นครศรีธรรมราช', school: 'เบญจมราชูทิศ', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 13:15', hasAttended: true, scanCount: 5 },
+            { uid: 'U1011', name: 'นายกิตติคุณ ศรีสวัสดิ์', role: 'นักเรียน', province: 'นครศรีธรรมราช', school: 'กัลยาณีศรีธรรมราช', gradeLevel: 'มัธยมศึกษาปีที่ 4', registeredAt: '2026-10-17 19:10', hasAttended: true, scanCount: 2 },
+            { uid: 'U1012', name: 'นางสาวณิชาภัทร ชูมณี', role: 'นักเรียน', province: 'ภูเก็ต', school: 'ภูเก็ตวิทยาลัย', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 20:00', hasAttended: true, scanCount: 4 },
+            { uid: 'U1013', name: 'นายชลทิศ สัจจา', role: 'นักเรียน', province: 'ภูเก็ต', school: 'สตรีภูเก็ต', gradeLevel: 'มัธยมศึกษาปีที่ 5', registeredAt: '2026-10-17 20:15', hasAttended: false, scanCount: 0 },
+            { uid: 'U1014', name: 'นายปวริศ ยิ้มแย้ม', role: 'นักเรียน', province: 'สุราษฎร์ธานี', school: 'สุราษฎร์พิทยา', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 21:05', hasAttended: true, scanCount: 3 },
+            { uid: 'U1015', name: 'นางสาวสุภาวดี ชัยสิทธิ์', role: 'นักเรียน', province: 'ตรัง', school: 'วิเชียรมาตุ', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-17 21:30', hasAttended: true, scanCount: 3 },
+            { uid: 'U1016', name: 'นายอัครเดช รอดทอง', role: 'นักเรียน', province: 'ตรัง', school: 'สภาราชินี จังหวัดตรัง', gradeLevel: 'มัธยมศึกษาปีที่ 5', registeredAt: '2026-10-17 22:00', hasAttended: false, scanCount: 0 },
+            { uid: 'U1017', name: 'นายพงศธร ใจหาญ', role: 'นักเรียน', province: 'พัทลุง', school: 'ตะโหมด', gradeLevel: 'มัธยมศึกษาปีที่ 4', registeredAt: '2026-10-18 06:40', hasAttended: true, scanCount: 2 },
+            { uid: 'U1018', name: 'นางสาวอนันตญา ทองขาว', role: 'นักเรียน', province: 'พัทลุง', school: 'สตรีพัทลุง', gradeLevel: 'มัธยมศึกษาปีที่ 6', registeredAt: '2026-10-18 06:55', hasAttended: true, scanCount: 5 },
+            { uid: 'U1019', name: 'นายกฤษดา อินทรสุวรรณ', role: 'นักเรียน', province: 'สตูล', school: 'สตูลวิทยา', gradeLevel: 'ปวช. 3', registeredAt: '2026-10-18 07:00', hasAttended: true, scanCount: 3 },
+            { uid: 'U1020', name: 'นางสาวมณีรัตน์ วงศ์แก้ว', role: 'ผู้ปกครอง', province: 'พัทลุง', school: '-', gradeLevel: '-', registeredAt: '2026-10-18 07:10', hasAttended: false, scanCount: 0 }
+        ];
+
+        // -------------------------------------------------------------------------
+        // 🎬 DOCUMENT READY
+        // -------------------------------------------------------------------------
+        $(document).ready(function() {
+            // โหลดรายการจังหวัดใน Dropdown ตัวกรอง
+            populateProvinceFilterOptions();
+
+            // ผูก Event ตัวกรอง
+            initFilterEvents();
+
+            // ผูก Event ปุ่มสลับ Top 5 / Top 10
+            $('#btnTop5Prov').on('click', function() {
+                provDisplayLimit = 5;
+                $(this).removeClass('bg-slate-100 text-slate-600').addClass('bg-emerald-600 text-white');
+                $('#btnTop10Prov').removeClass('bg-emerald-600 text-white').addClass('bg-slate-100 text-slate-600');
+                renderProvincesChart();
+            });
+
+            $('#btnTop10Prov').on('click', function() {
+                provDisplayLimit = 10;
+                $(this).removeClass('bg-slate-100 text-slate-600').addClass('bg-emerald-600 text-white');
+                $('#btnTop5Prov').removeClass('bg-emerald-600 text-white').addClass('bg-slate-100 text-slate-600');
+                renderProvincesChart();
+            });
+
+            // ผูก Event ปุ่มรีเฟรช
+            $('#refreshBtn').on('click', function() {
+                fetchAnalyticsData(true);
+            });
+
+            // ผูก Event ส่งออกไฟล์ CSV
+            $('#exportCsvBtn').on('click', function() {
+                exportDataToCsv();
+            });
+
+            // ผูก Event แบ่งหน้าตาราง
+            $('#pageSizeSelect').on('change', function() {
+                pageSize = parseInt($(this).val()) || 25;
+                currentPage = 1;
+                renderParticipantsTable();
+            });
+
+            $('#prevPageBtn').on('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderParticipantsTable();
+                }
+            });
+
+            $('#nextPageBtn').on('click', function() {
+                const totalPages = Math.ceil(filteredUsersData.length / pageSize) || 1;
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderParticipantsTable();
+                }
+            });
+
+            // ดึงข้อมูลครั้งแรก
+            fetchAnalyticsData(false);
+        });
+
+        // -------------------------------------------------------------------------
+        // 📥 FETCH DATA (ดึงข้อมูลจาก Google Apps Script)
+        // -------------------------------------------------------------------------
+        async function fetchAnalyticsData(isManualRefresh = false) {
+            $('#refreshIcon').addClass('fa-spin');
+            $('#dataStatusIndicator').text('● กำลังดึงข้อมูล...').removeClass().addClass('text-amber-500 font-medium');
+
+            try {
+                const res = await fetch(`${API_URL}?action=getDashboardData`);
+                const data = await res.json();
+
+                $('#refreshIcon').removeClass('fa-spin');
+
+                if (data && data.status === 'success' && Array.isArray(data.users) && data.users.length > 0) {
+                    allUsersData = data.users;
+                    serverTotalAttendees = data.totalAttendees || 0;
+                    serverTotalScans = data.totalScans || 0;
+                    $('#dataStatusIndicator').text('● เชื่อมต่อสด Google Sheets').removeClass().addClass('text-emerald-600 font-medium');
+                    if (isManualRefresh) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'อัปเดตข้อมูลสำเร็จ',
+                            text: `โหลดข้อมูลสดจาก Google Sheet สำเร็จ (${allUsersData.length} รายการ | มาร่วมงาน ${serverTotalAttendees} คน)`,
+                            timer: 1800,
+                            showConfirmButton: false
+                        });
+                    }
+                } else {
+                    throw new Error("Empty data or endpoint not ready");
+                }
+            } catch (err) {
+                console.warn("Could not fetch live dashboard from Google Apps Script, using cached/sample data:", err);
+                $('#refreshIcon').removeClass('fa-spin');
+                $('#dataStatusIndicator').text('● ข้อมูลตัวอย่าง & แคชในระบบ').removeClass().addClass('text-slate-500 font-medium');
+
+                // รวมข้อมูลจาก LocalStorage หากมี
+                let localUsers = [];
+                try {
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && (key.startsWith('openhouse_user_') || key.startsWith('localUser_'))) {
+                            const u = JSON.parse(localStorage.getItem(key));
+                            if (u && u.name) {
+                                // ตรวจสอบว่า local user คนนี้มีประวัติสแกนหรือไม่
+                                const scanKey = 'openhouse_scans_' + (u.uid || '');
+                                const scans = JSON.parse(localStorage.getItem(scanKey) || '[]');
+                                const hasScans = Array.isArray(scans) && scans.length > 0;
+
+                                localUsers.push({
+                                    uid: u.uid || 'LOCAL',
+                                    name: u.name,
+                                    role: u.role || 'นักเรียน',
+                                    province: u.province || 'พัทลุง',
+                                    school: u.school || 'ตะโหมด',
+                                    gradeLevel: u.gradeLevel || 'มัธยมศึกษาปีที่ 6',
+                                    registeredAt: 'วันนี้',
+                                    hasAttended: hasScans,
+                                    scanCount: hasScans ? scans.length : 0
+                                });
+                            }
+                        }
+                    }
+                } catch(e) {}
+
+                allUsersData = localUsers.length > 0 ? [...localUsers, ...SAMPLE_SEED_DATA] : SAMPLE_SEED_DATA;
+                serverTotalAttendees = allUsersData.filter(u => u.hasAttended).length;
+                serverTotalScans = allUsersData.reduce((acc, u) => acc + (u.scanCount || 0), 0);
+            }
+
+            // บันทึกเวลาอัปเดต
+            const now = new Date();
+            $('#lastUpdatedTime').text(now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+
+            // รีเซ็ตตัวกรองและคำนวณแดชบอร์ด
+            applyFilters();
+        }
+
+        // -------------------------------------------------------------------------
+        // 🔍 FILTERING & CALCULATION (ระบบตัวกรองและการคำนวณ)
+        // -------------------------------------------------------------------------
+        function populateProvinceFilterOptions() {
+            const provinces = window.getAllProvinces ? window.getAllProvinces() : [
+                "กระบี่", "ชุมพร", "ตรัง", "นครศรีธรรมราช", "นราธิวาส", 
+                "ปัตตานี", "พังงา", "พัทลุง", "ภูเก็ต", "ยะลา", 
+                "ระนอง", "สงขลา", "สตูล", "สุราษฎร์ธานี"
+            ];
+            
+            const $filter = $('#filterProvince');
+            provinces.forEach(p => {
+                $filter.append(new Option(p, p));
+            });
+        }
+
+        function initFilterEvents() {
+            $('#searchInput, #filterProvince, #filterGradeLevel, #filterRole, #filterAttendance').on('input change', function() {
+                currentPage = 1;
+                applyFilters();
+            });
+
+            $('#resetFilterBtn').on('click', function() {
+                $('#searchInput').val('');
+                $('#filterAttendance').val('');
+                $('#filterProvince').val('');
+                $('#filterGradeLevel').val('');
+                $('#filterRole').val('');
+                currentPage = 1;
+                applyFilters();
+            });
+        }
+
+        function applyFilters() {
+            const query = $('#searchInput').val().trim().toLowerCase();
+            const selectedAttendance = $('#filterAttendance').val();
+            const selectedProv = $('#filterProvince').val();
+            const selectedGrade = $('#filterGradeLevel').val();
+            const selectedRole = $('#filterRole').val();
+
+            filteredUsersData = allUsersData.filter(user => {
+                const matchQuery = !query || 
+                    (user.name && user.name.toLowerCase().includes(query)) ||
+                    (user.school && user.school.toLowerCase().includes(query)) ||
+                    (user.province && user.province.toLowerCase().includes(query));
+
+                const matchProv = !selectedProv || (user.province === selectedProv);
+                const matchGrade = !selectedGrade || (user.gradeLevel === selectedGrade);
+                const matchRole = !selectedRole || (user.role === selectedRole);
+                
+                // กรองตามสถานะการมาร่วมงานจริง
+                const matchAttendance = !selectedAttendance ||
+                    (selectedAttendance === 'attended' && user.hasAttended) ||
+                    (selectedAttendance === 'not_attended' && !user.hasAttended);
+
+                return matchQuery && matchProv && matchGrade && matchRole && matchAttendance;
+            });
+
+            // อัปเดตชิปตัวกรอง
+            renderFilterChips(selectedProv, selectedGrade, selectedRole, selectedAttendance, query);
+
+            // อัปเดต KPI ตัวเลขสรุป
+            updateKPICards();
+
+            // วาดกราฟทั้ง 4 รูปแบบ
+            renderProvincesChart();
+            renderGradeLevelChart();
+            renderSchoolsChart();
+            renderRolesChart();
+
+            // อัปเดตข้อความวิเคราะห์เชิงลึก
+            updateKeyInsights();
+
+            // วาดตารางข้อมูลผู้เข้าร่วม
+            renderParticipantsTable();
+        }
+
+        function renderFilterChips(prov, grade, role, attendance, query) {
+            const $tags = $('#activeFilterTags');
+            $tags.empty();
+
+            const chips = [];
+            if (query) chips.push(`ค้นหา: "${query}"`);
+            if (attendance === 'attended') chips.push(`สถานะ: มาร่วมงานแล้ว`);
+            if (attendance === 'not_attended') chips.push(`สถานะ: ยังไม่มาร่วมงาน`);
+            if (prov) chips.push(`จังหวัด: ${prov}`);
+            if (grade) chips.push(`ระดับชั้น: ${grade}`);
+            if (role) chips.push(`ประเภท: ${role}`);
+
+            if (chips.length > 0) {
+                $tags.removeClass('hidden');
+                $tags.append('<span class="text-slate-400 text-[11px]">ตัวกรองที่เลือก:</span>');
+                chips.forEach(c => {
+                    $tags.append(`
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-brand-50 text-brand-700 font-medium text-[11px] border border-brand-200/60">
+                            ${c}
+                        </span>
+                    `);
+                });
+            } else {
+                $tags.addClass('hidden');
+            }
+        }
+
+        // -------------------------------------------------------------------------
+        // 📊 KPI CARDS CALCULATION (คำนวณการ์ดสถิติ 5 ใบ)
+        // -------------------------------------------------------------------------
+        function updateKPICards() {
+            const total = filteredUsersData.length;
+            const students = filteredUsersData.filter(u => u.role === 'นักเรียน').length;
+            const teachers = filteredUsersData.filter(u => u.role === 'ครู').length;
+            const others = total - students - teachers;
+
+            $('#statTotalUsers').text(total.toLocaleString('th-TH'));
+            $('#statStudentsCount').text(`นักเรียน ${students.toLocaleString('th-TH')} คน (${total > 0 ? Math.round((students/total)*100) : 0}%)`);
+            $('#statTeachersCount').text(teachers.toLocaleString('th-TH') + ' คน');
+            $('#statOthersCount').text(others.toLocaleString('th-TH') + ' คน');
+
+            // 🎟️ คำนวณผู้มาร่วมงานจริง (Unique UID ในชีท Scans ที่ตรงตามตัวกรอง)
+            const attendedUsers = filteredUsersData.filter(u => u.hasAttended);
+            const attendedCount = attendedUsers.length;
+            const attendancePct = total > 0 ? Math.round((attendedCount / total) * 100) : 0;
+            const totalScansInView = filteredUsersData.reduce((acc, u) => acc + (u.scanCount || (u.hasAttended ? 1 : 0)), 0);
+
+            $('#statTotalAttendees').text(attendedCount.toLocaleString('th-TH'));
+            $('#statAttendanceRate').text(`คิดเป็น ${attendancePct}% ของผู้ลงทะเบียน`);
+            $('#statTotalScans').text(`${totalScansInView.toLocaleString('th-TH')} ครั้ง`);
+
+            // 1. จังหวัดยอดนิยม
+            const provMap = {};
+            filteredUsersData.forEach(u => {
+                if (u.province && u.province !== '-' && u.province !== 'ไม่ระบุ') {
+                    provMap[u.province] = (provMap[u.province] || 0) + 1;
+                }
+            });
+            const provSorted = Object.entries(provMap).sort((a, b) => b[1] - a[1]);
+            const distinctProvinces = provSorted.length;
+
+            if (provSorted.length > 0) {
+                const [topProv, topProvCount] = provSorted[0];
+                const pct = total > 0 ? Math.round((topProvCount / total) * 100) : 0;
+                $('#statTopProvince').text(topProv);
+                $('#statTopProvinceCount').text(`${topProvCount} คน (${pct}% ของทั้งหมด)`);
+            } else {
+                $('#statTopProvince').text('-');
+                $('#statTopProvinceCount').text('0 คน');
+            }
+            $('#statTotalProvinces').text(`${distinctProvinces} จังหวัด`);
+            $('#provStatsSummary').text(`ครอบคลุม ${distinctProvinces} จังหวัด`);
+
+            // 2. โรงเรียนยอดนิยม
+            const schoolMap = {};
+            filteredUsersData.forEach(u => {
+                if (u.school && u.school !== '-' && u.school !== 'ไม่ระบุ') {
+                    schoolMap[u.school] = (schoolMap[u.school] || 0) + 1;
+                }
+            });
+            const schoolSorted = Object.entries(schoolMap).sort((a, b) => b[1] - a[1]);
+            const distinctSchools = schoolSorted.length;
+
+            if (schoolSorted.length > 0) {
+                const [topSchool, topSchoolCount] = schoolSorted[0];
+                $('#statTopSchool').text(topSchool).attr('title', topSchool);
+                $('#statTopSchoolCount').text(`${topSchoolCount} คน เข้าร่วม`);
+            } else {
+                $('#statTopSchool').text('-');
+                $('#statTopSchoolCount').text('0 คน');
+            }
+            $('#statTotalSchools').text(`${distinctSchools} แห่ง`);
+
+            // 3. ระดับชั้นที่สนใจมากที่สุด
+            const gradeMap = {};
+            let studentUsers = filteredUsersData.filter(u => u.gradeLevel && u.gradeLevel !== '-');
+            studentUsers.forEach(u => {
+                gradeMap[u.gradeLevel] = (gradeMap[u.gradeLevel] || 0) + 1;
+            });
+            const gradeSorted = Object.entries(gradeMap).sort((a, b) => b[1] - a[1]);
+
+            if (gradeSorted.length > 0) {
+                const [topGrade, topGradeCount] = gradeSorted[0];
+                const gradePct = studentUsers.length > 0 ? Math.round((topGradeCount / studentUsers.length) * 100) : 0;
+                $('#statTopGradeLevel').text(topGrade);
+                $('#statTopGradeLevelPercent').text(`${topGradeCount} คน (${gradePct}% ของนักเรียน)`);
+                $('#statGradeSubText').text(`สนใจมากที่สุดอันดับ 1`);
+            } else {
+                $('#statTopGradeLevel').text('-');
+                $('#statTopGradeLevelPercent').text('0%');
+                $('#statGradeSubText').text('ไม่พบข้อมูล');
+            }
+        }
+
+        // -------------------------------------------------------------------------
+        // 🗺️ CHART 1: PROVINCES RANKING (ผู้เข้าร่วมงานมาจากจังหวัดไหนมากที่สุด)
+        // -------------------------------------------------------------------------
+        function renderProvincesChart() {
+            const ctx = document.getElementById('provincesChart');
+            if (!ctx) return;
+
+            const provMap = {};
+            filteredUsersData.forEach(u => {
+                if (u.province && u.province !== '-' && u.province !== 'ไม่ระบุ') {
+                    provMap[u.province] = (provMap[u.province] || 0) + 1;
+                }
+            });
+
+            const sorted = Object.entries(provMap).sort((a, b) => b[1] - a[1]).slice(0, provDisplayLimit);
+            const labels = sorted.map(item => item[0]);
+            const values = sorted.map(item => item[1]);
+
+            if (provincesChartInstance) {
+                provincesChartInstance.destroy();
+            }
+
+            const colors = [
+                '#059669', '#10b981', '#34d399', '#0284c7', '#38bdf8', 
+                '#6366f1', '#818cf8', '#a855f7', '#f59e0b', '#fbbf24'
+            ];
+
+            provincesChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'จำนวนผู้เข้าร่วม (คน)',
+                        data: values,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y', // กราฟแท่งแนวนอน อ่านชื่อจังหวัดง่าย
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = filteredUsersData.length;
+                                    const pct = total > 0 ? Math.round((context.raw / total) * 100) : 0;
+                                    return ` ${context.raw} คน (${pct}% ของผู้เข้าร่วม)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { family: 'Prompt', size: 11 }, precision: 0 }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { font: { family: 'Prompt', size: 12, weight: '500' } }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const clickedProv = labels[index];
+                            $('#filterProvince').val(clickedProv).trigger('change');
+                        }
+                    }
+                }
+            });
+        }
+
+        // -------------------------------------------------------------------------
+        // 🎓 CHART 2: GRADE LEVEL DISTRIBUTION (ระดับชั้นไหนสนใจเข้าร่วมมากที่สุด)
+        // -------------------------------------------------------------------------
+        function renderGradeLevelChart() {
+            const ctx = document.getElementById('gradeLevelChart');
+            if (!ctx) return;
+
+            const gradeMap = {
+                'มัธยมศึกษาปีที่ 6': 0,
+                'มัธยมศึกษาปีที่ 5': 0,
+                'มัธยมศึกษาปีที่ 4': 0,
+                'มัธยมศึกษาตอนต้น': 0,
+                'ปวช. 1': 0,
+                'ปวช. 2': 0,
+                'ปวช. 3': 0
+            };
+
+            filteredUsersData.forEach(u => {
+                if (u.gradeLevel && u.gradeLevel !== '-') {
+                    gradeMap[u.gradeLevel] = (gradeMap[u.gradeLevel] || 0) + 1;
+                }
+            });
+
+            // กรองเฉพาะที่มีค่า
+            const activeEntries = Object.entries(gradeMap).filter(item => item[1] > 0).sort((a, b) => b[1] - a[1]);
+            const labels = activeEntries.map(item => item[0]);
+            const values = activeEntries.map(item => item[1]);
+
+            if (gradeLevelChartInstance) {
+                gradeLevelChartInstance.destroy();
+            }
+
+            const palette = ['#0062b8', '#0284c7', '#38bdf8', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+
+            gradeLevelChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: palette.slice(0, labels.length),
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const sum = values.reduce((a, b) => a + b, 0);
+                                    const pct = sum > 0 ? Math.round((context.raw / sum) * 100) : 0;
+                                    return ` ${context.raw} คน (${pct}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '68%'
+                }
+            });
+
+            // อัปเดตรายการ Legend ด้านล่าง
+            const $legend = $('#gradeLevelLegend');
+            $legend.empty();
+
+            const sum = values.reduce((a, b) => a + b, 0);
+            activeEntries.forEach((item, idx) => {
+                const color = palette[idx % palette.length];
+                const pct = sum > 0 ? Math.round((item[1] / sum) * 100) : 0;
+                $legend.append(`
+                    <div class="flex items-center justify-between text-xs py-0.5">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${color}"></span>
+                            <span class="text-slate-700 truncate">${item[0]}</span>
+                        </div>
+                        <span class="font-bold text-slate-800 text-[11px]">${item[1]} คน <span class="text-slate-400 font-normal">(${pct}%)</span></span>
+                    </div>
+                `);
+            });
+        }
+
+        // -------------------------------------------------------------------------
+        // 🏫 CHART 3: TOP SCHOOLS (โรงเรียนที่มาร่วมมากที่สุด)
+        // -------------------------------------------------------------------------
+        function renderSchoolsChart() {
+            const ctx = document.getElementById('schoolsChart');
+            if (!ctx) return;
+
+            const schoolMap = {};
+            filteredUsersData.forEach(u => {
+                if (u.school && u.school !== '-' && u.school !== 'ไม่ระบุ') {
+                    schoolMap[u.school] = (schoolMap[u.school] || 0) + 1;
+                }
+            });
+
+            const sorted = Object.entries(schoolMap).sort((a, b) => b[1] - a[1]).slice(0, 10);
+            const labels = sorted.map(item => item[0]);
+            const values = sorted.map(item => item[1]);
+
+            if (schoolsChartInstance) {
+                schoolsChartInstance.destroy();
+            }
+
+            schoolsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'จำนวนผู้เข้าร่วม (คน)',
+                        data: values,
+                        backgroundColor: '#4f46e5',
+                        hoverBackgroundColor: '#4338ca',
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.raw} คน`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { family: 'Prompt', size: 10 },
+                                maxRotation: 35,
+                                minRotation: 20
+                            }
+                        },
+                        y: {
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { family: 'Prompt', size: 11 }, precision: 0 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // -------------------------------------------------------------------------
+        // 👥 CHART 4: ROLE DISTRIBUTION (ประเภทผู้เข้าร่วมงาน)
+        // -------------------------------------------------------------------------
+        function renderRolesChart() {
+            const ctx = document.getElementById('rolesChart');
+            if (!ctx) return;
+
+            const roleMap = { 'นักเรียน': 0, 'ครู': 0, 'ผู้ปกครอง': 0, 'บุคคลทั่วไป': 0 };
+            filteredUsersData.forEach(u => {
+                const r = u.role || 'นักเรียน';
+                roleMap[r] = (roleMap[r] || 0) + 1;
+            });
+
+            const labels = Object.keys(roleMap);
+            const values = Object.values(roleMap);
+
+            if (rolesChartInstance) {
+                rolesChartInstance.destroy();
+            }
+
+            rolesChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: ['#0284c7', '#10b981', '#f59e0b', '#8b5cf6'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { family: 'Prompt', size: 11 } } },
+                        y: { grid: { color: '#f8fafc' }, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        // -------------------------------------------------------------------------
+        // 💡 KEY INSIGHTS (ข้อความสรุปวิเคราะห์ข้อมูลตอบโจทย์ผู้ใช้)
+        // -------------------------------------------------------------------------
+        function updateKeyInsights() {
+            const $list = $('#keyInsightsList');
+            $list.empty();
+
+            if (filteredUsersData.length === 0) {
+                $list.append('<li>ไม่มีข้อมูลตรงตามตัวกรองที่เลือก</li>');
+                return;
+            }
+
+            // คำนวณสรุป
+            const provMap = {};
+            const schoolMap = {};
+            const gradeMap = {};
+
+            filteredUsersData.forEach(u => {
+                if (u.province && u.province !== '-') provMap[u.province] = (provMap[u.province] || 0) + 1;
+                if (u.school && u.school !== '-') schoolMap[u.school] = (schoolMap[u.school] || 0) + 1;
+                if (u.gradeLevel && u.gradeLevel !== '-') gradeMap[u.gradeLevel] = (gradeMap[u.gradeLevel] || 0) + 1;
+            });
+
+            const topP = Object.entries(provMap).sort((a, b) => b[1] - a[1])[0];
+            const topS = Object.entries(schoolMap).sort((a, b) => b[1] - a[1])[0];
+            const topG = Object.entries(gradeMap).sort((a, b) => b[1] - a[1])[0];
+
+            if (topP) {
+                const pct = Math.round((topP[1] / filteredUsersData.length) * 100);
+                $list.append(`<li>📍 ผู้เข้าร่วมมาจาก <b>จังหวัด${topP[0]}</b> มากที่สุด คิดเป็น <b>${pct}%</b> (${topP[1]} คน)</li>`);
+            }
+            if (topS) {
+                $list.append(`<li>🏫 สถาบันที่มีผู้เข้าร่วมสูงสุดคือ <b>โรงเรียน${topS[0]}</b> (${topS[1]} คน)</li>`);
+            }
+            if (topG) {
+                const totalStudents = filteredUsersData.filter(u => u.gradeLevel && u.gradeLevel !== '-').length;
+                const gPct = totalStudents > 0 ? Math.round((topG[1] / totalStudents) * 100) : 0;
+                $list.append(`<li>🎓 ระดับชั้นที่ให้ความสนใจสูงสุดคือ <b>${topG[0]}</b> (คิดเป็น ${gPct}% ของนักเรียนทั้งหมด)</li>`);
+            }
+
+            const attendedCount = filteredUsersData.filter(u => u.hasAttended).length;
+            const attPct = filteredUsersData.length > 0 ? Math.round((attendedCount / filteredUsersData.length) * 100) : 0;
+            $list.append(`<li>🎟️ ผู้มาร่วมงานจริง (เช็คอินสแกนกิจกรรม): <b>${attendedCount.toLocaleString('th-TH')} คน</b> (${attPct}% Turnout)</li>`);
+        }
+
+        // -------------------------------------------------------------------------
+        // 📋 PARTICIPANTS DATA TABLE
+        // -------------------------------------------------------------------------
+        function renderParticipantsTable() {
+            const $tbody = $('#participantsTableBody');
+            $tbody.empty();
+
+            const total = filteredUsersData.length;
+            if (total === 0) {
+                $tbody.append(`
+                    <tr>
+                        <td colspan="8" class="py-10 text-center text-slate-400">
+                            <i class="fas fa-folder-open text-2xl mb-1 text-slate-300"></i>
+                            <p class="text-xs">ไม่พบข้อมูลที่ตรงกับตัวกรองที่เลือก</p>
+                        </td>
+                    </tr>
+                `);
+                $('#tableRecordCountText').text('แสดง 0 ถึง 0 จาก 0 รายการ');
+                $('#currentPageIndicator').text('1 / 1');
+                $('#prevPageBtn').prop('disabled', true);
+                $('#nextPageBtn').prop('disabled', true);
+                return;
+            }
+
+            const totalPages = Math.ceil(total / pageSize) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIdx = (currentPage - 1) * pageSize;
+            const endIdx = Math.min(startIdx + pageSize, total);
+            const pageUsers = filteredUsersData.slice(startIdx, endIdx);
+
+            pageUsers.forEach((u, idx) => {
+                const rowNum = startIdx + idx + 1;
+                
+                let roleBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-700">นักเรียน</span>';
+                if (u.role === 'ครู') {
+                    roleBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700">ครู</span>';
+                } else if (u.role === 'ผู้ปกครอง') {
+                    roleBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-700">ผู้ปกครอง</span>';
+                } else if (u.role === 'บุคคลทั่วไป') {
+                    roleBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-50 text-purple-700">บุคคลทั่วไป</span>';
+                }
+
+                let attendedBadge = u.hasAttended ? 
+                    `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200" title="สแกนสะสมแล้ว ${u.scanCount || 1} ครั้ง">
+                        <i class="fas fa-circle-check text-emerald-500"></i> มาร่วมงาน (${u.scanCount || 1} สแกน)
+                    </span>` :
+                    `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-400 border border-slate-200">
+                        <i class="far fa-circle text-slate-400"></i> ยังไม่สแกน
+                    </span>`;
+
+                $tbody.append(`
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-2.5 px-4 text-center text-slate-400 font-mono text-[11px]">${rowNum}</td>
+                        <td class="py-2.5 px-4 font-semibold text-slate-900">${u.name || '-'}</td>
+                        <td class="py-2.5 px-4 text-center">${attendedBadge}</td>
+                        <td class="py-2.5 px-4">${roleBadge}</td>
+                        <td class="py-2.5 px-4">
+                            <span class="inline-flex items-center gap-1 font-medium text-slate-700">
+                                <i class="fas fa-location-dot text-[10px] text-slate-400"></i>
+                                ${u.province || '-'}
+                            </span>
+                        </td>
+                        <td class="py-2.5 px-4 text-slate-700 font-medium">${u.school || '-'}</td>
+                        <td class="py-2.5 px-4">
+                            <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-mono text-[11px]">
+                                ${u.gradeLevel || '-'}
+                            </span>
+                        </td>
+                        <td class="py-2.5 px-4 text-right text-slate-400 font-mono text-[11px]">
+                            ${u.registeredAt || '-'}
+                        </td>
+                    </tr>
+                `);
+            });
+
+            $('#tableRecordCountText').text(`แสดง ${startIdx + 1} ถึง ${endIdx} จากทั้งหมด ${total.toLocaleString('th-TH')} รายการ`);
+            $('#currentPageIndicator').text(`${currentPage} / ${totalPages}`);
+            $('#prevPageBtn').prop('disabled', currentPage <= 1);
+            $('#nextPageBtn').prop('disabled', currentPage >= totalPages);
+        }
+
+        // -------------------------------------------------------------------------
+        // 📤 EXPORT TO CSV (ส่งออกไฟล์ CSV ภาษาไทย UTF-8)
+        // -------------------------------------------------------------------------
+        function exportDataToCsv() {
+            if (filteredUsersData.length === 0) {
+                Swal.fire({ icon: 'warning', title: 'ไม่มีข้อมูลสำหรับส่งออก', text: 'กรุณาปรับตัวกรองเพื่อเลือกข้อมูล' });
+                return;
+            }
+
+            const headers = ["ลำดับ", "UID", "ชื่อ-นามสกุล", "การมาร่วมงาน", "จำนวนครั้งที่สแกน", "ประเภท", "จังหวัด", "โรงเรียน/สถาบัน", "ระดับชั้น", "เวลาลงทะเบียน"];
+            const rows = filteredUsersData.map((u, idx) => [
+                idx + 1,
+                `"${(u.uid || '').replace(/"/g, '""')}"`,
+                `"${(u.name || '').replace(/"/g, '""')}"`,
+                `"${u.hasAttended ? 'มาร่วมงานแล้ว' : 'ยังไม่มาร่วมงาน'}"`,
+                u.scanCount || (u.hasAttended ? 1 : 0),
+                `"${(u.role || '').replace(/"/g, '""')}"`,
+                `"${(u.province || '').replace(/"/g, '""')}"`,
+                `"${(u.school || '').replace(/"/g, '""')}"`,
+                `"${(u.gradeLevel || '').replace(/"/g, '""')}"`,
+                `"${(u.registeredAt || '').replace(/"/g, '""')}"`
+            ]);
+
+            // UTF-8 BOM (\uFEFF) ป้องกันภาษาไทยเพี้ยนใน Microsoft Excel
+            let csvContent = "\uFEFF" + headers.join(",") + "\n";
+            rows.forEach(r => {
+                csvContent += r.join(",") + "\n";
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `OpenHouse_Participants_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'ส่งออกไฟล์ CSV สำเร็จ',
+                text: `ดาวน์โหลดข้อมูลจำนวน ${filteredUsersData.length} รายการเรียบร้อยแล้ว`,
+                timer: 1800,
+                showConfirmButton: false
+            });
+        }
+    </script>
+</body>
+</html>
