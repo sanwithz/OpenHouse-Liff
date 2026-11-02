@@ -533,28 +533,31 @@
         <div id="appScreen" class="hidden space-y-6">
 
             <!-- User Profile Bar -->
-            <div class="glass-card rounded-2xl p-4 shadow-md flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img id="userAvatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-indigo-500 shadow-sm">
-                    <div>
+            <div class="glass-card rounded-2xl p-4 shadow-md flex items-center justify-between gap-2">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <img id="userAvatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-indigo-500 shadow-sm flex-shrink-0">
+                    <div class="min-w-0">
                         <div class="flex items-center gap-1.5">
-                            <h2 id="userName" class="font-bold text-slate-800 text-base leading-snug">ชื่อผู้ใช้งาน</h2>
-                            <span class="px-2 py-0.5 text-[10px] font-medium bg-indigo-100 text-indigo-700 rounded-full">ผู้เข้าร่วม</span>
+                            <h2 id="userName" class="font-bold text-slate-800 text-base leading-snug truncate">ชื่อผู้ใช้งาน</h2>
+                            <span class="px-2 py-0.5 text-[10px] font-medium bg-indigo-100 text-indigo-700 rounded-full flex-shrink-0">ผู้เข้าร่วม</span>
                         </div>
-                        <p id="userSchool" class="text-xs text-slate-500 truncate max-w-[210px]">โรงเรียน...</p>
+                        <p id="userSchool" class="text-xs text-slate-500 truncate max-w-[145px] sm:max-w-[210px]">โรงเรียน...</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-1.5">
-                    <button id="showMyQrBtn" title="แสดง QR Code ประจำตัว" class="p-2.5 text-[#0062b8] hover:text-[#00529e] hover:bg-blue-50 rounded-xl transition-colors border border-blue-200">
+                <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
+                    <button id="showMyQrBtn" title="แสดง QR Code ประจำตัว" class="p-2 sm:p-2.5 text-[#0062b8] hover:text-[#00529e] hover:bg-blue-50 rounded-xl transition-colors border border-blue-200">
                         <i class="fas fa-qrcode"></i>
                     </button>
-                    <a href="dashboard.html" target="_blank" title="แดชบอร์ดสถิติผู้เข้าร่วม (Analytics Dashboard)" class="p-2.5 text-slate-500 hover:text-[#0062b8] hover:bg-blue-50 rounded-xl transition-colors">
+                    <button id="navMapQuickBtn" type="button" title="แผนที่นำทางอาคารจัดกิจกรรม (Google Maps)" class="p-2 sm:p-2.5 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors border border-emerald-200">
+                        <i class="fas fa-map-location-dot"></i>
+                    </button>
+                    <a href="dashboard.html" target="_blank" title="แดชบอร์ดสถิติผู้เข้าร่วม (Analytics Dashboard)" class="p-2 sm:p-2.5 text-slate-500 hover:text-[#0062b8] hover:bg-blue-50 rounded-xl transition-colors">
                         <i class="fas fa-chart-pie"></i>
                     </a>
-                    <button id="editProfileBtn" title="แก้ไขข้อมูลส่วนตัว" class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors">
+                    <button id="editProfileBtn" title="แก้ไขข้อมูลส่วนตัว" class="p-2 sm:p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors">
                         <i class="fas fa-user-pen"></i>
                     </button>
-                    <button id="refreshDataBtn" title="รีเฟรชข้อมูล" class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors">
+                    <button id="refreshDataBtn" title="รีเฟรชข้อมูล" class="p-2 sm:p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors">
                         <i class="fas fa-sync-alt"></i>
                     </button>
                 </div>
@@ -730,6 +733,135 @@
                         <i class="fas fa-keyboard text-base sm:text-lg text-indigo-600"></i>
                         <span class="truncate">กรอกรหัส</span>
                     </button>
+                </div>
+            </div>
+
+            <!-- GOOGLE MAPS NAVIGATION SECTION -->
+            <div id="campusMapSection" class="glass-card rounded-3xl shadow-xl p-6 transition-all duration-300">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                            <i class="fas fa-map-location-dot"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800 leading-tight">แผนที่นำทางอาคารจัดกิจกรรม</h3>
+                        </div>
+                    </div>
+                    <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200/80 rounded-full flex items-center gap-1">
+                        <i class="fas fa-location-dot text-rose-500"></i>
+                        <span>Google Maps</span>
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 mb-4">แตะเลือกอาคารเพื่อเปิดแผนที่และนำทางไปยังจุดจัดกิจกรรมภายในมหาวิทยาลัย</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <!-- 1. อาคาร 7 สำนักงานอธิการบดี -->
+                    <a href="https://maps.app.goo.gl/F3qP1ej3Rz8SRNJa7" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-between p-3 rounded-2xl bg-white/90 hover:bg-blue-50/70 border border-slate-200/90 hover:border-blue-300 shadow-xs hover:shadow-md transition-all duration-200 active:scale-[0.99]">
+                        <div class="flex items-center gap-3 min-w-0 pr-2">
+                            <div class="w-10 h-10 rounded-xl bg-blue-100/90 text-[#0062b8] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fas fa-building-columns text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-50 text-[#0062b8] mb-0.5">อาคาร 7</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">สำนักงานอธิการบดี</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-[#0062b8] text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
+                            <i class="fas fa-diamond-turn-right text-xs"></i>
+                            <span>นำทาง</span>
+                        </div>
+                    </a>
+
+                    <!-- 2. อาคาร CoC -->
+                    <a href="https://maps.app.goo.gl/Wh6B9SWgtFgQX9WJ6?g_st=ac" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-between p-3 rounded-2xl bg-white/90 hover:bg-sky-50/70 border border-slate-200/90 hover:border-sky-300 shadow-xs hover:shadow-md transition-all duration-200 active:scale-[0.99]">
+                        <div class="flex items-center gap-3 min-w-0 pr-2">
+                            <div class="w-10 h-10 rounded-xl bg-sky-100/90 text-sky-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fas fa-laptop-code text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 mb-0.5">CoC</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">อาคาร CoC</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-sky-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
+                            <i class="fas fa-diamond-turn-right text-xs"></i>
+                            <span>นำทาง</span>
+                        </div>
+                    </a>
+
+                    <!-- 3. อาคาร 5A วิทยบริการ -->
+                    <a href="https://maps.app.goo.gl/uY6nMV4VCaBiH3bF8?g_st=ac" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-between p-3 rounded-2xl bg-white/90 hover:bg-purple-50/70 border border-slate-200/90 hover:border-purple-300 shadow-xs hover:shadow-md transition-all duration-200 active:scale-[0.99]">
+                        <div class="flex items-center gap-3 min-w-0 pr-2">
+                            <div class="w-10 h-10 rounded-xl bg-purple-100/90 text-purple-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fas fa-book-open-reader text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 mb-0.5">อาคาร 5A</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">วิทยบริการ</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-purple-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
+                            <i class="fas fa-diamond-turn-right text-xs"></i>
+                            <span>นำทาง</span>
+                        </div>
+                    </a>
+
+                    <!-- 4. อาคาร 3 คณะวิเทศศึกษา -->
+                    <a href="https://maps.app.goo.gl/E6wZZkMNE8byUAtP8?g_st=ac" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-between p-3 rounded-2xl bg-white/90 hover:bg-amber-50/70 border border-slate-200/90 hover:border-amber-300 shadow-xs hover:shadow-md transition-all duration-200 active:scale-[0.99]">
+                        <div class="flex items-center gap-3 min-w-0 pr-2">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100/90 text-amber-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fas fa-earth-americas text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 mb-0.5">อาคาร 3</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">คณะวิเทศศึกษา</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-amber-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
+                            <i class="fas fa-diamond-turn-right text-xs"></i>
+                            <span>นำทาง</span>
+                        </div>
+                    </a>
+
+                    <!-- 5. อาคาร 2 คณะการบริการและการท่องเที่ยว -->
+                    <a href="https://maps.app.goo.gl/5zSCMyGJ3pDCWaua9" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-between p-3 rounded-2xl bg-white/90 hover:bg-rose-50/70 border border-slate-200/90 hover:border-rose-300 shadow-xs hover:shadow-md transition-all duration-200 active:scale-[0.99]">
+                        <div class="flex items-center gap-3 min-w-0 pr-2">
+                            <div class="w-10 h-10 rounded-xl bg-rose-100/90 text-rose-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fas fa-plane-departure text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 mb-0.5">อาคาร 2</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">คณะการบริการและการท่องเที่ยว</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-rose-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
+                            <i class="fas fa-diamond-turn-right text-xs"></i>
+                            <span>นำทาง</span>
+                        </div>
+                    </a>
+
+                    <!-- 6. อาคาร 1 คณะเทคโนโลยีและสิ่งแวดล้อม -->
+                    <a href="https://maps.app.goo.gl/MNLhg9VduqcpKoH69" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-between p-3 rounded-2xl bg-white/90 hover:bg-emerald-50/70 border border-slate-200/90 hover:border-emerald-300 shadow-xs hover:shadow-md transition-all duration-200 active:scale-[0.99]">
+                        <div class="flex items-center gap-3 min-w-0 pr-2">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100/90 text-emerald-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <i class="fas fa-leaf text-base"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 mb-0.5">อาคาร 1</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">คณะเทคโนโลยีและสิ่งแวดล้อม</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-emerald-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
+                            <i class="fas fa-diamond-turn-right text-xs"></i>
+                            <span>นำทาง</span>
+                        </div>
+                    </a>
                 </div>
             </div>
 
@@ -1431,6 +1563,18 @@
             $('#showMyQrBtn').on('click', function() {
                 if (!currentUser) return;
                 openDigitalBadgeModal();
+            });
+
+            // ปุ่มไอคอนนำทาง Google Maps จากแถบโปรไฟล์ (เลื่อนไปยังส่วนแผนที่นำทาง)
+            $('#navMapQuickBtn').on('click', function() {
+                const mapSection = document.getElementById('campusMapSection');
+                if (mapSection) {
+                    mapSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    $('#campusMapSection').addClass('ring-2 ring-emerald-500 ring-offset-2');
+                    setTimeout(() => {
+                        $('#campusMapSection').removeClass('ring-2 ring-emerald-500 ring-offset-2');
+                    }, 1800);
+                }
             });
 
             $('#closeBadgeModalBtn, #dismissBadgeModalBtn').on('click', function() {
