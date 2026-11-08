@@ -133,9 +133,9 @@
     <div id="devModeNotice" class="hidden bg-amber-500 text-white text-xs px-4 py-2 flex items-center justify-between shadow-md">
         <div class="flex items-center gap-2">
             <i class="fas fa-flask"></i>
-            <span>โหมดทดสอบ (Dev Mode): เปิดใช้งานนอกแอป LINE</span>
+            <span data-i18n="devModeText">โหมดทดสอบ (Dev Mode): เปิดใช้งานนอกแอป LINE</span>
         </div>
-        <button id="toggleMockUidBtn" class="bg-white text-amber-700 px-2 py-0.5 rounded font-semibold text-xs hover:bg-amber-50">
+        <button id="toggleMockUidBtn" class="bg-white text-amber-700 px-2 py-0.5 rounded font-semibold text-xs hover:bg-amber-50" data-i18n="devModeSwitchBtn">
             สลับ UID จำลอง
         </button>
     </div>
@@ -150,25 +150,25 @@
             <div id="loadingIconContainer" class="inline-flex p-4 rounded-full bg-white shadow-xl animate-bounce">
                 <i class="fab fa-line text-5xl text-[#06c755]"></i>
             </div>
-            <h2 id="loadingTitle" class="text-xl font-bold text-slate-800">กำลังเชื่อมต่อ LINE LIFF...</h2>
-            <p id="loadingDesc" class="text-slate-500 text-sm max-w-sm mx-auto">กรุณารอสักครู่ ระบบกำลังตรวจสอบข้อมูลบัญชีของคุณ</p>
+            <h2 id="loadingTitle" class="text-xl font-bold text-slate-800" data-i18n="loadingConnecting">กำลังเชื่อมต่อ LINE LIFF...</h2>
+            <p id="loadingDesc" class="text-slate-500 text-sm max-w-sm mx-auto" data-i18n="loadingWait">กรุณารอสักครู่ ระบบกำลังตรวจสอบข้อมูลบัญชีของคุณ</p>
             
             <!-- Connection Retry Box (จะแสดงขึ้นเมื่อเชื่อมต่อฐานข้อมูลล่าช้า) -->
             <div id="loadingRetryBox" class="hidden pt-3 max-w-sm mx-auto">
                 <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-left flex items-start gap-3 mb-4 shadow-sm">
                     <i class="fas fa-triangle-exclamation text-amber-500 text-xl mt-0.5 flex-shrink-0"></i>
                     <div>
-                        <div class="font-bold text-slate-800 text-sm">การเชื่อมต่อฐานข้อมูลล่าช้า</div>
-                        <div class="text-xs text-slate-600 mt-1 leading-relaxed">ระบบกำลังพยายามตรวจสอบประวัติการลงทะเบียน หากมีสัญญาณเน็ตช้าสามารถกดลองตรวจสอบอีกครั้ง หรือไปหน้าลงทะเบียนใหม่ได้ทันที</div>
+                        <div class="font-bold text-slate-800 text-sm" data-i18n="loadingDelayedTitle">การเชื่อมต่อฐานข้อมูลล่าช้า</div>
+                        <div class="text-xs text-slate-600 mt-1 leading-relaxed" data-i18n="loadingDelayedDesc">ระบบกำลังพยายามตรวจสอบประวัติการลงทะเบียน หากมีสัญญาณเน็ตช้าสามารถกดลองตรวจสอบอีกครั้ง หรือไปหน้าลงทะเบียนใหม่ได้ทันที</div>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-2">
                     <button type="button" id="retryCheckUidBtn" class="w-full py-2.5 px-4 rounded-xl bg-[#0062b8] hover:bg-[#004e8c] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95">
                         <i class="fas fa-rotate-right"></i>
-                        <span>ลองตรวจสอบอีกครั้ง</span>
+                        <span data-i18n="retryBtn">ลองตรวจสอบอีกครั้ง</span>
                     </button>
                     <button type="button" id="skipToRegisterBtn" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center justify-center gap-1 active:scale-95">
-                        <span>ไปหน้าลงทะเบียนใหม่</span>
+                        <span data-i18n="skipToRegisterBtn">ไปหน้าลงทะเบียนใหม่</span>
                     </button>
                 </div>
             </div>
@@ -179,12 +179,22 @@
         <!-- ============================================================== -->
         <div id="registerScreen" class="hidden">
             <!-- App Header matching screenshot -->
-            <div class="flex items-center justify-between mb-4">
-                <div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-[#0a335c] tracking-tight">แบบฟอร์มลงทะเบียน</h1>
-                    <p class="text-slate-500 text-xs sm:text-sm mt-0.5">กรุณากรอกข้อมูลเพื่อรับบัตรเข้าร่วมงาน</p>
+            <div class="flex items-start justify-between mb-4 gap-2">
+                <div class="min-w-0">
+                    <div class="text-[11px] font-bold text-[#0062b8] tracking-wide mb-0.5" data-i18n="eventMainTitle">เปิดบ้าน ม.อ.ภูเก็ต วิชาการ 2569</div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-[#0a335c] tracking-tight" data-i18n="regFormTitle">แบบฟอร์มลงทะเบียน</h1>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-0.5" data-i18n="regFormSubtitle">กรุณากรอกข้อมูลเพื่อรับบัตรเข้าร่วมงาน</p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <!-- Language Switcher (TH / EN) -->
+                    <div class="inline-flex items-center p-0.5 rounded-full bg-slate-200/85 border border-slate-200 shadow-inner text-xs font-bold" role="group" aria-label="Language switcher">
+                        <button type="button" data-set-lang="th" class="lang-btn px-2.5 py-1 rounded-full transition-all bg-white text-[#0062b8] shadow-sm">
+                            ไทย
+                        </button>
+                        <button type="button" data-set-lang="en" class="lang-btn px-2.5 py-1 rounded-full transition-all text-slate-600 hover:text-slate-900">
+                            EN
+                        </button>
+                    </div>
                     <button id="headerAvatarBtn" type="button" title="ดู QR Code ประจำตัว" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-[#0a335c] flex items-center justify-center border border-slate-200 shadow-sm transition-all active:scale-95">
                         <i class="fas fa-user-plus text-sm"></i>
                     </button>
@@ -195,11 +205,11 @@
             <div class="flex p-1 bg-slate-200/80 backdrop-blur-sm rounded-2xl mb-5 shadow-inner">
                 <button type="button" id="tabRegisterBtn" class="flex-1 py-2.5 px-3 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 bg-white text-[#0062b8] shadow-sm">
                     <i class="fas fa-file-signature"></i>
-                    <span>แบบฟอร์มลงทะเบียน</span>
+                    <span data-i18n="regFormTitle">แบบฟอร์มลงทะเบียน</span>
                 </button>
                 <button type="button" id="tabQrCodeBtn" class="flex-1 py-2.5 px-3 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 text-slate-600 hover:text-slate-900">
                     <i class="fas fa-qrcode"></i>
-                    <span>QR Code ประจำตัว (UID)</span>
+                    <span data-i18n="eventTicketTab">บัตรประจำตัวผู้ร่วมงาน</span>
                 </button>
             </div>
 
@@ -209,7 +219,7 @@
                 <div class="bg-[#f0f7ff] border border-[#d6e8fa] rounded-2xl p-3.5 mb-5 flex items-center gap-3.5 shadow-sm">
                     <img id="regLineAvatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Avatar" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-white shadow-sm ring-1 ring-blue-100 flex-shrink-0">
                     <div class="min-w-0 flex-1">
-                        <div class="text-[11px] font-medium text-slate-500">
+                        <div class="text-[11px] font-medium text-slate-500" data-i18n="loggedInViaLine">
                             เข้าใช้งานผ่าน LINE
                         </div>
                         <h3 id="regLineName" class="font-bold text-[#004e8c] text-base leading-tight truncate mt-0.5">ผู้ใช้งาน LINE</h3>
@@ -222,7 +232,7 @@
                         <!-- LINE UID (ดึงข้อมูลอัตโนมัติ) -->
                         <div>
                             <label for="regLineUidInput" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                LINE UID <span class="text-xs font-normal text-slate-400">(ดึงข้อมูลอัตโนมัติ)</span>
+                                LINE UID <span class="text-xs font-normal text-slate-400" data-i18n="uidAutoDetected">(ดึงข้อมูลอัตโนมัติ)</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -242,10 +252,10 @@
                             </div>
                         </div>
 
-                        <!-- ชื่อ - นามสกุล * -->
+                        <!-- ชื่อ - นามสกุล สำหรับออกเกียรติบัตร * -->
                         <div>
                             <label for="regName" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                ชื่อ - นามสกุล <span class="text-red-500">*</span>
+                                <span data-i18n="fullNameLabel">ชื่อ - นามสกุล สำหรับออกเกียรติบัตร</span> <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -263,10 +273,10 @@
                             </div>
                         </div>
 
-                        <!-- อีเมล (E-mail) * -->
+                        <!-- อีเมล * -->
                         <div>
                             <label for="regEmail" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                อีเมล (E-mail) <span class="text-red-500">*</span>
+                                <span data-i18n="emailLabel">อีเมล</span> <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -282,31 +292,31 @@
                                     class="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0072ce] focus:border-transparent transition-all shadow-sm text-sm"
                                 >
                             </div>
-                            <p id="emailError" class="text-red-500 text-xs mt-1 hidden">กรุณากรอกรูปแบบอีเมลให้ถูกต้อง เช่น example@gmail.com</p>
+                            <p id="emailError" class="text-red-500 text-xs mt-1 hidden" data-i18n="emailErrorText">กรุณากรอกรูปแบบอีเมลให้ถูกต้อง เช่น example@gmail.com</p>
                         </div>
 
                         <!-- ประเภทผู้ร่วมงาน * -->
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-2">
-                                ประเภทผู้ร่วมงาน <span class="text-red-500">*</span>
+                                <span data-i18n="participantTypeLabel">ประเภทผู้ร่วมงาน</span> <span class="text-red-500">*</span>
                             </label>
                             <input type="hidden" id="regRole" name="role" value="นักเรียน">
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                                 <button type="button" class="role-btn active flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-[#0072ce] bg-[#f0f7ff] text-[#0072ce] transition-all duration-200 shadow-sm" data-role="นักเรียน">
                                     <i class="fas fa-graduation-cap text-2xl mb-1.5"></i>
-                                    <span class="text-xs sm:text-sm font-semibold">นักเรียน</span>
+                                    <span class="text-xs sm:text-sm font-semibold" data-i18n="roleStudent">นักเรียน</span>
                                 </button>
                                 <button type="button" class="role-btn flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-800 transition-all duration-200 shadow-sm" data-role="ครู">
                                     <i class="fas fa-chalkboard-user text-2xl mb-1.5"></i>
-                                    <span class="text-xs sm:text-sm font-semibold">ครู</span>
+                                    <span class="text-xs sm:text-sm font-semibold" data-i18n="roleTeacher">ครู</span>
                                 </button>
                                 <button type="button" class="role-btn flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-800 transition-all duration-200 shadow-sm" data-role="ผู้ปกครอง">
                                     <i class="fas fa-users text-2xl mb-1.5"></i>
-                                    <span class="text-xs sm:text-sm font-semibold">ผู้ปกครอง</span>
+                                    <span class="text-xs sm:text-sm font-semibold" data-i18n="roleParent">ผู้ปกครอง</span>
                                 </button>
                                 <button type="button" class="role-btn flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-800 transition-all duration-200 shadow-sm" data-role="บุคคลทั่วไป">
                                     <i class="fas fa-user text-2xl mb-1.5"></i>
-                                    <span class="text-xs sm:text-sm font-semibold">บุคคลทั่วไป</span>
+                                    <span class="text-xs sm:text-sm font-semibold" data-i18n="roleGeneral">บุคคลทั่วไป</span>
                                 </button>
                             </div>
                         </div>
@@ -314,7 +324,7 @@
                         <!-- จังหวัด * -->
                         <div id="provinceGroup">
                             <label for="regProvince" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                จังหวัด <span class="text-red-500">*</span>
+                                <span data-i18n="provinceLabel">จังหวัด</span> <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -326,7 +336,7 @@
                                     required 
                                     class="w-full pl-10 pr-10 py-3 rounded-2xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0072ce] focus:border-transparent transition-all shadow-sm text-sm appearance-none cursor-pointer"
                                 >
-                                    <option value="" disabled selected>-- กรุณาเลือกจังหวัด --</option>
+                                    <option value="" disabled selected>กรุณาเลือกจังหวัด</option>
                                 </select>
                                 <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
                                     <i class="fas fa-chevron-down text-xs"></i>
@@ -337,7 +347,7 @@
                         <!-- ช่องพิมพ์จังหวัดเอง (เมื่อเลือก 'อื่นๆ') -->
                         <div id="customProvinceContainer" class="hidden">
                             <label for="regCustomProvince" class="block text-xs font-semibold text-blue-700 mb-1">
-                                พิมพ์ชื่อจังหวัดของคุณ <span class="text-red-500">*</span>
+                                <span data-i18n="customProvinceLabel">พิมพ์ชื่อจังหวัดของคุณ</span> <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-blue-500">
@@ -355,7 +365,7 @@
                         <!-- ชื่อโรงเรียน / วิทยาลัย * (สำหรับ นักเรียน และ ครู) -->
                         <div id="schoolGroup">
                             <label for="regSchool" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                ชื่อโรงเรียน / วิทยาลัย <span class="text-red-500">*</span>
+                                <span data-i18n="schoolLabel">ชื่อโรงเรียน / วิทยาลัย</span> <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -378,7 +388,7 @@
                         <!-- ช่องพิมพ์ชื่อโรงเรียนเอง (เมื่อเลือก 'อื่นๆ') -->
                         <div id="customSchoolContainer" class="hidden">
                             <label for="regCustomSchool" class="block text-xs font-semibold text-blue-700 mb-1">
-                                พิมพ์ชื่อโรงเรียน / วิทยาลัยของคุณ <span class="text-red-500">*</span>
+                                <span data-i18n="customSchoolLabel">พิมพ์ชื่อโรงเรียน / วิทยาลัยของคุณ</span> <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-blue-500">
@@ -396,7 +406,7 @@
                         <!-- ระดับชั้นปี * (สำหรับ นักเรียน เท่านั้น) -->
                         <div id="gradeLevelGroup">
                             <label for="regGradeLevel" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                                ระดับชั้นปี <span class="text-red-500">*</span>
+                                <span data-i18n="gradeLabel">ระดับชั้นปี</span> <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -407,14 +417,14 @@
                                     name="gradeLevel" 
                                     class="w-full pl-10 pr-10 py-3 rounded-2xl border border-slate-200 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0072ce] focus:border-transparent transition-all shadow-sm text-sm appearance-none cursor-pointer"
                                 >
-                                    <option value="" disabled selected>-- กรุณาเลือกระดับชั้นปี --</option>
-                                    <option value="มัธยมศึกษาตอนต้น">มัธยมศึกษาตอนต้น</option>
-                                    <option value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</option>
-                                    <option value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</option>
-                                    <option value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</option>
-                                    <option value="ปวช. 1">ปวช. 1</option>
-                                    <option value="ปวช. 2">ปวช. 2</option>
-                                    <option value="ปวช. 3">ปวช. 3</option>
+                                    <option value="" disabled selected data-i18n="selectGradePlaceholder">กรุณาเลือกระดับชั้นปี</option>
+                                    <option value="มัธยมศึกษาตอนต้น" data-i18n="gradeLowerSecondary">มัธยมศึกษาตอนต้น</option>
+                                    <option value="มัธยมศึกษาปีที่ 4" data-i18n="gradeM4">มัธยมศึกษาปีที่ 4</option>
+                                    <option value="มัธยมศึกษาปีที่ 5" data-i18n="gradeM5">มัธยมศึกษาปีที่ 5</option>
+                                    <option value="มัธยมศึกษาปีที่ 6" data-i18n="gradeM6">มัธยมศึกษาปีที่ 6</option>
+                                    <option value="ปวช. 1" data-i18n="gradeVoc1">ปวช.1</option>
+                                    <option value="ปวช. 2" data-i18n="gradeVoc2">ปวช.2</option>
+                                    <option value="ปวช. 3" data-i18n="gradeVoc3">ปวช.3</option>
                                 </select>
                                 <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
                                     <i class="fas fa-chevron-down text-xs"></i>
@@ -430,7 +440,7 @@
                                 class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#0062b8] to-[#0084d6] hover:from-[#00529e] hover:to-[#0074be] text-white font-bold text-base shadow-md shadow-blue-300/40 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group active:scale-[0.99]"
                             >
                                 <i class="fas fa-paper-plane group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
-                                <span>ยืนยันการลงทะเบียน</span>
+                                <span data-i18n="confirmRegBtn">ยืนยันการลงทะเบียน</span>
                             </button>
                         </div>
                     </form>
@@ -447,9 +457,9 @@
                     <!-- Event Header -->
                     <div class="mb-4 pb-3 border-b border-slate-100">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0062b8] text-xs font-bold uppercase tracking-wider mb-1.5">
-                            <i class="fas fa-certificate text-amber-500"></i> Open House Digital Pass 2026
+                            <i class="fas fa-certificate text-amber-500"></i> <span data-i18n="eventMainTitle">เปิดบ้าน ม.อ.ภูเก็ต วิชาการ 2569</span>
                         </span>
-                        <h2 class="text-base sm:text-lg font-bold text-slate-800">บัตรประจำตัวผู้เข้าร่วมงาน</h2>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-800" data-i18n="eventTicketTitle">บัตรประจำตัวผู้ร่วมงาน</h2>
                         <p class="text-xs text-slate-500">Prince of Songkla University, Phuket Campus</p>
                     </div>
 
@@ -484,12 +494,12 @@
 
                     <!-- UID Info Box & Copy Button -->
                     <div class="max-w-xs mx-auto mb-5 p-3 rounded-2xl bg-slate-50 border border-slate-200">
-                        <div class="text-[11px] text-slate-400 font-medium mb-1">LINE UID (สำหรับเช็คอิน)</div>
+                        <div class="text-[11px] text-slate-400 font-medium mb-1" data-i18n="uidForCheckin">LINE UID (สำหรับเช็คอิน)</div>
                         <div class="flex items-center justify-center gap-2">
                             <span id="badgeUidText" class="font-mono text-xs text-slate-700 font-semibold truncate max-w-[190px]">U------------------------</span>
                             <button type="button" id="copyBadgeUidBtn" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 hover:text-[#0062b8] text-xs font-semibold flex items-center gap-1 transition-all active:scale-95 shadow-sm">
                                 <i class="fas fa-copy"></i>
-                                <span>คัดลอก</span>
+                                <span data-i18n="copyBtn">คัดลอก</span>
                             </button>
                         </div>
                     </div>
@@ -504,7 +514,7 @@
                             class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all"
                         >
                             <i class="fas fa-download"></i>
-                            <span>บันทึกรูป QR Code</span>
+                            <span data-i18n="saveQrCodeBtn">บันทึกรูป QR Code</span>
                         </a>
                         <button 
                             type="button" 
@@ -512,12 +522,12 @@
                             class="flex-1 py-2.5 px-4 rounded-xl bg-[#0062b8] hover:bg-[#00529e] text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-blue-200"
                         >
                             <i class="fas fa-pen-to-square"></i>
-                            <span>กลับไปหน้าแบบฟอร์ม</span>
+                            <span data-i18n="backToFormBtn">กลับไปหน้าแบบฟอร์ม</span>
                         </button>
                     </div>
 
                     <p class="text-xs text-slate-400 mt-4 leading-relaxed">
-                        <i class="fas fa-info-circle text-[#0062b8] mr-1"></i> แสดง QR Code นี้แก่เจ้าหน้าที่ ณ จุดลงทะเบียน หรือ บูธกิจกรรมเพื่อเช็คอินและสะสมคะแนน
+                        <i class="fas fa-info-circle text-[#0062b8] mr-1"></i> <span data-i18n="qrTicketInstruction">แสดง QR Code นี้แก่เจ้าหน้าที่ ณ จุดลงทะเบียน หรือบูธกิจกรรมเพื่อเช็คอินคะแนนและสะสมคะแนน</span>
                     </p>
                 </div>
             </div>
@@ -532,6 +542,24 @@
         <!-- ============================================================== -->
         <div id="appScreen" class="hidden space-y-6">
 
+            <!-- App Top Header with Event Title & Language Switcher -->
+            <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-slate-200/80 text-[#0a335c] text-xs font-bold shadow-xs truncate">
+                        <i class="fas fa-graduation-cap text-[#0062b8]"></i>
+                        <span data-i18n="eventMainTitle">เปิดบ้าน ม.อ.ภูเก็ต วิชาการ 2569</span>
+                    </span>
+                </div>
+                <div class="inline-flex items-center p-0.5 rounded-full bg-slate-200/85 border border-slate-200 shadow-inner text-xs font-bold flex-shrink-0" role="group" aria-label="Language switcher">
+                    <button type="button" data-set-lang="th" class="lang-btn px-2.5 py-1 rounded-full transition-all bg-white text-[#0062b8] shadow-sm">
+                        ไทย
+                    </button>
+                    <button type="button" data-set-lang="en" class="lang-btn px-2.5 py-1 rounded-full transition-all text-slate-600 hover:text-slate-900">
+                        EN
+                    </button>
+                </div>
+            </div>
+
             <!-- User Profile Bar -->
             <div class="glass-card rounded-2xl p-4 shadow-md flex items-center justify-between gap-2">
                 <div class="flex items-center gap-3 min-w-0 flex-1">
@@ -539,7 +567,7 @@
                     <div class="min-w-0">
                         <div class="flex items-center gap-1.5">
                             <h2 id="userName" class="font-bold text-slate-800 text-base leading-snug truncate">ชื่อผู้ใช้งาน</h2>
-                            <span class="px-2 py-0.5 text-[10px] font-medium bg-indigo-100 text-indigo-700 rounded-full flex-shrink-0">ผู้เข้าร่วม</span>
+                            <span class="px-2 py-0.5 text-[10px] font-medium bg-indigo-100 text-indigo-700 rounded-full flex-shrink-0" data-i18n="participantBadge">ผู้เข้าร่วม</span>
                         </div>
                         <p id="userSchool" class="text-xs text-slate-500 truncate max-w-[145px] sm:max-w-[210px]">โรงเรียน...</p>
                     </div>
@@ -570,15 +598,15 @@
 
                 <div class="flex items-center justify-between mb-4">
                     <div>
-                        <span class="text-xs uppercase tracking-wider font-bold text-indigo-600">คะแนนสะสมของคุณ</span>
+                        <span class="text-xs uppercase tracking-wider font-bold text-indigo-600" data-i18n="yourTotalPoints">คะแนนสะสมของคุณ</span>
                         <div class="flex items-baseline gap-2 mt-1">
                             <span id="statTotalPoints" class="text-4xl font-extrabold text-slate-900 tracking-tight">0</span>
-                            <span class="text-slate-400 text-sm font-medium">/ <span id="passingScoreLabel">80</span> คะแนน</span>
+                            <span class="text-slate-400 text-sm font-medium">/ <span id="passingScoreLabel">80</span> <span data-i18n="pointsUnit">คะแนน</span></span>
                         </div>
                     </div>
                     <div id="certStatusBadge" class="px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 bg-slate-100 text-slate-600">
                         <i class="fas fa-hourglass-half"></i>
-                        <span>สะสมคะแนน</span>
+                        <span data-i18n="statusCollecting">สะสมคะแนน</span>
                     </div>
                 </div>
 
@@ -600,7 +628,7 @@
                             <i class="fas fa-calendar-day"></i>
                         </div>
                         <div>
-                            <div class="text-xs text-slate-500">คะแนนวันนี้</div>
+                            <div class="text-xs text-slate-500" data-i18n="pointsToday">คะแนนวันนี้</div>
                             <div id="statTodayPoints" class="text-lg font-bold text-slate-800">0</div>
                         </div>
                     </div>
@@ -610,7 +638,7 @@
                             <i class="fas fa-bullseye"></i>
                         </div>
                         <div>
-                            <div class="text-xs text-slate-500">บูธที่สแกนแล้ว</div>
+                            <div class="text-xs text-slate-500" data-i18n="boothsVisited">บูธที่สแกนแล้ว</div>
                             <div id="statTotalScans" class="text-lg font-bold text-slate-800">0 บูธ</div>
                         </div>
                     </div>
@@ -629,8 +657,8 @@
                         <div class="inline-flex p-3 rounded-2xl bg-white/20 backdrop-blur-md shadow-inner text-yellow-100">
                             <i class="fas fa-medal text-3xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white tracking-tight">🎉 ยินดีด้วย! คุณผ่านเกณฑ์แล้ว</h3>
-                        <p class="text-white/90 text-sm max-w-sm mx-auto">
+                        <h3 class="text-xl font-bold text-white tracking-tight" data-i18n="certCongratsTitle">🎉 ยินดีด้วย! คุณผ่านเกณฑ์แล้ว</h3>
+                        <p class="text-white/90 text-sm max-w-sm mx-auto" data-i18n="certCongratsDesc">
                             คุณสะสมคะแนนครบตามเกณฑ์ สามารถดาวน์โหลดเกียรติบัตรฉบับอิเล็กทรอนิกส์ (PDF) ได้ทันที
                         </p>
 
@@ -640,7 +668,7 @@
                                 class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-amber-700 hover:bg-yellow-50 font-bold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center gap-2 group active:scale-95"
                             >
                                 <i class="fas fa-file-pdf text-red-500 text-lg group-hover:scale-110 transition-transform"></i>
-                                <span>ดาวน์โหลดเกียรติบัตร (PDF)</span>
+                                <span data-i18n="downloadCertBtn">ดาวน์โหลดเกียรติบัตร (PDF)</span>
                             </button>
                             <button 
                                 id="previewCertBtn" 
@@ -648,7 +676,7 @@
                                 class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-semibold text-sm backdrop-blur-sm border border-white/30 transition-all inline-flex items-center justify-center gap-2 active:scale-95"
                             >
                                 <i class="fas fa-eye text-yellow-200"></i>
-                                <span>ดูตัวอย่างเกียรติบัตร</span>
+                                <span data-i18n="previewCertBtn">ดูตัวอย่างเกียรติบัตร</span>
                             </button>
                         </div>
                     </div>
@@ -662,9 +690,9 @@
                         <div class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
                             <i class="fas fa-qrcode"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-800">เครื่องสแกน QR Code</h3>
+                        <h3 class="text-lg font-bold text-slate-800" data-i18n="scannerTitle">เครื่องสแกน QR Code</h3>
                     </div>
-                    <span id="cameraStatusPill" class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500">
+                    <span id="cameraStatusPill" class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500" data-i18n="cameraReady">
                         พร้อมใช้งาน
                     </span>
                 </div>
@@ -687,8 +715,8 @@
                         <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-3 text-slate-300">
                             <i class="fas fa-camera text-3xl"></i>
                         </div>
-                        <h4 class="font-semibold text-base mb-1">กล้องยังไม่ได้เปิด</h4>
-                        <p class="text-xs text-slate-400 max-w-xs mb-4">กดปุ่มด้านล่างเพื่อเปิดกล้องแล้วส่อง QR Code ที่บูธกิจกรรมเพื่อรับคะแนน</p>
+                        <h4 class="font-semibold text-base mb-1" data-i18n="cameraOffTitle">กล้องยังไม่ได้เปิด</h4>
+                        <p class="text-xs text-slate-400 max-w-xs mb-4" data-i18n="cameraOffDesc">กดปุ่มด้านล่างเพื่อเปิดกล้องแล้วส่อง QR Code ที่บูธกิจกรรมเพื่อรับคะแนน</p>
                     </div>
                 </div>
 
@@ -702,7 +730,7 @@
                             class="w-full py-3 px-2 sm:px-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-200/80 transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 active:scale-95 border border-emerald-500/20"
                         >
                             <i class="fas fa-camera text-base sm:text-lg"></i>
-                            <span class="truncate">สแกน QR</span>
+                            <span class="truncate" data-i18n="scanQrBtn">สแกน QR</span>
                         </button>
 
                         <button 
@@ -710,7 +738,7 @@
                             class="hidden w-full py-3 px-2 sm:px-3 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-200/80 transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 active:scale-95 border border-rose-500/20"
                         >
                             <i class="fas fa-stop text-base sm:text-lg"></i>
-                            <span class="truncate">ปิดกล้อง</span>
+                            <span class="truncate" data-i18n="stopScanBtn">ปิดกล้อง</span>
                         </button>
                     </div>
 
@@ -721,7 +749,7 @@
                         class="col-span-1 w-full py-3 px-2 sm:px-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm shadow-sm transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 active:scale-95 border border-slate-200 hover:border-slate-300"
                     >
                         <i class="fas fa-camera-rotate text-base sm:text-lg text-slate-600"></i>
-                        <span class="truncate">สลับกล้อง</span>
+                        <span class="truncate" data-i18n="switchCamBtn">สลับกล้อง</span>
                     </button>
 
                     <!-- ปุ่มที่ 3: กรอกรหัสกิจกรรมด้วยตนเอง (Manual Code Entry) -->
@@ -731,7 +759,7 @@
                         class="col-span-1 w-full py-3 px-2 sm:px-3 rounded-2xl bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 font-bold text-xs sm:text-sm shadow-sm transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 active:scale-95 border border-indigo-200/80 hover:border-indigo-300"
                     >
                         <i class="fas fa-keyboard text-base sm:text-lg text-indigo-600"></i>
-                        <span class="truncate">กรอกรหัส</span>
+                        <span class="truncate" data-i18n="manualCodeBtn">กรอกรหัส</span>
                     </button>
                 </div>
             </div>
@@ -744,7 +772,7 @@
                             <i class="fas fa-map-location-dot"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-slate-800 leading-tight">แผนที่นำทางอาคารจัดกิจกรรม</h3>
+                            <h3 class="text-lg font-bold text-slate-800 leading-tight" data-i18n="campusMapTitle">แผนที่นำทางอาคารจัดกิจกรรม</h3>
                         </div>
                     </div>
                     <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200/80 rounded-full flex items-center gap-1">
@@ -752,7 +780,7 @@
                         <span>Google Maps</span>
                     </span>
                 </div>
-                <p class="text-xs text-slate-500 mb-4">แตะเลือกอาคารเพื่อเปิดแผนที่และนำทางไปยังจุดจัดกิจกรรมภายในมหาวิทยาลัย</p>
+                <p class="text-xs text-slate-500 mb-4" data-i18n="campusMapSubtitle">แตะเลือกอาคารเพื่อเปิดแผนที่และนำทางไปยังจุดจัดกิจกรรมภายในมหาวิทยาลัย</p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <!-- 1. อาคาร 7 สำนักงานอธิการบดี -->
@@ -763,13 +791,13 @@
                                 <i class="fas fa-building-columns text-base"></i>
                             </div>
                             <div class="min-w-0">
-                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-50 text-[#0062b8] mb-0.5">อาคาร 7</span>
-                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">สำนักงานอธิการบดี</h4>
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-50 text-[#0062b8] mb-0.5" data-i18n="bldg7Tag">อาคาร 7</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate" data-i18n="bldg7Name">สำนักงานอธิการบดี</h4>
                             </div>
                         </div>
                         <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-[#0062b8] text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
                             <i class="fas fa-diamond-turn-right text-xs"></i>
-                            <span>นำทาง</span>
+                            <span data-i18n="navigateBtn">นำทาง</span>
                         </div>
                     </a>
 
@@ -782,12 +810,12 @@
                             </div>
                             <div class="min-w-0">
                                 <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 mb-0.5">CoC</span>
-                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">อาคาร CoC</h4>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate" data-i18n="bldgCocName">อาคาร CoC</h4>
                             </div>
                         </div>
                         <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-sky-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
                             <i class="fas fa-diamond-turn-right text-xs"></i>
-                            <span>นำทาง</span>
+                            <span data-i18n="navigateBtn">นำทาง</span>
                         </div>
                     </a>
 
@@ -799,13 +827,13 @@
                                 <i class="fas fa-book-open-reader text-base"></i>
                             </div>
                             <div class="min-w-0">
-                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 mb-0.5">อาคาร 5A</span>
-                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">วิทยบริการ</h4>
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 mb-0.5" data-i18n="bldg5aTag">อาคาร 5A</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate" data-i18n="bldg5aName">วิทยบริการ</h4>
                             </div>
                         </div>
                         <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-purple-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
                             <i class="fas fa-diamond-turn-right text-xs"></i>
-                            <span>นำทาง</span>
+                            <span data-i18n="navigateBtn">นำทาง</span>
                         </div>
                     </a>
 
@@ -817,13 +845,13 @@
                                 <i class="fas fa-earth-americas text-base"></i>
                             </div>
                             <div class="min-w-0">
-                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 mb-0.5">อาคาร 3</span>
-                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">คณะวิเทศศึกษา</h4>
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 mb-0.5" data-i18n="bldg3Tag">อาคาร 3</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate" data-i18n="bldg3Name">คณะวิเทศศึกษา</h4>
                             </div>
                         </div>
                         <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-amber-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
                             <i class="fas fa-diamond-turn-right text-xs"></i>
-                            <span>นำทาง</span>
+                            <span data-i18n="navigateBtn">นำทาง</span>
                         </div>
                     </a>
 
@@ -835,13 +863,13 @@
                                 <i class="fas fa-plane-departure text-base"></i>
                             </div>
                             <div class="min-w-0">
-                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 mb-0.5">อาคาร 2</span>
-                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">คณะการบริการและการท่องเที่ยว</h4>
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 mb-0.5" data-i18n="bldg2Tag">อาคาร 2</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate" data-i18n="bldg2Name">คณะการบริการและการท่องเที่ยว</h4>
                             </div>
                         </div>
                         <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-rose-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
                             <i class="fas fa-diamond-turn-right text-xs"></i>
-                            <span>นำทาง</span>
+                            <span data-i18n="navigateBtn">นำทาง</span>
                         </div>
                     </a>
 
@@ -853,13 +881,13 @@
                                 <i class="fas fa-leaf text-base"></i>
                             </div>
                             <div class="min-w-0">
-                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 mb-0.5">อาคาร 1</span>
-                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate">คณะเทคโนโลยีและสิ่งแวดล้อม</h4>
+                                <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 mb-0.5" data-i18n="bldg1Tag">อาคาร 1</span>
+                                <h4 class="font-bold text-slate-800 text-xs sm:text-sm leading-snug truncate" data-i18n="bldg1Name">คณะเทคโนโลยีและสิ่งแวดล้อม</h4>
                             </div>
                         </div>
                         <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-emerald-600 text-slate-600 group-hover:text-white text-xs font-semibold transition-colors flex-shrink-0">
                             <i class="fas fa-diamond-turn-right text-xs"></i>
-                            <span>นำทาง</span>
+                            <span data-i18n="navigateBtn">นำทาง</span>
                         </div>
                     </a>
                 </div>
@@ -872,7 +900,7 @@
                         <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
                             <i class="fas fa-clock-rotate-left"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-800">ประวัติการเข้าร่วมกิจกรรม</h3>
+                        <h3 class="text-lg font-bold text-slate-800" data-i18n="recentHistoryTitle">ประวัติการเข้าร่วมกิจกรรม</h3>
                     </div>
                     <span id="scanCountBadge" class="text-xs font-semibold px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded-full">
                         0 รายการ
@@ -884,8 +912,8 @@
                         <div class="w-11 h-11 mx-auto rounded-xl bg-slate-50 flex items-center justify-center text-slate-300 mb-2 border border-slate-100">
                             <i class="fas fa-qrcode text-lg"></i>
                         </div>
-                        <p class="text-xs font-medium text-slate-600">ยังไม่มีประวัติการสแกน</p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">สแกน QR Code หรือกรอกรหัสที่บูธเพื่อรับคะแนน</p>
+                        <p class="text-xs font-medium text-slate-600" data-i18n="noHistoryTitle">ยังไม่มีประวัติการสแกน</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5" data-i18n="noHistoryDesc">สแกน QR Code หรือกรอกรหัสที่บูธเพื่อรับคะแนน</p>
                     </div>
                 </div>
             </div>
@@ -903,28 +931,28 @@
                 
                 <div>
                     <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs border border-emerald-200">
-                        <i class="fas fa-check-circle mr-1"></i> ผ่านเกณฑ์การเข้าร่วมกิจกรรม
+                        <i class="fas fa-check-circle mr-1"></i> <span data-i18n="directCertQualified">ผ่านเกณฑ์การเข้าร่วมกิจกรรม</span>
                     </span>
-                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-2">เกียรติบัตรฉบับอิเล็กทรอนิกส์ (PDF)</h2>
-                    <p class="text-xs sm:text-sm text-slate-500 mt-1">กิจกรรมเปิดบ้านวิชาการ Open House ประจำปีการศึกษา 2569</p>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mt-2" data-i18n="directCertHeading">เกียรติบัตรฉบับอิเล็กทรอนิกส์ (PDF)</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1" data-i18n="eventMainTitle">เปิดบ้าน ม.อ.ภูเก็ต วิชาการ 2569</p>
                 </div>
 
                 <!-- Recipient Card -->
                 <div class="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl text-left space-y-2 text-xs text-slate-700">
                     <div class="flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">ชื่อผู้รับเกียรติบัตร:</span>
+                        <span class="text-slate-500 font-medium" data-i18n="directCertRecipientLabel">ชื่อผู้รับเกียรติบัตร:</span>
                         <span id="directCertName" class="font-bold text-slate-900 text-sm">-</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">สถานศึกษา:</span>
+                        <span class="text-slate-500 font-medium" data-i18n="directCertSchoolLabel">สถานศึกษา:</span>
                         <span id="directCertSchool" class="font-medium text-slate-800 text-right truncate max-w-[200px]">-</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">คะแนนสะสม:</span>
+                        <span class="text-slate-500 font-medium" data-i18n="directCertScoreLabel">คะแนนสะสม:</span>
                         <span id="directCertScore" class="font-bold text-emerald-600">-</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">เลขที่เกียรติบัตร:</span>
+                        <span class="text-slate-500 font-medium" data-i18n="directCertIdLabel">เลขที่เกียรติบัตร:</span>
                         <span id="directCertId" class="font-mono text-slate-600">-</span>
                     </div>
                 </div>
@@ -933,23 +961,23 @@
                 <div class="space-y-2.5 pt-2">
                     <button type="button" id="directDownloadPdfBtn" class="w-full py-3.5 px-6 rounded-xl bg-[#0062b8] hover:bg-[#004e8c] text-white font-bold text-sm shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 active:scale-95">
                         <i class="fas fa-file-arrow-down text-lg"></i>
-                        <span>ดาวน์โหลดไฟล์ PDF ลงเครื่อง</span>
+                        <span data-i18n="directDownloadPdfBtn">ดาวน์โหลดไฟล์ PDF ลงเครื่อง</span>
                     </button>
                     
                     <button type="button" id="directOpenPdfBtn" class="w-full py-3 px-6 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 active:scale-95">
                         <i class="fas fa-arrow-up-right-from-square"></i>
-                        <span>เปิดดูเกียรติบัตรในแท็บใหม่ (View / Print)</span>
+                        <span data-i18n="directOpenPdfBtn">เปิดดูเกียรติบัตรในแท็บใหม่ (View / Print)</span>
                     </button>
                 </div>
 
-                <div class="p-3.5 bg-amber-50 border border-amber-200/80 rounded-2xl text-left text-[11px] text-amber-900 leading-relaxed">
+                <div class="p-3.5 bg-amber-50 border border-amber-200/80 rounded-2xl text-left text-[11px] text-amber-900 leading-relaxed" data-i18n-html="directIosTip">
                     <i class="fas fa-lightbulb text-amber-600 mr-1"></i>
                     <b>สำหรับผู้ใช้ iPhone / iPad (iOS):</b> หากกดดาวน์โหลดแล้วไม่ขึ้นหน้าต่างเซฟ ให้กด <b>"เปิดดูเกียรติบัตรในแท็บใหม่"</b> จากนั้นแตะปุ่มแชร์ <i class="fas fa-arrow-up-from-bracket mx-0.5"></i> แล้วเลือก <b>"บันทึกลงในไฟล์" (Save to Files)</b> หรือ <b>"พิมพ์" (Print)</b> ได้ทันที
                 </div>
 
                 <div class="pt-2">
                     <a href="/" class="text-xs text-slate-500 hover:text-[#0062b8] font-medium transition-colors">
-                        <i class="fas fa-arrow-left mr-1"></i> กลับสู่หน้าระบบหลัก
+                        <i class="fas fa-arrow-left mr-1"></i> <span data-i18n="backToHome">กลับสู่หน้าระบบหลัก</span>
                     </a>
                 </div>
             </div>
@@ -961,7 +989,7 @@
             <div class="mt-2.5 flex items-center justify-center gap-2">
                 <a href="dashboard.html" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-slate-600 hover:text-[#0062b8] border border-slate-200/80 shadow-xs transition-all text-[11px] font-medium">
                     <i class="fas fa-chart-pie text-[#0062b8]"></i>
-                    <span>แดชบอร์ดสถิติผู้เข้าร่วมงาน (Analytics Dashboard)</span>
+                    <span data-i18n="analyticsDashboardLink">แดชบอร์ดสถิติผู้เข้าร่วมงาน (Analytics Dashboard)</span>
                 </a>
             </div>
         </footer>
@@ -978,7 +1006,7 @@
                     <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-xs">
                         <i class="fas fa-award"></i>
                     </div>
-                    <h3 class="text-base font-bold text-slate-800">ตัวอย่างเกียรติบัตร</h3>
+                    <h3 class="text-base font-bold text-slate-800" data-i18n="certPreviewModalTitle">ตัวอย่างเกียรติบัตร</h3>
                 </div>
                 <button type="button" id="closeCertModalBtn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-sm transition-all">
                     <i class="fas fa-times"></i>
@@ -1029,10 +1057,10 @@
             <div class="mt-3.5 flex flex-col sm:flex-row gap-2 flex-shrink-0">
                 <button type="button" id="certModalDownloadBtn" class="flex-1 py-3 px-4 rounded-xl bg-[#0062b8] hover:bg-[#004e8c] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95">
                     <i class="fas fa-file-arrow-down"></i>
-                    <span>ดาวน์โหลดไฟล์ PDF</span>
+                    <span data-i18n="certModalDownloadBtn">ดาวน์โหลดไฟล์ PDF</span>
                 </button>
                 <button type="button" id="certModalCloseBottomBtn" class="py-3 px-5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all active:scale-95">
-                    <span>ปิด</span>
+                    <span data-i18n="closeBtn">ปิด</span>
                 </button>
             </div>
         </div>
@@ -1045,7 +1073,7 @@
     <div id="editProfileModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="glass-card bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-slate-800">แก้ไขข้อมูลผู้เข้าร่วมงาน</h3>
+                <h3 class="text-lg font-bold text-slate-800" data-i18n="editModalTitle">แก้ไขข้อมูลผู้เข้าร่วมงาน</h3>
                 <button id="closeEditModalBtn" class="text-slate-400 hover:text-slate-600 text-lg p-1">
                     <i class="fas fa-times"></i>
                 </button>
@@ -1053,58 +1081,58 @@
 
             <form id="editProfileForm" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ชื่อ - นามสกุล <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"><span data-i18n="fullNameLabel">ชื่อ - นามสกุล สำหรับออกเกียรติบัตร</span> <span class="text-red-500">*</span></label>
                     <input type="text" id="editName" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">อีเมล (E-mail) <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"><span data-i18n="emailLabel">อีเมล</span> <span class="text-red-500">*</span></label>
                     <input type="email" id="editEmail" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ประเภทผู้ร่วมงาน <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"><span data-i18n="participantTypeLabel">ประเภทผู้ร่วมงาน</span> <span class="text-red-500">*</span></label>
                     <select id="editRole" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm">
-                        <option value="นักเรียน">นักเรียน</option>
-                        <option value="ครู">ครู</option>
-                        <option value="ผู้ปกครอง">ผู้ปกครอง</option>
-                        <option value="บุคคลทั่วไป">บุคคลทั่วไป</option>
+                        <option value="นักเรียน" data-i18n="roleStudent">นักเรียน</option>
+                        <option value="ครู" data-i18n="roleTeacher">ครู</option>
+                        <option value="ผู้ปกครอง" data-i18n="roleParent">ผู้ปกครอง</option>
+                        <option value="บุคคลทั่วไป" data-i18n="roleGeneral">บุคคลทั่วไป</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">จังหวัด <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"><span data-i18n="provinceLabel">จังหวัด</span> <span class="text-red-500">*</span></label>
                     <select id="editProvince" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm">
-                        <option value="" disabled>-- เลือกจังหวัด --</option>
+                        <option value="" disabled>กรุณาเลือกจังหวัด</option>
                     </select>
                 </div>
                 <div id="editCustomProvinceContainer" class="hidden">
-                    <label class="block text-xs font-semibold text-blue-700 mb-1">พิมพ์ชื่อจังหวัดของคุณ <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-blue-700 mb-1"><span data-i18n="customProvinceLabel">พิมพ์ชื่อจังหวัดของคุณ</span> <span class="text-red-500">*</span></label>
                     <input type="text" id="editCustomProvince" class="w-full px-4 py-2 rounded-xl border border-blue-200 text-sm">
                 </div>
                 <div id="editSchoolGroup">
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">โรงเรียน / สถานศึกษา <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"><span data-i18n="schoolLabel">ชื่อโรงเรียน / วิทยาลัย</span> <span class="text-red-500">*</span></label>
                     <select id="editSchool" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm">
                     </select>
                 </div>
                 <div id="editCustomSchoolContainer" class="hidden">
-                    <label class="block text-xs font-semibold text-blue-700 mb-1">พิมพ์ชื่อโรงเรียนของคุณ <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-blue-700 mb-1"><span data-i18n="customSchoolLabel">พิมพ์ชื่อโรงเรียน / วิทยาลัยของคุณ</span> <span class="text-red-500">*</span></label>
                     <input type="text" id="editCustomSchool" class="w-full px-4 py-2 rounded-xl border border-blue-200 text-sm">
                 </div>
                 <div id="editGradeLevelGroup">
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ระดับชั้นปี <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"><span data-i18n="gradeLabel">ระดับชั้นปี</span> <span class="text-red-500">*</span></label>
                     <select id="editGradeLevel" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm">
-                        <option value="" disabled selected>-- เลือกระดับชั้นปี --</option>
-                        <option value="มัธยมศึกษาตอนต้น">มัธยมศึกษาตอนต้น</option>
-                        <option value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</option>
-                        <option value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</option>
-                        <option value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</option>
-                        <option value="ปวช. 1">ปวช. 1</option>
-                        <option value="ปวช. 2">ปวช. 2</option>
-                        <option value="ปวช. 3">ปวช. 3</option>
+                        <option value="" disabled selected data-i18n="selectGradePlaceholder">กรุณาเลือกระดับชั้นปี</option>
+                        <option value="มัธยมศึกษาตอนต้น" data-i18n="gradeLowerSecondary">มัธยมศึกษาตอนต้น</option>
+                        <option value="มัธยมศึกษาปีที่ 4" data-i18n="gradeM4">มัธยมศึกษาปีที่ 4</option>
+                        <option value="มัธยมศึกษาปีที่ 5" data-i18n="gradeM5">มัธยมศึกษาปีที่ 5</option>
+                        <option value="มัธยมศึกษาปีที่ 6" data-i18n="gradeM6">มัธยมศึกษาปีที่ 6</option>
+                        <option value="ปวช. 1" data-i18n="gradeVoc1">ปวช.1</option>
+                        <option value="ปวช. 2" data-i18n="gradeVoc2">ปวช.2</option>
+                        <option value="ปวช. 3" data-i18n="gradeVoc3">ปวช.3</option>
                     </select>
                 </div>
 
                 <div class="pt-3 flex gap-2">
-                    <button type="button" id="cancelEditBtn" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold">ยกเลิก</button>
-                    <button type="submit" class="flex-1 py-2.5 rounded-xl bg-[#0062b8] hover:bg-[#00529e] text-white text-sm font-semibold">บันทึกข้อมูล</button>
+                    <button type="button" id="cancelEditBtn" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold" data-i18n="cancelBtn">ยกเลิก</button>
+                    <button type="submit" class="flex-1 py-2.5 rounded-xl bg-[#0062b8] hover:bg-[#00529e] text-white text-sm font-semibold" data-i18n="saveBtn">บันทึกข้อมูล</button>
                 </div>
             </form>
         </div>
@@ -1120,9 +1148,9 @@
             </button>
 
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0062b8] text-xs font-bold uppercase tracking-wider mb-2">
-                <i class="fas fa-certificate text-amber-500"></i> Open House Pass 2026
+                <i class="fas fa-certificate text-amber-500"></i> <span data-i18n="eventMainTitle">เปิดบ้าน ม.อ.ภูเก็ต วิชาการ 2569</span>
             </span>
-            <h3 class="text-lg font-bold text-slate-800">บัตรประจำตัวผู้เข้าร่วมงาน</h3>
+            <h3 class="text-lg font-bold text-slate-800" data-i18n="eventTicketTitle">บัตรประจำตัวผู้ร่วมงาน</h3>
             <p class="text-xs text-slate-500 mb-4">Prince of Songkla University, Phuket</p>
 
             <div class="mb-4">
@@ -1139,16 +1167,16 @@
             </div>
 
             <div class="mb-4 p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                <div class="text-[10px] text-slate-400 font-medium">LINE UID ของคุณ</div>
+                <div class="text-[10px] text-slate-400 font-medium" data-i18n="uidForCheckin">LINE UID (สำหรับเช็คอิน)</div>
                 <div class="flex items-center justify-center gap-2 mt-0.5">
                     <span id="modalBadgeUidText" class="font-mono text-xs text-slate-700 font-semibold truncate max-w-[160px]">U--------</span>
-                    <button type="button" id="copyModalUidBtn" class="px-2 py-0.5 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#0062b8] text-[11px] font-semibold">
+                    <button type="button" id="copyModalUidBtn" class="px-2 py-0.5 rounded bg-white border border-slate-300 text-slate-700 hover:text-[#0062b8] text-[11px] font-semibold" data-i18n="copyBtn">
                         คัดลอก
                     </button>
                 </div>
             </div>
 
-            <button type="button" id="dismissBadgeModalBtn" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs">
+            <button type="button" id="dismissBadgeModalBtn" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs" data-i18n="closeWindowBtn">
                 ปิดหน้าต่าง
             </button>
         </div>
@@ -1189,6 +1217,484 @@
         let userScans = [];
         let qrScanner = null;
         let isMockMode = false;
+        let currentLang = (function() {
+            const urlLang = new URLSearchParams(window.location.search).get('lang');
+            if (urlLang === 'en' || urlLang === 'th') return urlLang;
+            const saved = localStorage.getItem('openhouse_lang');
+            return (saved === 'en' || saved === 'th') ? saved : 'th';
+        })();
+
+        // =========================================================================
+        // 🌐 INTERNATIONALIZATION (i18n: ภาษาไทย & English)
+        // =========================================================================
+        const I18N = {
+            th: {
+                pageTitle: 'เปิดบ้าน ม.อ.ภูเก็ต วิชาการ 2569 - ลงทะเบียน & บัตรเข้างาน',
+                eventMainTitle: 'เปิดบ้าน ม.อ.ภูเก็ต วิชาการ 2569',
+                eventSchedule: 'กำหนดการกิจกรรม',
+                eventRegistration: 'ลงทะเบียนเข้าร่วมงาน',
+                registerNow: 'ลงทะเบียนเลย',
+                myEventTicket: 'บัตรเข้างานของท่าน',
+                viewMyEventTicket: 'ตรวจสอบบัตรเข้างานหลังลงทะเบียนเข้าร่วมงาน',
+                regFormTitle: 'แบบฟอร์มลงทะเบียน',
+                regFormSubtitle: 'กรุณากรอกข้อมูลเพื่อรับบัตรเข้าร่วมงาน',
+                eventTicketTab: 'บัตรประจำตัวผู้ร่วมงาน',
+                loggedInViaLine: 'เข้าใช้งานผ่าน LINE',
+                defaultLineUser: 'ผู้ใช้งาน LINE',
+                uidAutoDetected: '(ดึงข้อมูลอัตโนมัติ)',
+                fetchingUidPlaceholder: 'กำลังดึงข้อมูล UID...',
+                copyUidTitle: 'คัดลอก UID',
+                fullNameLabel: 'ชื่อ - นามสกุล สำหรับออกเกียรติบัตร',
+                emailLabel: 'อีเมล',
+                emailErrorText: 'กรุณากรอกรูปแบบอีเมลให้ถูกต้อง เช่น example@gmail.com',
+                participantTypeLabel: 'ประเภทผู้ร่วมงาน',
+                roleStudent: 'นักเรียน',
+                roleTeacher: 'ครู',
+                roleParent: 'ผู้ปกครอง',
+                roleGeneral: 'บุคคลทั่วไป',
+                provinceLabel: 'จังหวัด',
+                selectProvincePlaceholder: 'กรุณาเลือกจังหวัด',
+                otherProvinceOption: 'อื่น ๆ (โปรดระบุจังหวัด)',
+                customProvinceLabel: 'พิมพ์ชื่อจังหวัดของคุณ',
+                customProvincePlaceholder: 'เช่น กรุงเทพมหานคร, เชียงใหม่, ขอนแก่น...',
+                schoolLabel: 'ชื่อโรงเรียน / วิทยาลัย',
+                selectProvinceFirstPlaceholder: '-- กรุณาเลือกจังหวัดก่อน --',
+                selectSchoolPlaceholder: '-- กรุณาเลือกโรงเรียน / วิทยาลัย --',
+                otherSchoolOption: 'โรงเรียนอื่น ๆ (พิมพ์ระบุเอง)',
+                customSchoolLabel: 'พิมพ์ชื่อโรงเรียน / วิทยาลัยของคุณ',
+                customSchoolPlaceholder: 'กรอกชื่อโรงเรียน/วิทยาลัยแบบเต็ม เช่น โรงเรียน...',
+                gradeLabel: 'ระดับชั้นปี',
+                selectGradePlaceholder: 'กรุณาเลือกระดับชั้นปี',
+                gradeLowerSecondary: 'มัธยมศึกษาตอนต้น',
+                gradeM4: 'มัธยมศึกษาปีที่ 4',
+                gradeM5: 'มัธยมศึกษาปีที่ 5',
+                gradeM6: 'มัธยมศึกษาปีที่ 6',
+                gradeVoc1: 'ปวช.1',
+                gradeVoc2: 'ปวช.2',
+                gradeVoc3: 'ปวช.3',
+                confirmRegBtn: 'ยืนยันการลงทะเบียน',
+                eventTicketTitle: 'บัตรประจำตัวผู้ร่วมงาน',
+                defaultParticipantName: 'ชื่อผู้เข้าร่วมงาน',
+                uidForCheckin: 'LINE UID (สำหรับเช็คอิน)',
+                copyBtn: 'คัดลอก',
+                saveQrCodeBtn: 'บันทึกรูป QR Code',
+                backToFormBtn: 'กลับไปหน้าแบบฟอร์ม',
+                qrTicketInstruction: 'แสดง QR Code นี้แก่เจ้าหน้าที่ ณ จุดลงทะเบียน หรือบูธกิจกรรมเพื่อเช็คอินคะแนนและสะสมคะแนน',
+                devModeText: 'โหมดทดสอบ (Dev Mode): เปิดใช้งานนอกแอป LINE',
+                devModeSwitchBtn: 'สลับ UID จำลอง',
+                loadingConnecting: 'กำลังเชื่อมต่อ LINE LIFF...',
+                loadingWait: 'กรุณารอสักครู่ ระบบกำลังตรวจสอบข้อมูลบัญชีของคุณ',
+                loadingCheckingMember: 'กำลังตรวจสอบสถานะสมาชิก...',
+                loadingSearchingHistory: 'กรุณารอสักครู่ ระบบกำลังค้นหาประวัติการลงทะเบียนของคุณ',
+                loadingDelayedTitle: 'การเชื่อมต่อฐานข้อมูลล่าช้า',
+                loadingDelayedDesc: 'ระบบกำลังพยายามตรวจสอบประวัติการลงทะเบียน หากมีสัญญาณเน็ตช้าสามารถกดลองตรวจสอบอีกครั้ง หรือไปหน้าลงทะเบียนใหม่ได้ทันที',
+                loadingDelayedShort: 'ระบบยังไม่สามารถยืนยันข้อมูลได้ในขณะนี้ กรุณากดปุ่มลองอีกครั้ง',
+                retryBtn: 'ลองตรวจสอบอีกครั้ง',
+                skipToRegisterBtn: 'ไปหน้าลงทะเบียนใหม่',
+                participantBadge: 'ผู้เข้าร่วม',
+                yourTotalPoints: 'คะแนนสะสมของคุณ',
+                pointsUnit: 'คะแนน',
+                statusCollecting: 'สะสมคะแนน',
+                statusQualified: 'ผ่านเกณฑ์แล้ว',
+                progressCompleted: '<strong class="text-emerald-600"><i class="fas fa-check"></i> คะแนนครบตามเกณฑ์แล้ว!</strong>',
+                progressRemaining: (diff) => `สะสมอีก ${diff} คะแนน เพื่อรับเกียรติบัตร`,
+                pointsToday: 'คะแนนวันนี้',
+                boothsVisited: 'บูธที่สแกนแล้ว',
+                boothsUnit: (n) => `${n} บูธ`,
+                itemsUnit: (n) => `${n} รายการ`,
+                certCongratsTitle: '🎉 ยินดีด้วย! คุณผ่านเกณฑ์แล้ว',
+                certCongratsDesc: 'คุณสะสมคะแนนครบตามเกณฑ์ สามารถดาวน์โหลดเกียรติบัตรฉบับอิเล็กทรอนิกส์ (PDF) ได้ทันที',
+                downloadCertBtn: 'ดาวน์โหลดเกียรติบัตร (PDF)',
+                previewCertBtn: 'ดูตัวอย่างเกียรติบัตร',
+                scannerTitle: 'เครื่องสแกน QR Code',
+                cameraReady: 'พร้อมใช้งาน',
+                cameraOpening: 'กำลังเปิดกล้อง...',
+                cameraScanning: 'กำลังสแกน...',
+                cameraOffTitle: 'กล้องยังไม่ได้เปิด',
+                cameraOffDesc: 'กดปุ่มด้านล่างเพื่อเปิดกล้องแล้วส่อง QR Code ที่บูธกิจกรรมเพื่อรับคะแนน',
+                scanQrBtn: 'สแกน QR',
+                stopScanBtn: 'ปิดกล้อง',
+                switchCamBtn: 'สลับกล้อง',
+                manualCodeBtn: 'กรอกรหัส',
+                campusMapTitle: 'แผนที่นำทางอาคารจัดกิจกรรม',
+                campusMapSubtitle: 'แตะเลือกอาคารเพื่อเปิดแผนที่และนำทางไปยังจุดจัดกิจกรรมภายในมหาวิทยาลัย',
+                bldg7Tag: 'อาคาร 7',
+                bldg7Name: 'สำนักงานอธิการบดี',
+                bldgCocName: 'อาคาร CoC',
+                bldg5aTag: 'อาคาร 5A',
+                bldg5aName: 'วิทยบริการ',
+                bldg3Tag: 'อาคาร 3',
+                bldg3Name: 'คณะวิเทศศึกษา',
+                bldg2Tag: 'อาคาร 2',
+                bldg2Name: 'คณะการบริการและการท่องเที่ยว',
+                bldg1Tag: 'อาคาร 1',
+                bldg1Name: 'คณะเทคโนโลยีและสิ่งแวดล้อม',
+                navigateBtn: 'นำทาง',
+                recentHistoryTitle: 'ประวัติการเข้าร่วมกิจกรรม',
+                noHistoryTitle: 'ยังไม่มีประวัติการสแกน',
+                noHistoryDesc: 'สแกน QR Code หรือกรอกรหัสที่บูธเพื่อรับคะแนน',
+                directCertQualified: 'ผ่านเกณฑ์การเข้าร่วมกิจกรรม',
+                directCertHeading: 'เกียรติบัตรฉบับอิเล็กทรอนิกส์ (PDF)',
+                directCertRecipientLabel: 'ชื่อผู้รับเกียรติบัตร:',
+                directCertSchoolLabel: 'สถานศึกษา:',
+                directCertScoreLabel: 'คะแนนสะสม:',
+                directCertIdLabel: 'เลขที่เกียรติบัตร:',
+                directDownloadPdfBtn: 'ดาวน์โหลดไฟล์ PDF ลงเครื่อง',
+                directOpenPdfBtn: 'เปิดดูเกียรติบัตรในแท็บใหม่ (View / Print)',
+                directIosTip: '<i class="fas fa-lightbulb text-amber-600 mr-1"></i><b>สำหรับผู้ใช้ iPhone / iPad (iOS):</b> หากกดดาวน์โหลดแล้วไม่ขึ้นหน้าต่างเซฟ ให้กด <b>"เปิดดูเกียรติบัตรในแท็บใหม่"</b> จากนั้นแตะปุ่มแชร์ <i class="fas fa-arrow-up-from-bracket mx-0.5"></i> แล้วเลือก <b>"บันทึกลงในไฟล์" (Save to Files)</b> หรือ <b>"พิมพ์" (Print)</b> ได้ทันที',
+                backToHome: 'กลับสู่หน้าระบบหลัก',
+                analyticsDashboardLink: 'แดชบอร์ดสถิติผู้เข้าร่วมงาน (Analytics Dashboard)',
+                certPreviewModalTitle: 'ตัวอย่างเกียรติบัตร',
+                certModalDownloadBtn: 'ดาวน์โหลดไฟล์ PDF',
+                closeBtn: 'ปิด',
+                editModalTitle: 'แก้ไขข้อมูลผู้เข้าร่วมงาน',
+                cancelBtn: 'ยกเลิก',
+                saveBtn: 'บันทึกข้อมูล',
+                closeWindowBtn: 'ปิดหน้าต่าง',
+                copiedUidToast: 'คัดลอก LINE UID แล้ว!',
+                warnSelectProvinceTitle: 'กรุณาเลือกจังหวัด',
+                warnSelectProvinceText: 'โปรดเลือกจังหวัดของคุณ',
+                warnIncompleteTitle: 'ข้อมูลไม่ครบถ้วน',
+                warnInputSchoolText: 'กรุณาระบุชื่อโรงเรียน / สถานศึกษา',
+                warnSelectGradeText: 'กรุณาเลือกระดับชั้นปี',
+                savingRegOverlay: 'กำลังบันทึกข้อมูลการลงทะเบียน...',
+                regSuccessTitle: 'ลงทะเบียนสำเร็จ!',
+                regWelcomeText: (name, role) => `ยินดีต้อนรับ ${name} (${role})`,
+                devModeModalTitle: 'โหมดทดสอบ (Dev Mode)',
+                devModeSavedText: (name, role) => `บันทึกข้อมูลเรียบร้อย: ยินดีต้อนรับ ${name} (${role})`,
+                enterEventBtn: 'เข้าสู่หน้ากิจกรรม',
+                connErrorTitle: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+                connErrorText: 'ไม่สามารถบันทึกข้อมูลลง Google Sheet ได้ กรุณาตรวจสอบว่าได้ตั้งค่า Google Apps Script Web App แล้ว',
+                updatingOverlay: 'กำลังอัปเดตข้อมูล...',
+                updatedToast: 'อัปเดตข้อมูลเรียบร้อย',
+                editSuccessToast: 'แก้ไขข้อมูลสำเร็จ',
+                editSuccessDevToast: 'แก้ไขข้อมูลสำเร็จ (โหมดทดสอบ)',
+                errorTitle: 'ผิดพลาด',
+                updateFailedText: 'ไม่สามารถอัปเดตข้อมูลได้',
+                schoolFallbackLabel: 'สถานศึกษา'
+            },
+            en: {
+                pageTitle: 'PSU Phuket Open House 2026 - Registration & Event Ticket',
+                eventMainTitle: 'PSU Phuket Open House 2026',
+                eventSchedule: 'Event Schedule',
+                eventRegistration: 'Event Registration',
+                registerNow: 'Register Now',
+                myEventTicket: 'My Event Ticket',
+                viewMyEventTicket: 'View My Event Ticket',
+                regFormTitle: 'Registration Form',
+                regFormSubtitle: 'Fill in the form to get your ticket.',
+                eventTicketTab: 'Event Ticket',
+                loggedInViaLine: 'Logged in via LINE',
+                defaultLineUser: 'LINE User',
+                uidAutoDetected: '(Auto-detected)',
+                fetchingUidPlaceholder: 'Fetching UID...',
+                copyUidTitle: 'Copy UID',
+                fullNameLabel: 'Full Name (for Certificate)',
+                emailLabel: 'Email',
+                emailErrorText: 'Please enter a valid email address, e.g. example@gmail.com',
+                participantTypeLabel: 'Participant Type',
+                roleStudent: 'Student',
+                roleTeacher: 'Teacher',
+                roleParent: 'Parent/Guardian',
+                roleGeneral: 'General Visitor',
+                provinceLabel: 'Province',
+                selectProvincePlaceholder: 'Select Province',
+                otherProvinceOption: 'Other (Please Specify)',
+                customProvinceLabel: 'Specify Your Province',
+                customProvincePlaceholder: 'e.g. Bangkok, Chiang Mai, Khon Kaen...',
+                schoolLabel: 'School / College',
+                selectProvinceFirstPlaceholder: '-- Select Province First --',
+                selectSchoolPlaceholder: '-- Select School / College --',
+                otherSchoolOption: 'Other School (Please Specify)',
+                customSchoolLabel: 'Specify Your School / College',
+                customSchoolPlaceholder: 'Enter full school or college name...',
+                gradeLabel: 'Grade',
+                selectGradePlaceholder: 'Select Grade',
+                gradeLowerSecondary: 'Lower Secondary',
+                gradeM4: 'Grade 10 (M.4)',
+                gradeM5: 'Grade 11 (M.5)',
+                gradeM6: 'Grade 12 (M.6)',
+                gradeVoc1: 'Vocational Year 1',
+                gradeVoc2: 'Vocational Year 2',
+                gradeVoc3: 'Vocational Year 3',
+                confirmRegBtn: 'Confirm',
+                eventTicketTitle: 'Event Ticket',
+                defaultParticipantName: 'Participant Name',
+                uidForCheckin: 'LINE UID (for Check-in)',
+                copyBtn: 'Copy',
+                saveQrCodeBtn: 'Save QR Code',
+                backToFormBtn: 'Back to Form',
+                qrTicketInstruction: 'Show this QR Code at the registration desk or activity booths to check in and earn points.',
+                devModeText: 'Dev Mode: Running outside LINE app',
+                devModeSwitchBtn: 'Switch Mock UID',
+                loadingConnecting: 'Connecting to LINE LIFF...',
+                loadingWait: 'Please wait while we verify your account information.',
+                loadingCheckingMember: 'Checking registration status...',
+                loadingSearchingHistory: 'Please wait while we look up your registration record.',
+                loadingDelayedTitle: 'Database Connection Delayed',
+                loadingDelayedDesc: 'We are verifying your registration. If your connection is slow, you can retry or go to the registration form.',
+                loadingDelayedShort: 'Unable to verify your record right now. Please tap retry.',
+                retryBtn: 'Retry',
+                skipToRegisterBtn: 'Go to Registration Form',
+                participantBadge: 'Participant',
+                yourTotalPoints: 'Your Total Points',
+                pointsUnit: 'pts',
+                statusCollecting: 'In Progress',
+                statusQualified: 'Qualified',
+                progressCompleted: '<strong class="text-emerald-600"><i class="fas fa-check"></i> You have qualified for the certificate!</strong>',
+                progressRemaining: (diff) => `Earn ${diff} more points to unlock your certificate`,
+                pointsToday: 'Points Today',
+                boothsVisited: 'Booths Visited',
+                boothsUnit: (n) => `${n} ${n === 1 ? 'booth' : 'booths'}`,
+                itemsUnit: (n) => `${n} ${n === 1 ? 'item' : 'items'}`,
+                certCongratsTitle: '🎉 Congratulations! You Qualified',
+                certCongratsDesc: 'You have earned enough points. You can now download your e-Certificate (PDF).',
+                downloadCertBtn: 'Download Certificate (PDF)',
+                previewCertBtn: 'Preview Certificate',
+                scannerTitle: 'QR Code Scanner',
+                cameraReady: 'Ready',
+                cameraOpening: 'Starting camera...',
+                cameraScanning: 'Scanning...',
+                cameraOffTitle: 'Camera is Off',
+                cameraOffDesc: 'Tap the button below to open your camera and scan a booth QR Code to earn points.',
+                scanQrBtn: 'Scan QR',
+                stopScanBtn: 'Stop',
+                switchCamBtn: 'Flip Cam',
+                manualCodeBtn: 'Enter Code',
+                campusMapTitle: 'Campus Event Map',
+                campusMapSubtitle: 'Tap a building to open Google Maps directions inside the campus.',
+                bldg7Tag: 'Building 7',
+                bldg7Name: "President's Office",
+                bldgCocName: 'College of Computing (CoC)',
+                bldg5aTag: 'Building 5A',
+                bldg5aName: 'Academic Resources',
+                bldg3Tag: 'Building 3',
+                bldg3Name: 'Faculty of International Studies',
+                bldg2Tag: 'Building 2',
+                bldg2Name: 'Faculty of Hospitality & Tourism',
+                bldg1Tag: 'Building 1',
+                bldg1Name: 'Faculty of Technology & Environment',
+                navigateBtn: 'Navigate',
+                recentHistoryTitle: 'Activity History',
+                noHistoryTitle: 'No scan history yet',
+                noHistoryDesc: 'Scan a QR Code or enter a booth code to earn points.',
+                directCertQualified: 'Qualified for Certificate',
+                directCertHeading: 'Electronic Certificate (PDF)',
+                directCertRecipientLabel: 'Recipient Name:',
+                directCertSchoolLabel: 'School / Institution:',
+                directCertScoreLabel: 'Total Score:',
+                directCertIdLabel: 'Certificate No.:',
+                directDownloadPdfBtn: 'Download PDF File',
+                directOpenPdfBtn: 'Open Certificate in New Tab (View / Print)',
+                directIosTip: '<i class="fas fa-lightbulb text-amber-600 mr-1"></i><b>For iPhone / iPad (iOS):</b> If the download prompt does not appear, tap <b>"Open Certificate in New Tab"</b>, then tap Share <i class="fas fa-arrow-up-from-bracket mx-0.5"></i> and select <b>"Save to Files"</b> or <b>"Print"</b>.',
+                backToHome: 'Back to Main Page',
+                analyticsDashboardLink: 'Participant Analytics Dashboard',
+                certPreviewModalTitle: 'Certificate Preview',
+                certModalDownloadBtn: 'Download PDF',
+                closeBtn: 'Close',
+                editModalTitle: 'Edit Participant Profile',
+                cancelBtn: 'Cancel',
+                saveBtn: 'Save',
+                closeWindowBtn: 'Close',
+                copiedUidToast: 'LINE UID copied!',
+                warnSelectProvinceTitle: 'Please Select Province',
+                warnSelectProvinceText: 'Please select your province.',
+                warnIncompleteTitle: 'Incomplete Information',
+                warnInputSchoolText: 'Please select or enter your school / college.',
+                warnSelectGradeText: 'Please select your grade.',
+                savingRegOverlay: 'Saving registration...',
+                regSuccessTitle: 'Registration Complete!',
+                regWelcomeText: (name, role) => `Welcome, ${name} (${role})`,
+                devModeModalTitle: 'Dev Mode',
+                devModeSavedText: (name, role) => `Saved successfully: Welcome ${name} (${role})`,
+                enterEventBtn: 'Continue',
+                connErrorTitle: 'Connection Error',
+                connErrorText: 'Could not save data to Google Sheets. Please check the Web App configuration.',
+                updatingOverlay: 'Updating data...',
+                updatedToast: 'Data updated!',
+                editSuccessToast: 'Profile updated!',
+                editSuccessDevToast: 'Profile updated (Dev Mode)',
+                errorTitle: 'Error',
+                updateFailedText: 'Could not update profile.',
+                schoolFallbackLabel: 'School / Institution'
+            }
+        };
+
+        function t(key) {
+            const dict = I18N[currentLang] || I18N.th;
+            return dict[key] !== undefined ? dict[key] : (I18N.th[key] || key);
+        }
+
+        const ROLE_TRANSLATIONS = {
+            th: {
+                'นักเรียน': 'นักเรียน',
+                'ครู': 'ครู',
+                'ผู้ปกครอง': 'ผู้ปกครอง',
+                'บุคคลทั่วไป': 'บุคคลทั่วไป',
+                'ผู้เข้าร่วม': 'ผู้เข้าร่วม',
+                'Student': 'นักเรียน',
+                'Teacher': 'ครู',
+                'Parent/Guardian': 'ผู้ปกครอง',
+                'General Visitor': 'บุคคลทั่วไป',
+                'Participant': 'ผู้เข้าร่วม'
+            },
+            en: {
+                'นักเรียน': 'Student',
+                'ครู': 'Teacher',
+                'ผู้ปกครอง': 'Parent/Guardian',
+                'บุคคลทั่วไป': 'General Visitor',
+                'ผู้เข้าร่วม': 'Participant',
+                'Student': 'Student',
+                'Teacher': 'Teacher',
+                'Parent/Guardian': 'Parent/Guardian',
+                'General Visitor': 'General Visitor',
+                'Participant': 'Participant'
+            }
+        };
+
+        function translateRole(role) {
+            if (!role) return t('participantBadge');
+            return (ROLE_TRANSLATIONS[currentLang] && ROLE_TRANSLATIONS[currentLang][role]) || role;
+        }
+
+        function translateProvince(prov) {
+            if (!prov) return '';
+            const map = window.PROVINCE_EN_MAP || {};
+            if (currentLang === 'en') {
+                return map[prov] || prov;
+            } else {
+                const reverseEntry = Object.entries(map).find(([, enName]) => enName.toLowerCase() === String(prov).toLowerCase());
+                return reverseEntry ? reverseEntry[0] : prov;
+            }
+        }
+
+        function formatProvinceDisplay(prov) {
+            if (!prov) return '';
+            const translated = translateProvince(prov);
+            return currentLang === 'en' ? translated : `จ.${translated}`;
+        }
+
+        function translateSchool(school) {
+            if (!school || school === '-') return '';
+            if (ROLE_TRANSLATIONS.en[school]) {
+                return translateRole(school);
+            }
+            const schoolMap = window.SCHOOL_EN_MAP || {};
+            if (currentLang === 'en') {
+                return schoolMap[school] || school;
+            } else {
+                if (school === 'Headstart International School, Phuket') {
+                    return 'นานาชาติเฮดสตาร์ท';
+                }
+                return school;
+            }
+        }
+
+        /**
+         * สลับภาษาของระบบ (th / en) และอัปเดต UI ทั้งหมดทันที
+         */
+        function setLanguage(lang) {
+            if (lang !== 'th' && lang !== 'en') return;
+            currentLang = lang;
+            localStorage.setItem('openhouse_lang', lang);
+            document.documentElement.lang = lang;
+            document.title = t('pageTitle');
+
+            // อัปเดตสถานะปุ่มสลับภาษา (ไทย / EN)
+            $('.lang-btn').each(function() {
+                const btnLang = $(this).data('set-lang');
+                if (btnLang === lang) {
+                    $(this).removeClass('text-slate-600 hover:text-slate-900')
+                           .addClass('bg-white text-[#0062b8] shadow-sm');
+                } else {
+                    $(this).removeClass('bg-white text-[#0062b8] shadow-sm')
+                           .addClass('text-slate-600 hover:text-slate-900');
+                }
+            });
+
+            // อัปเดตข้อความที่มี data-i18n และ data-i18n-html
+            $('[data-i18n]').each(function() {
+                const key = $(this).attr('data-i18n');
+                const val = t(key);
+                if (typeof val === 'string') {
+                    $(this).text(val);
+                }
+            });
+
+            $('[data-i18n-html]').each(function() {
+                const key = $(this).attr('data-i18n-html');
+                const val = t(key);
+                if (typeof val === 'string') {
+                    $(this).html(val);
+                }
+            });
+
+            // อัปเดต placeholders และ titles
+            $('#regLineUidInput').attr('placeholder', t('fetchingUidPlaceholder'));
+            $('#copyUidSmallBtn').attr('title', t('copyUidTitle'));
+            $('#regCustomProvince, #editCustomProvince').attr('placeholder', t('customProvincePlaceholder'));
+            $('#regCustomSchool, #editCustomSchool').attr('placeholder', t('customSchoolPlaceholder'));
+            $('#headerAvatarBtn, #showMyQrBtn').attr('title', t('eventTicketTitle'));
+
+            if (lineProfile && (lineProfile.displayName === 'ผู้ใช้งาน LINE' || lineProfile.displayName === 'LINE User' || lineProfile.displayName === 'ผู้ใช้ทดสอบ (Dev)' || lineProfile.displayName === 'Test User (Dev)')) {
+                if (isMockMode) {
+                    lineProfile.displayName = lang === 'en' ? 'Test User (Dev)' : 'ผู้ใช้ทดสอบ (Dev)';
+                    $('#regLineName').text(lineProfile.displayName);
+                }
+            }
+
+            // อัปเดตตัวเลือกใน Dropdown จังหวัด และ โรงเรียน โดยคงค่าที่เลือกไว้
+            refreshProvinceDropdownLabels();
+
+            // อัปเดตบัตร QR Code และหน้าแดชบอร์ด
+            updateBadgeQrView();
+            if (currentUser) {
+                const roleBadgeText = translateRole(currentUser.role || 'ผู้เข้าร่วม');
+                const schoolText = (currentUser.school && currentUser.school !== '-' && !ROLE_TRANSLATIONS.en[currentUser.school])
+                    ? translateSchool(currentUser.school)
+                    : (currentUser.province ? formatProvinceDisplay(currentUser.province) : '');
+                $('#userSchool').text(schoolText ? `${schoolText} • ${roleBadgeText}` : roleBadgeText);
+                updateDashboardUI();
+            }
+        }
+
+        function refreshProvinceDropdownLabels() {
+            const provinces = window.getAllProvinces ? window.getAllProvinces() : [];
+            const regProvVal = $('#regProvince').val();
+            const regSchoolVal = $('#regSchool').val();
+            const editProvVal = $('#editProvince').val();
+            const editSchoolVal = $('#editSchool').val();
+
+            [$('#regProvince'), $('#editProvince')].forEach(($sel) => {
+                const prevVal = $sel.val();
+                $sel.empty();
+                const $placeholder = new Option(t('selectProvincePlaceholder'), '', true, !prevVal);
+                $placeholder.disabled = true;
+                $sel.append($placeholder);
+
+                provinces.forEach(p => {
+                    const label = currentLang === 'en' ? ((window.PROVINCE_EN_MAP && window.PROVINCE_EN_MAP[p]) || p) : p;
+                    $sel.append(new Option(label, p));
+                });
+
+                $sel.append(new Option(`📍 ${t('otherProvinceOption')}`, '__OTHER__'));
+                if (prevVal) {
+                    $sel.val(prevVal);
+                }
+            });
+
+            if (regProvVal && regProvVal !== '__OTHER__') {
+                populateSchoolDropdown($('#regSchool'), $('#customSchoolContainer'), regProvVal, regSchoolVal);
+            } else {
+                $('#regSchool').empty().prop('disabled', true).append(new Option(t('selectProvinceFirstPlaceholder'), ''));
+            }
+
+            if (editProvVal && editProvVal !== '__OTHER__') {
+                populateSchoolDropdown($('#editSchool'), $('#editCustomSchoolContainer'), editProvVal, editSchoolVal);
+            } else {
+                $('#editSchool').empty().prop('disabled', true).append(new Option(t('selectProvinceFirstPlaceholder'), ''));
+            }
+        }
 
         // -------------------------------------------------------------------------
         // 🎪 BOOTH CATALOG (รายชื่อบูธกิจกรรมมาตรฐาน และระบบซิงค์สดกับ Google Sheets แท็บ 'Booths')
@@ -1261,9 +1767,16 @@
         // 🚀 INITIALIZATION (เริ่มต้นระบบ)
         // =========================================================================
         $(document).ready(async function() {
+            // ผูกปุ่มสลับภาษา (ไทย / EN)
+            $(document).on('click', '.lang-btn', function() {
+                const lang = $(this).data('set-lang');
+                if (lang) setLanguage(lang);
+            });
+
             // ตรวจสอบ Parameter สำหรับกรณีเปิดดาวน์โหลดเกียรติบัตรผ่าน Browser ภายนอก (Safari / Chrome)
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('action') === 'cert' && urlParams.get('uid')) {
+                setLanguage(currentLang);
                 $('#loadingScreen').hide();
                 $('#registerScreen').addClass('hidden');
                 $('#appScreen').addClass('hidden');
@@ -1286,6 +1799,9 @@
             // ผูก Event คัดลอก UID
             initCopyUidEvents();
 
+            // ตั้งค่าภาษาเริ่มต้น
+            setLanguage(currentLang);
+
             // ซิงค์ชื่อสดไปยังบัตร QR Code
             $('#regName').on('input', function() {
                 updateBadgeQrView();
@@ -1299,26 +1815,10 @@
          * กำหนดค่า Dropdown จังหวัด และ Event เปลี่ยนจังหวัด
          */
         function initProvinceDropdowns() {
-            const provinces = window.getAllProvinces ? window.getAllProvinces() : [];
             const $regProv = $('#regProvince');
             const $editProv = $('#editProvince');
 
-            // ล้างตัวเลือกเดิมและใส่ placeholder
-            $regProv.empty().append(new Option('-- กรุณาเลือกจังหวัด --', '', true, true));
-            $regProv.find('option:first').prop('disabled', true);
-
-            $editProv.empty().append(new Option('-- เลือกจังหวัด --', '', true, true));
-            $editProv.find('option:first').prop('disabled', true);
-
-            // ใส่ 14 จังหวัดภาคใต้จาก JSON
-            provinces.forEach(p => {
-                $regProv.append(new Option(p, p));
-                $editProv.append(new Option(p, p));
-            });
-
-            // เพิ่มตัวเลือก อื่นๆ (สำหรับจังหวัดนอกเหนือจากใน JSON)
-            $regProv.append(new Option('📍 อื่นๆ (พิมพ์ระบุจังหวัดเอง)', '__OTHER__'));
-            $editProv.append(new Option('📍 อื่นๆ (พิมพ์ระบุจังหวัดเอง)', '__OTHER__'));
+            refreshProvinceDropdownLabels();
 
             // เมื่อเลือกจังหวัดในฟอร์มลงทะเบียน
             $regProv.on('change', function() {
@@ -1403,32 +1903,68 @@
         }
 
         /**
-         * เติมรายชื่อโรงเรียนตามจังหวัดที่เลือก
+         * เติมรายชื่อโรงเรียนตามจังหวัดที่เลือก (รองรับทั้งโหมดภาษาไทยและภาษาอังกฤษ)
          */
         function populateSchoolDropdown($schoolSelect, $customContainer, provinceName, selectedSchool = '') {
             $schoolSelect.empty();
             $customContainer.addClass('hidden');
 
             if (!provinceName || provinceName === '__OTHER__') {
-                $schoolSelect.prop('disabled', true).append(new Option('-- กรุณาเลือกจังหวัดก่อน --', ''));
+                $schoolSelect.prop('disabled', true).append(new Option(t('selectProvinceFirstPlaceholder'), ''));
                 return;
             }
 
             $schoolSelect.prop('disabled', false);
-            $schoolSelect.append(new Option('-- กรุณาเลือกโรงเรียน / วิทยาลัย --', '', true, false));
+            const $defaultOpt = new Option(t('selectSchoolPlaceholder'), '', true, false);
+            $defaultOpt.disabled = true;
+            $schoolSelect.append($defaultOpt);
 
-            const schools = window.getSchoolsByProvince ? window.getSchoolsByProvince(provinceName) : [];
-            
-            schools.forEach(s => {
-                $schoolSelect.append(new Option(s, s));
+            const rawSchools = window.getSchoolsByProvince ? window.getSchoolsByProvince(provinceName) : [];
+            const intlSchools = (provinceName === 'ภูเก็ต' && Array.isArray(window.PHUKET_INTERNATIONAL_SCHOOLS))
+                ? window.PHUKET_INTERNATIONAL_SCHOOLS
+                : [];
+
+            // จัดลำดับและแสดงชื่อโรงเรียนตามภาษา
+            const orderedSchools = [];
+            const seenLabels = new Set();
+
+            if (currentLang === 'en' && intlSchools.length > 0) {
+                intlSchools.forEach(s => {
+                    if (!seenLabels.has(s)) {
+                        seenLabels.add(s);
+                        orderedSchools.push({ value: s, label: s });
+                    }
+                });
+            }
+
+            rawSchools.forEach(s => {
+                let label = s;
+                if (currentLang === 'en' && window.SCHOOL_EN_MAP && window.SCHOOL_EN_MAP[s]) {
+                    label = window.SCHOOL_EN_MAP[s];
+                } else if (currentLang === 'th' && s === 'Headstart International School, Phuket' && rawSchools.includes('นานาชาติเฮดสตาร์ท')) {
+                    // ในโหมดภาษาไทย มี 'นานาชาติเฮดสตาร์ท' อยู่แล้ว แต่ยังแสดงรายการโรงเรียนนานาชาติครบตามที่กำหนด
+                    label = s;
+                }
+                if (!seenLabels.has(label)) {
+                    seenLabels.add(label);
+                    orderedSchools.push({ value: s, label: label });
+                }
             });
 
-            // เพิ่มตัวเลือก อื่นๆ (ระบุเอง)
-            $schoolSelect.append(new Option('🏫 โรงเรียนอื่นๆ (พิมพ์ระบุเอง)', '__OTHER__'));
+            orderedSchools.forEach(item => {
+                $schoolSelect.append(new Option(item.label, item.value));
+            });
+
+            // เพิ่มตัวเลือก โรงเรียนอื่น ๆ (พิมพ์ระบุเอง) / Other School (Please Specify)
+            $schoolSelect.append(new Option(`🏫 ${t('otherSchoolOption')}`, '__OTHER__'));
 
             if (selectedSchool) {
-                if (schools.includes(selectedSchool)) {
-                    $schoolSelect.val(selectedSchool);
+                const directMatch = orderedSchools.find(item => item.value === selectedSchool || item.label === selectedSchool);
+                if (directMatch) {
+                    $schoolSelect.val(directMatch.value);
+                } else if (selectedSchool === '__OTHER__') {
+                    $schoolSelect.val('__OTHER__');
+                    $customContainer.removeClass('hidden');
                 } else {
                     $schoolSelect.val('__OTHER__');
                     $customContainer.removeClass('hidden');
@@ -1602,7 +2138,7 @@
          */
         function updateBadgeQrView() {
             const uid = lineProfile ? lineProfile.uid : (currentUser ? currentUser.uid : 'U_OPENHOUSE_2026');
-            const name = $('#regName').val().trim() || (lineProfile ? lineProfile.displayName : (currentUser ? currentUser.name : 'ผู้เข้าร่วมงาน'));
+            const name = $('#regName').val().trim() || (lineProfile ? lineProfile.displayName : (currentUser ? currentUser.name : t('defaultParticipantName')));
             const role = $('#regRole').val() || (currentUser ? currentUser.role : 'นักเรียน');
             
             let province = $('#regProvince').val();
@@ -1618,7 +2154,7 @@
             $('#downloadBadgeQrBtn').attr('href', qrUrl);
             $('#badgeUidText').text(uid);
             $('#badgeName').text(name);
-            $('#badgeRolePill').text(role);
+            $('#badgeRolePill').text(translateRole(role));
 
             // สัญลักษณ์ไอคอนตามบทบาท
             let roleIconHtml = '<i class="fas fa-graduation-cap"></i>';
@@ -1629,10 +2165,10 @@
 
             // ข้อมูลสถานศึกษาหรือจังหวัด
             if (role === 'นักเรียน' || role === 'ครู') {
-                const schoolDisplay = school ? school : (province ? `จ.${province}` : 'สถานศึกษา');
+                const schoolDisplay = school ? translateSchool(school) : (province ? formatProvinceDisplay(province) : t('schoolFallbackLabel'));
                 $('#badgeSchoolPill').text(schoolDisplay).removeClass('hidden');
             } else {
-                const provDisplay = province ? `จ.${province}` : 'ผู้เข้าร่วมงาน';
+                const provDisplay = province ? formatProvinceDisplay(province) : t('participantBadge');
                 $('#badgeSchoolPill').text(provDisplay).removeClass('hidden');
             }
 
@@ -1650,8 +2186,11 @@
             const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(currentUser.uid)}&size=360&ecLevel=H&margin=2&dark=004488&light=ffffff&format=png`;
 
             $('#modalBadgeName').text(currentUser.name);
-            $('#modalBadgeRole').text(currentUser.role || 'ผู้เข้าร่วม');
-            $('#modalBadgeSchool').text(currentUser.school && currentUser.school !== '-' ? currentUser.school : (currentUser.province ? `จ.${currentUser.province}` : 'Open House'));
+            $('#modalBadgeRole').text(translateRole(currentUser.role || 'ผู้เข้าร่วม'));
+            const modalSchoolDisplay = (currentUser.school && currentUser.school !== '-' && !ROLE_TRANSLATIONS.en[currentUser.school])
+                ? translateSchool(currentUser.school)
+                : (currentUser.province ? formatProvinceDisplay(currentUser.province) : 'Open House');
+            $('#modalBadgeSchool').text(modalSchoolDisplay);
             $('#modalBadgeUidText').text(currentUser.uid);
             $('#modalBadgeQrImg').attr('src', qrUrl);
 
@@ -1687,7 +2226,7 @@
                         toast: true,
                         position: 'top-end',
                         icon: 'success',
-                        title: 'คัดลอก LINE UID แล้ว!',
+                        title: t('copiedUidToast'),
                         showConfirmButton: false,
                         timer: 1500
                     });
@@ -1707,7 +2246,7 @@
                 toast: true,
                 position: 'top-end',
                 icon: 'success',
-                title: 'คัดลอก LINE UID แล้ว!',
+                title: t('copiedUidToast'),
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -1762,7 +2301,7 @@
 
             lineProfile = {
                 uid: mockUid,
-                displayName: 'ผู้ใช้ทดสอบ (Dev)',
+                displayName: currentLang === 'en' ? 'Test User (Dev)' : 'ผู้ใช้ทดสอบ (Dev)',
                 pictureUrl: 'https://cdn-icons-png.flaticon.com/512/847/847969.png'
             };
 
@@ -1777,10 +2316,6 @@
 
         /**
          * ตรวจสอบว่า UID นี้เคยลงทะเบียนไว้ในฐานข้อมูลหรือยัง
-         * กลยุทธ์ Cache-First + Stale-While-Revalidate:
-         * 1. ตรวจสอบข้อมูลใน Local Storage ก่อนทันที ถ้าเคยลงทะเบียนแล้ว ให้เปิดแดชบอร์ดทันทีใน 0 วินาที
-         * 2. ทำการตรวจสอบซ้ำกับฐานข้อมูล Google Sheets ในพื้นหลัง เพื่ออัปเดตคะแนนและข้อมูลล่าสุด
-         * 3. ถ้าไม่มี Cache จะแสดงหน้า Loading จนกว่าฐานข้อมูลจะตอบกลับว่ามีหรือไม่มี UID
          */
         async function checkUserRegistration(uid) {
             if (!uid) {
@@ -1829,10 +2364,9 @@
                 return;
             }
 
-            // 3. ถ้ายังไม่มี Cache ในเครื่อง (ผู้ใช้เข้าใช้งานครั้งแรกหรือล้างแคชเครื่อง)
-            // ให้แสดงหน้า Loading และค้นหาใน Google Sheets อย่างละเอียด โดยไม่แสดงหน้า Login ก่อนเด็ดขาด
-            $('#loadingTitle').text('กำลังตรวจสอบสถานะสมาชิก...');
-            $('#loadingDesc').text('กรุณารอสักครู่ ระบบกำลังค้นหาประวัติการลงทะเบียนของคุณ');
+            // 3. ถ้ายังไม่มี Cache ในเครื่อง
+            $('#loadingTitle').text(t('loadingCheckingMember'));
+            $('#loadingDesc').text(t('loadingSearchingHistory'));
             $('#loadingScreen').show();
 
             await queryUserFromDatabase(uid);
@@ -1843,7 +2377,6 @@
          */
         async function queryUserFromDatabase(uid) {
             const controller = new AbortController();
-            // ให้เวลา Google Apps Script ทำงานอย่างเพียงพอ (15 วินาที สำหรับ Cold Start)
             const timeoutId = setTimeout(() => controller.abort(), 15000);
 
             try {
@@ -1855,7 +2388,6 @@
 
                 if (data.status === 'success') {
                     if (data.isRegistered && data.user) {
-                        // พบข้อมูลผู้ใช้ในระบบ -> บันทึก Cache และเข้าหน้าแดชบอร์ดทันที
                         currentUser = data.user;
                         userScans = data.scans || [];
                         localStorage.setItem('openhouse_user_' + uid, JSON.stringify(currentUser));
@@ -1869,7 +2401,6 @@
                         showAppScreen();
                         return;
                     } else {
-                        // ได้รับการยืนยันจาก Google Sheets แล้วว่ายังไม่เคยลงทะเบียนจริง
                         localStorage.removeItem('openhouse_user_' + uid);
                         localStorage.removeItem('openhouse_scans_' + uid);
                         $('#loadingScreen').hide();
@@ -1883,21 +2414,17 @@
                 clearTimeout(timeoutId);
                 console.warn("Check user registration error:", err);
 
-                // หากเน็ตช้าหรือเกิด Error เราจะไม่พาผู้ใช้ไปหน้าลงทะเบียนสุ่มสี่สุ่มห้า
-                // แต่จะแสดงกล่องแจ้งเตือนพร้อมปุ่มให้ลองกดตรวจสอบใหม่อีกครั้ง
-                $('#loadingTitle').text('การเชื่อมต่อฐานข้อมูลล่าช้า');
-                $('#loadingDesc').text('ระบบยังไม่สามารถยืนยันข้อมูลได้ในขณะนี้ กรุณากดปุ่มลองอีกครั้ง');
+                $('#loadingTitle').text(t('loadingDelayedTitle'));
+                $('#loadingDesc').text(t('loadingDelayedShort'));
                 $('#loadingRetryBox').removeClass('hidden');
 
-                // ผูกปุ่มลองใหม่
                 $('#retryCheckUidBtn').off('click').on('click', function() {
                     $('#loadingRetryBox').addClass('hidden');
-                    $('#loadingTitle').text('กำลังตรวจสอบสถานะสมาชิก...');
-                    $('#loadingDesc').text('กรุณารอสักครู่ ระบบกำลังค้นหาประวัติการลงทะเบียนของคุณ');
+                    $('#loadingTitle').text(t('loadingCheckingMember'));
+                    $('#loadingDesc').text(t('loadingSearchingHistory'));
                     queryUserFromDatabase(uid);
                 });
 
-                // ผูกปุ่มข้ามไปหน้าลงทะเบียนใหม่ (กรณีผู้ใช้รู้ตัวว่ายังไม่เคยสมัคร)
                 $('#skipToRegisterBtn').off('click').on('click', function() {
                     $('#loadingScreen').hide();
                     showRegisterScreen();
@@ -1931,13 +2458,14 @@
 
                         // อัปเดตข้อมูลบนหน้าจอแดชบอร์ดอย่างเงียบๆ
                         if (currentUser.name) $('#userName').text(currentUser.name);
-                        const roleBadgeText = currentUser.role || 'ผู้เข้าร่วม';
-                        const schoolText = (currentUser.school && currentUser.school !== '-') ? currentUser.school : (currentUser.province ? `จ.${currentUser.province}` : '');
+                        const roleBadgeText = translateRole(currentUser.role || 'ผู้เข้าร่วม');
+                        const schoolText = (currentUser.school && currentUser.school !== '-' && !ROLE_TRANSLATIONS.en[currentUser.school])
+                            ? translateSchool(currentUser.school)
+                            : (currentUser.province ? formatProvinceDisplay(currentUser.province) : '');
                         $('#userSchool').text(schoolText ? `${schoolText} • ${roleBadgeText}` : roleBadgeText);
 
                         updateDashboardUI();
                     } else if (data.isRegistered === false) {
-                        // กรณีที่แอดมินลบผู้ใช้ออกจาก Google Sheet
                         localStorage.removeItem('openhouse_user_' + uid);
                         localStorage.removeItem('openhouse_scans_' + uid);
                         currentUser = null;
@@ -1983,8 +2511,10 @@
 
             if (currentUser) {
                 $('#userName').text(currentUser.name);
-                const roleBadgeText = currentUser.role || 'ผู้เข้าร่วม';
-                const schoolText = (currentUser.school && currentUser.school !== '-') ? currentUser.school : (currentUser.province ? `จ.${currentUser.province}` : '');
+                const roleBadgeText = translateRole(currentUser.role || 'ผู้เข้าร่วม');
+                const schoolText = (currentUser.school && currentUser.school !== '-' && !ROLE_TRANSLATIONS.en[currentUser.school])
+                    ? translateSchool(currentUser.school)
+                    : (currentUser.province ? formatProvinceDisplay(currentUser.province) : '');
                 
                 $('#userSchool').text(schoolText ? `${schoolText} • ${roleBadgeText}` : roleBadgeText);
 
@@ -2013,8 +2543,10 @@
             
             $('#statTotalPoints').text(totalPoints);
             $('#statTodayPoints').text(todayPoints);
-            $('#statTotalScans').text(userScans.length + ' บูธ');
-            $('#scanCountBadge').text(userScans.length + ' รายการ');
+            const boothsUnitFn = t('boothsUnit');
+            const itemsUnitFn = t('itemsUnit');
+            $('#statTotalScans').text(typeof boothsUnitFn === 'function' ? boothsUnitFn(userScans.length) : `${userScans.length} บูธ`);
+            $('#scanCountBadge').text(typeof itemsUnitFn === 'function' ? itemsUnitFn(userScans.length) : `${userScans.length} รายการ`);
 
             // คำนวณความคืบหน้าของคะแนน
             const percent = Math.min(100, Math.round((totalPoints / PASSING_SCORE) * 100));
@@ -2025,18 +2557,19 @@
                 $('#certStatusBadge')
                     .removeClass('bg-slate-100 text-slate-600')
                     .addClass('bg-amber-100 text-amber-700')
-                    .html('<i class="fas fa-check-circle text-amber-600"></i><span>ผ่านเกณฑ์แล้ว</span>');
+                    .html(`<i class="fas fa-check-circle text-amber-600"></i><span>${t('statusQualified')}</span>`);
                 
-                $('#progressMessage').html('<strong class="text-emerald-600"><i class="fas fa-check"></i> คะแนนครบตามเกณฑ์แล้ว!</strong>');
+                $('#progressMessage').html(t('progressCompleted'));
                 $('#certUnlockedSection').removeClass('hidden');
             } else {
                 const diff = PASSING_SCORE - totalPoints;
                 $('#certStatusBadge')
                     .removeClass('bg-amber-100 text-amber-700')
                     .addClass('bg-slate-100 text-slate-600')
-                    .html('<i class="fas fa-hourglass-half"></i><span>สะสมคะแนน</span>');
+                    .html(`<i class="fas fa-hourglass-half"></i><span>${t('statusCollecting')}</span>`);
                 
-                $('#progressMessage').text(`สะสมอีก ${diff} คะแนน เพื่อรับเกียรติบัตร`);
+                const remFn = t('progressRemaining');
+                $('#progressMessage').text(typeof remFn === 'function' ? remFn(diff) : `สะสมอีก ${diff} คะแนน เพื่อรับเกียรติบัตร`);
                 $('#certUnlockedSection').addClass('hidden');
             }
 
@@ -2055,15 +2588,16 @@
                         <div class="w-11 h-11 mx-auto rounded-xl bg-slate-50 flex items-center justify-center text-slate-300 mb-2 border border-slate-100">
                             <i class="fas fa-qrcode text-lg"></i>
                         </div>
-                        <p class="text-xs font-medium text-slate-600">ยังไม่มีประวัติการสแกน</p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">สแกน QR Code หรือกรอกรหัสที่บูธเพื่อรับคะแนน</p>
+                        <p class="text-xs font-medium text-slate-600">${t('noHistoryTitle')}</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">${t('noHistoryDesc')}</p>
                     </div>
                 `);
                 return;
             }
 
+            const localeStr = currentLang === 'en' ? 'en-US' : 'th-TH';
             const html = userScans.map(item => {
-                const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleString('th-TH', { 
+                const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleString(localeStr, { 
                     month: 'short', 
                     day: 'numeric', 
                     hour: '2-digit', 
@@ -2080,7 +2614,7 @@
                             </div>
                             <div class="min-w-0">
                                 <div class="flex items-center gap-1.5">
-                                    <h4 class="font-semibold text-slate-800 text-xs sm:text-[13px] leading-tight truncate">${item.event || 'กิจกรรม'}</h4>
+                                    <h4 class="font-semibold text-slate-800 text-xs sm:text-[13px] leading-tight truncate">${item.event || 'Activity'}</h4>
                                     ${codeBadge}
                                 </div>
                                 <div class="flex items-center gap-1 text-[10px] text-slate-400 mt-0.5">
@@ -2091,7 +2625,7 @@
                         </div>
                         <div class="flex-shrink-0 text-right">
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-bold text-xs border border-emerald-100/90">
-                                +${item.points} <span class="text-[10px] font-medium ml-0.5">คะแนน</span>
+                                +${item.points} <span class="text-[10px] font-medium ml-0.5">${t('pointsUnit')}</span>
                             </span>
                         </div>
                     </div>
@@ -2128,7 +2662,7 @@
             }
 
             if (!province) {
-                Swal.fire({ icon: 'warning', title: 'กรุณาเลือกจังหวัด', text: 'โปรดเลือกจังหวัดของคุณ' });
+                Swal.fire({ icon: 'warning', title: t('warnSelectProvinceTitle'), text: t('warnSelectProvinceText') });
                 $('#regProvince').focus();
                 return;
             }
@@ -2146,13 +2680,13 @@
                 }
 
                 if (!school) {
-                    Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบถ้วน', text: 'กรุณาระบุชื่อโรงเรียน / สถานศึกษา' });
+                    Swal.fire({ icon: 'warning', title: t('warnIncompleteTitle'), text: t('warnInputSchoolText') });
                     return;
                 }
 
                 gradeLevel = $('#regGradeLevel').val();
                 if (!gradeLevel) {
-                    Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบถ้วน', text: 'กรุณาเลือกระดับชั้นปี' });
+                    Swal.fire({ icon: 'warning', title: t('warnIncompleteTitle'), text: t('warnSelectGradeText') });
                     $('#regGradeLevel').focus();
                     return;
                 }
@@ -2166,7 +2700,7 @@
                 }
 
                 if (!school) {
-                    Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบถ้วน', text: 'กรุณาระบุชื่อโรงเรียน / สถานศึกษา' });
+                    Swal.fire({ icon: 'warning', title: t('warnIncompleteTitle'), text: t('warnInputSchoolText') });
                     return;
                 }
 
@@ -2192,7 +2726,7 @@
                 pictureUrl: pictureUrl
             };
 
-            $('body').LoadingOverlay('show', { text: 'กำลังบันทึกข้อมูลการลงทะเบียน...' });
+            $('body').LoadingOverlay('show', { text: t('savingRegOverlay') });
 
             try {
                 const response = await fetch(API_URL, {
@@ -2210,10 +2744,11 @@
                     localStorage.setItem('openhouse_user_' + currentUser.uid, JSON.stringify(currentUser));
                     localStorage.setItem('openhouse_scans_' + currentUser.uid, JSON.stringify([]));
                     
+                    const welcomeFn = t('regWelcomeText');
                     Swal.fire({
                         icon: 'success',
-                        title: 'ลงทะเบียนสำเร็จ!',
-                        text: `ยินดีต้อนรับ ${currentUser.name} (${currentUser.role})`,
+                        title: t('regSuccessTitle'),
+                        text: typeof welcomeFn === 'function' ? welcomeFn(currentUser.name, translateRole(currentUser.role)) : `ยินดีต้อนรับ ${currentUser.name}`,
                         timer: 2000,
                         showConfirmButton: false
                     });
@@ -2231,11 +2766,12 @@
                     userScans = [];
                     localStorage.setItem('openhouse_user_' + payload.uid, JSON.stringify(payload));
                     localStorage.setItem('openhouse_scans_' + payload.uid, JSON.stringify([]));
+                    const devSavedFn = t('devModeSavedText');
                     Swal.fire({
                         icon: 'info',
-                        title: 'โหมดทดสอบ (Dev Mode)',
-                        text: `บันทึกข้อมูลเรียบร้อย: ยินดีต้อนรับ ${currentUser.name} (${currentUser.role})`,
-                        confirmButtonText: 'เข้าสู่หน้ากิจกรรม',
+                        title: t('devModeModalTitle'),
+                        text: typeof devSavedFn === 'function' ? devSavedFn(currentUser.name, translateRole(currentUser.role)) : '',
+                        confirmButtonText: t('enterEventBtn'),
                         confirmButtonColor: '#0062b8'
                     }).then(() => {
                         showAppScreen();
@@ -2245,8 +2781,8 @@
 
                 Swal.fire({
                     icon: 'error',
-                    title: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
-                    text: 'ไม่สามารถบันทึกข้อมูลลง Google Sheet ได้ กรุณาตรวจสอบว่าได้ตั้งค่า Google Apps Script Web App แล้ว'
+                    title: t('connErrorTitle'),
+                    text: t('connErrorText')
                 });
             }
         });
@@ -2254,7 +2790,7 @@
         // รีเฟรชข้อมูลผู้ใช้
         $('#refreshDataBtn').on('click', async function() {
             if (!currentUser) return;
-            $('body').LoadingOverlay('show', { text: 'กำลังอัปเดตข้อมูล...' });
+            $('body').LoadingOverlay('show', { text: t('updatingOverlay') });
             try {
                 const res = await fetch(`${API_URL}?uid=${encodeURIComponent(currentUser.uid)}&action=getUserData`);
                 const data = await res.json();
@@ -2270,7 +2806,7 @@
                         updateBoothCatalog(data.booths);
                     }
                     updateDashboardUI();
-                    Swal.fire({ icon: 'success', title: 'อัปเดตข้อมูลเรียบร้อย', timer: 1200, showConfirmButton: false });
+                    Swal.fire({ icon: 'success', title: t('updatedToast'), timer: 1200, showConfirmButton: false });
                 }
             } catch (e) {
                 $('body').LoadingOverlay('hide');
@@ -2353,7 +2889,7 @@
                 pictureUrl: currentUser.pictureUrl || ''
             };
 
-            $('body').LoadingOverlay('show', { text: 'กำลังอัปเดตข้อมูล...' });
+            $('body').LoadingOverlay('show', { text: t('updatingOverlay') });
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -2367,7 +2903,7 @@
                     localStorage.setItem('openhouse_user_' + currentUser.uid, JSON.stringify(currentUser));
                     $('#editProfileModal').addClass('hidden');
                     showAppScreen();
-                    Swal.fire({ icon: 'success', title: 'แก้ไขข้อมูลสำเร็จ', timer: 1500, showConfirmButton: false });
+                    Swal.fire({ icon: 'success', title: t('editSuccessToast'), timer: 1500, showConfirmButton: false });
                 }
             } catch (err) {
                 $('body').LoadingOverlay('hide');
@@ -2376,10 +2912,10 @@
                     localStorage.setItem('openhouse_user_' + payload.uid, JSON.stringify(payload));
                     $('#editProfileModal').addClass('hidden');
                     showAppScreen();
-                    Swal.fire({ icon: 'success', title: 'แก้ไขข้อมูลสำเร็จ (โหมดทดสอบ)', timer: 1500, showConfirmButton: false });
+                    Swal.fire({ icon: 'success', title: t('editSuccessDevToast'), timer: 1500, showConfirmButton: false });
                     return;
                 }
-                Swal.fire({ icon: 'error', title: 'ผิดพลาด', text: 'ไม่สามารถอัปเดตข้อมูลได้' });
+                Swal.fire({ icon: 'error', title: t('errorTitle'), text: t('updateFailedText') });
             }
         });
 
@@ -2420,7 +2956,7 @@
 
             async startScanning() {
                 try {
-                    $('#cameraStatusPill').text('กำลังเปิดกล้อง...').removeClass().addClass('text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-700');
+                    $('#cameraStatusPill').text(t('cameraOpening')).removeClass().addClass('text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-700');
                     $('#cameraIdlePlaceholder').addClass('hidden');
 
                     let deviceId = undefined;
@@ -2442,7 +2978,7 @@
                     this.scanning = true;
                     $('#startScanBtn').addClass('hidden');
                     $('#stopScanBtn').removeClass('hidden');
-                    $('#cameraStatusPill').text('กำลังสแกน...').removeClass().addClass('text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 animate-pulse');
+                    $('#cameraStatusPill').text(t('cameraScanning')).removeClass().addClass('text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 animate-pulse');
 
                     this.scanLoop();
                 } catch (err) {
@@ -2450,8 +2986,8 @@
                     this.stopScanning();
                     Swal.fire({
                         icon: 'error',
-                        title: 'ไม่สามารถเปิดกล้องได้',
-                        text: 'กรุณาอนุญาตการเข้าถึงกล้องถ่ายภาพในการตั้งค่าเบราว์เซอร์หรือแอป LINE'
+                        title: currentLang === 'en' ? 'Unable to Open Camera' : 'ไม่สามารถเปิดกล้องได้',
+                        text: currentLang === 'en' ? 'Please allow camera access in your browser or LINE settings.' : 'กรุณาอนุญาตการเข้าถึงกล้องถ่ายภาพในการตั้งค่าเบราว์เซอร์หรือแอป LINE'
                     });
                 }
             }
@@ -2468,12 +3004,12 @@
                 $('#startScanBtn').removeClass('hidden');
                 $('#stopScanBtn').addClass('hidden');
                 $('#cameraIdlePlaceholder').removeClass('hidden');
-                $('#cameraStatusPill').text('พร้อมใช้งาน').removeClass().addClass('text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500');
+                $('#cameraStatusPill').text(t('cameraReady')).removeClass().addClass('text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500');
             }
 
             async switchCamera() {
                 if (this.videoInputDevices.length < 2) {
-                    Swal.fire({ icon: 'info', title: 'มีกล้องเพียงตัวเดียว', timer: 1200, showConfirmButton: false });
+                    Swal.fire({ icon: 'info', title: currentLang === 'en' ? 'Only one camera found' : 'มีกล้องเพียงตัวเดียว', timer: 1200, showConfirmButton: false });
                     return;
                 }
                 this.selectedCameraIndex = (this.selectedCameraIndex + 1) % this.videoInputDevices.length;
@@ -2488,7 +3024,7 @@
                 const track = this.stream.getVideoTracks()[0];
                 const capabilities = track.getCapabilities ? track.getCapabilities() : {};
                 if (!capabilities.torch) {
-                    Swal.fire({ icon: 'info', title: 'อุปกรณ์นี้ไม่รองรับไฟฉาย', timer: 1200, showConfirmButton: false });
+                    Swal.fire({ icon: 'info', title: currentLang === 'en' ? 'Flashlight not supported on this device' : 'อุปกรณ์นี้ไม่รองรับไฟฉาย', timer: 1200, showConfirmButton: false });
                     return;
                 }
 
@@ -2566,17 +3102,17 @@
                         if (navigator.vibrate) navigator.vibrate([150, 100, 150]);
                         Swal.fire({
                             icon: 'warning',
-                            title: 'ได้รับคะแนนจากบูธนี้แล้ว',
+                            title: currentLang === 'en' ? 'Already Checked In' : 'ได้รับคะแนนจากบูธนี้แล้ว',
                             html: `
                                 <div class="text-center py-2">
                                     <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
                                         <i class="fas fa-ban"></i>
                                     </div>
                                     <h4 class="font-bold text-slate-800 text-base mb-1">${eventName}</h4>
-                                    <p class="text-sm text-slate-500">ท่านเคยสแกนรับคะแนนจากกิจกรรมนี้ไปแล้ว<br><span class="text-amber-600 font-semibold">ไม่สามารถรับคะแนนซ้ำจาก QR Code เดียวกันได้</span></p>
+                                    <p class="text-sm text-slate-500">${currentLang === 'en' ? 'You have already earned points from this booth.<br><span class="text-amber-600 font-semibold">Duplicate scans are not allowed.</span>' : 'ท่านเคยสแกนรับคะแนนจากกิจกรรมนี้ไปแล้ว<br><span class="text-amber-600 font-semibold">ไม่สามารถรับคะแนนซ้ำจาก QR Code เดียวกันได้</span>'}</p>
                                 </div>
                             `,
-                            confirmButtonText: 'รับทราบ',
+                            confirmButtonText: currentLang === 'en' ? 'OK' : 'รับทราบ',
                             confirmButtonColor: '#4f46e5'
                         });
                         this.isProcessing = false;
@@ -2594,8 +3130,8 @@
                 } catch (err) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'คิวอาร์โค้ดไม่ถูกต้อง',
-                        text: 'รูปแบบคิวอาร์โค้ดไม่ถูกต้อง หรือไม่ได้สร้างขึ้นสำหรับกิจกรรมนี้',
+                        title: currentLang === 'en' ? 'Invalid QR Code' : 'คิวอาร์โค้ดไม่ถูกต้อง',
+                        text: currentLang === 'en' ? 'This QR Code format is invalid or not generated for this event.' : 'รูปแบบคิวอาร์โค้ดไม่ถูกต้อง หรือไม่ได้สร้างขึ้นสำหรับกิจกรรมนี้',
                         confirmButtonColor: '#4f46e5'
                     });
                 } finally {
@@ -2612,8 +3148,8 @@
                 if (userScans.some(s => normalizeKey(s.event) === targetEventKey)) {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'เคยรับคะแนนไปแล้ว',
-                        text: `คุณเคยได้รับคะแนนจาก "${scanData.event}" ไปแล้ว ไม่สามารถรับคะแนนซ้ำได้`,
+                        title: currentLang === 'en' ? 'Already Checked In' : 'เคยรับคะแนนไปแล้ว',
+                        text: currentLang === 'en' ? `You have already earned points from "${scanData.event}".` : `คุณเคยได้รับคะแนนจาก "${scanData.event}" ไปแล้ว ไม่สามารถรับคะแนนซ้ำได้`,
                         confirmButtonColor: '#4f46e5'
                     });
                     return;
@@ -2632,7 +3168,7 @@
                     role: currentUser.role || ''
                 };
 
-                $('body').LoadingOverlay('show', { text: 'กำลังบันทึกคะแนน...' });
+                $('body').LoadingOverlay('show', { text: currentLang === 'en' ? 'Saving points...' : 'กำลังบันทึกคะแนน...' });
 
                 try {
                     const response = await fetch(API_URL, {
@@ -2647,14 +3183,14 @@
                         if (navigator.vibrate) navigator.vibrate([150, 100, 150]);
                         Swal.fire({ 
                             icon: 'warning', 
-                            title: 'สแกนซ้ำ', 
+                            title: currentLang === 'en' ? 'Duplicate Scan' : 'สแกนซ้ำ', 
                             html: `
                                 <div class="text-center py-2">
                                     <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
                                         <i class="fas fa-circle-exclamation"></i>
                                     </div>
                                     <h4 class="font-bold text-slate-800 text-base mb-1">${payload.event}</h4>
-                                    <p class="text-sm text-slate-600">${res.message || 'ระบบตรวจพบบันทึกการสแกนแล้ว ไม่สามารถรับคะแนนซ้ำได้'}</p>
+                                    <p class="text-sm text-slate-600">${res.message || (currentLang === 'en' ? 'Duplicate scan detected. Points cannot be claimed again.' : 'ระบบตรวจพบบันทึกการสแกนแล้ว ไม่สามารถรับคะแนนซ้ำได้')}</p>
                                 </div>
                             `,
                             confirmButtonColor: '#4f46e5'
@@ -2686,14 +3222,14 @@
 
                         Swal.fire({
                             icon: 'success',
-                            title: '🎉 ได้รับคะแนนแล้ว!',
+                            title: currentLang === 'en' ? '🎉 Points Earned!' : '🎉 ได้รับคะแนนแล้ว!',
                             html: `
                                 <div class="text-center py-2">
                                     <p class="text-slate-600 text-sm mb-1">${payload.event}</p>
-                                    <div class="text-4xl font-extrabold text-emerald-600">+${payload.points} คะแนน</div>
+                                    <div class="text-4xl font-extrabold text-emerald-600">+${payload.points} ${t('pointsUnit')}</div>
                                 </div>
                             `,
-                            confirmButtonText: 'ตกลง',
+                            confirmButtonText: currentLang === 'en' ? 'OK' : 'ตกลง',
                             confirmButtonColor: '#10b981'
                         });
 
@@ -2726,15 +3262,15 @@
 
                         Swal.fire({
                             icon: 'success',
-                            title: '🎉 ได้รับคะแนนแล้ว! (โหมดทดสอบ)',
+                            title: currentLang === 'en' ? '🎉 Points Earned! (Dev Mode)' : '🎉 ได้รับคะแนนแล้ว! (โหมดทดสอบ)',
                             html: `
                                 <div class="text-center py-2">
                                     <p class="text-slate-600 text-sm mb-1">${payload.event}</p>
-                                    <div class="text-4xl font-extrabold text-emerald-600">+${payload.points} คะแนน</div>
-                                    <p class="text-xs text-slate-400 mt-2">(บันทึกในโหมดทดสอบสำเร็จ)</p>
+                                    <div class="text-4xl font-extrabold text-emerald-600">+${payload.points} ${t('pointsUnit')}</div>
+                                    <p class="text-xs text-slate-400 mt-2">${currentLang === 'en' ? '(Saved in Dev Mode)' : '(บันทึกในโหมดทดสอบสำเร็จ)'}</p>
                                 </div>
                             `,
-                            confirmButtonText: 'ตกลง',
+                            confirmButtonText: currentLang === 'en' ? 'OK' : 'ตกลง',
                             confirmButtonColor: '#10b981'
                         });
 
@@ -2744,8 +3280,8 @@
 
                     Swal.fire({
                         icon: 'error',
-                        title: 'ไม่สามารถบันทึกได้',
-                        text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ Google Apps Script ได้'
+                        title: currentLang === 'en' ? 'Save Failed' : 'ไม่สามารถบันทึกได้',
+                        text: currentLang === 'en' ? 'Could not connect to Google Apps Script server.' : 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ Google Apps Script ได้'
                     });
                 }
             }
@@ -2756,8 +3292,8 @@
                 if (!currentUser) {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'กรุณาลงทะเบียนก่อน',
-                        text: 'คุณต้องลงทะเบียนเพื่อสะสมคะแนนเข้าร่วมกิจกรรม',
+                        title: currentLang === 'en' ? 'Please Register First' : 'กรุณาลงทะเบียนก่อน',
+                        text: currentLang === 'en' ? 'You must register before collecting activity points.' : 'คุณต้องลงทะเบียนเพื่อสะสมคะแนนเข้าร่วมกิจกรรม',
                         confirmButtonColor: '#4f46e5'
                     });
                     return;
@@ -2769,26 +3305,26 @@
                 // สร้างรายการ Dropdown โดยแสดงเฉพาะ "ชื่อบูธ (+คะแนน)" เท่านั้น
                 // ⚠️ ความปลอดภัย: ป้องกันการรั่วไหลของรหัส ไม่แสดงรหัสในตัวเลือก และไม่อนุญาตให้ออโต้ฟิลล์
                 const boothOptionsHtml = boothCatalog.map(b => 
-                    `<option value="${b.code}">${b.name} (+${b.points} คะแนน)</option>`
+                    `<option value="${b.code}">${b.name} (+${b.points} ${t('pointsUnit')})</option>`
                 ).join('');
 
                 Swal.fire({
-                    title: '<div class="text-slate-800 text-lg font-bold flex items-center justify-center gap-2"><i class="fas fa-key text-indigo-600"></i> กรอกรหัสรับคะแนนประจำบูธ</div>',
+                    title: `<div class="text-slate-800 text-lg font-bold flex items-center justify-center gap-2"><i class="fas fa-key text-indigo-600"></i> ${currentLang === 'en' ? 'Enter Booth Code' : 'กรอกรหัสรับคะแนนประจำบูธ'}</div>`,
                     html: `
                         <div class="text-left text-sm space-y-4 pt-1">
                             <!-- คำแนะนำ -->
                             <div class="p-3 bg-indigo-50/80 rounded-2xl border border-indigo-100 text-indigo-900 text-xs flex items-start gap-2.5">
                                 <i class="fas fa-shield-halved text-indigo-600 text-sm mt-0.5 flex-shrink-0"></i>
-                                <span>หากกล้องไม่สามารถสแกนได้ ให้เลือกบูธที่ท่านเข้าร่วม แล้วกรอกรหัสยืนยันจากป้ายประจำบูธ</span>
+                                <span>${currentLang === 'en' ? 'If the camera cannot scan, select the booth you visited and enter the verification code from the booth sign.' : 'หากกล้องไม่สามารถสแกนได้ ให้เลือกบูธที่ท่านเข้าร่วม แล้วกรอกรหัสยืนยันจากป้ายประจำบูธ'}</span>
                             </div>
 
                             <!-- ส่วนที่ 1: เลือกบูธกิจกรรม -->
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                                    1. เลือกบูธกิจกรรมที่ท่านเข้าร่วม: <span class="text-rose-500">*</span>
+                                    ${currentLang === 'en' ? '1. Select Activity Booth:' : '1. เลือกบูธกิจกรรมที่ท่านเข้าร่วม:'} <span class="text-rose-500">*</span>
                                 </label>
                                 <select id="manualBoothSelect" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all shadow-sm">
-                                    <option value="">-- กรุณาเลือกบูธกิจกรรม --</option>
+                                    <option value="">${currentLang === 'en' ? '-- Select Activity Booth --' : '-- กรุณาเลือกบูธกิจกรรม --'}</option>
                                     ${boothOptionsHtml}
                                 </select>
                             </div>
@@ -2796,14 +3332,14 @@
                             <!-- ส่วนที่ 2: กรอกรหัสประจำบูธ -->
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
-                                    <span>2. กรอกรหัสประจำบูธ (Code / PIN): <span class="text-rose-500">*</span></span>
-                                    <span class="text-[11px] text-slate-400 font-normal">ดูบนป้ายตั้งโต๊ะ</span>
+                                    <span>${currentLang === 'en' ? '2. Enter Booth Code / PIN:' : '2. กรอกรหัสประจำบูธ (Code / PIN):'} <span class="text-rose-500">*</span></span>
+                                    <span class="text-[11px] text-slate-400 font-normal">${currentLang === 'en' ? 'See booth sign' : 'ดูบนป้ายตั้งโต๊ะ'}</span>
                                 </label>
                                 <div class="relative">
                                     <input 
                                         id="manualBoothCodeInput" 
                                         type="text" 
-                                        placeholder="เช่น AI01, SCI02, CHEM04..." 
+                                        placeholder="${currentLang === 'en' ? 'e.g. AI01, SCI02, CHEM04...' : 'เช่น AI01, SCI02, CHEM04...'}" 
                                         class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 uppercase font-mono font-bold tracking-wider focus:ring-2 focus:ring-indigo-500 focus:outline-none text-base bg-slate-50 focus:bg-white transition-all shadow-inner text-center"
                                         autocomplete="off"
                                         maxlength="20"
@@ -2817,14 +3353,14 @@
                             <!-- คำเตือนป้องกันการใช้รหัสผิดบูธ -->
                             <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-200/80 text-amber-900 text-[11px] flex items-center gap-2">
                                 <i class="fas fa-triangle-exclamation text-amber-600 flex-shrink-0"></i>
-                                <span>แต่ละบูธมีรหัสเฉพาะตัว ไม่สามารถนำรหัสของบูธอื่นมาใช้รับคะแนนได้</span>
+                                <span>${currentLang === 'en' ? 'Each booth has a unique code. Codes from other booths cannot be used.' : 'แต่ละบูธมีรหัสเฉพาะตัว ไม่สามารถนำรหัสของบูธอื่นมาใช้รับคะแนนได้'}</span>
                             </div>
                         </div>
                     `,
                     showCancelButton: true,
-                    confirmButtonText: '<i class="fas fa-check mr-1.5"></i> ตรวจสอบและรับคะแนน',
+                    confirmButtonText: `<i class="fas fa-check mr-1.5"></i> ${currentLang === 'en' ? 'Verify & Claim Points' : 'ตรวจสอบและรับคะแนน'}`,
                     confirmButtonColor: '#4f46e5',
-                    cancelButtonText: 'ยกเลิก',
+                    cancelButtonText: currentLang === 'en' ? 'Cancel' : 'ยกเลิก',
                     cancelButtonColor: '#94a3b8',
                     focusConfirm: false,
                     didOpen: () => {
@@ -2848,7 +3384,7 @@
 
                         // 1. ตรวจสอบว่ากรอกรหัสหรือไม่
                         if (!enteredCode) {
-                            Swal.showValidationMessage('กรุณากรอกรหัสประจำบูธกิจกรรม');
+                            Swal.showValidationMessage(currentLang === 'en' ? 'Please enter the booth code.' : 'กรุณากรอกรหัสประจำบูธกิจกรรม');
                             return false;
                         }
 
@@ -2864,19 +3400,23 @@
                                 if (matchedBoothByCode) {
                                     // แจ้งเตือนชัดเจนว่าผู้ใช้นำรหัสของบูธอื่นมาใส่
                                     Swal.showValidationMessage(
-                                        `❌ รหัสไม่ตรงกับบูธที่เลือก!<br>` +
-                                        `<span class="text-xs font-normal text-rose-600 block mt-1 leading-relaxed">` +
-                                        `รหัส <b>"${enteredCode}"</b> เป็นรหัสของ <b>"${matchedBoothByCode.name}"</b><br>` +
-                                        `<b>ไม่สามารถ</b>นำมาใช้รับคะแนนจาก <b>"${selectedBooth.name}"</b> ได้` +
-                                        `</span>`
+                                        currentLang === 'en'
+                                            ? `❌ Code does not match selected booth!<br><span class="text-xs font-normal text-rose-600 block mt-1 leading-relaxed">Code <b>"${enteredCode}"</b> belongs to <b>"${matchedBoothByCode.name}"</b></span>`
+                                            : `❌ รหัสไม่ตรงกับบูธที่เลือก!<br>` +
+                                              `<span class="text-xs font-normal text-rose-600 block mt-1 leading-relaxed">` +
+                                              `รหัส <b>"${enteredCode}"</b> เป็นรหัสของ <b>"${matchedBoothByCode.name}"</b><br>` +
+                                              `<b>ไม่สามารถ</b>นำมาใช้รับคะแนนจาก <b>"${selectedBooth.name}"</b> ได้` +
+                                              `</span>`
                                     );
                                 } else {
                                     Swal.showValidationMessage(
-                                        `❌ รหัสไม่ถูกต้อง!<br>` +
-                                        `<span class="text-xs font-normal text-rose-600 block mt-1 leading-relaxed">` +
-                                        `รหัส <b>"${enteredCode}"</b> ไม่ใช่รหัสของ <b>"${selectedBooth.name}"</b><br>` +
-                                        `กรุณาตรวจสอบรหัสบนป้ายประจำบูธอีกครั้ง` +
-                                        `</span>`
+                                        currentLang === 'en'
+                                            ? `❌ Invalid Code!<br><span class="text-xs font-normal text-rose-600 block mt-1 leading-relaxed">Code <b>"${enteredCode}"</b> is not valid for <b>"${selectedBooth.name}"</b></span>`
+                                            : `❌ รหัสไม่ถูกต้อง!<br>` +
+                                              `<span class="text-xs font-normal text-rose-600 block mt-1 leading-relaxed">` +
+                                              `รหัส <b>"${enteredCode}"</b> ไม่ใช่รหัสของ <b>"${selectedBooth.name}"</b><br>` +
+                                              `กรุณาตรวจสอบรหัสบนป้ายประจำบูธอีกครั้ง` +
+                                              `</span>`
                                     );
                                 }
                                 return false;
@@ -2893,8 +3433,10 @@
                         // 3. กรณีที่ผู้ใช้ไม่ได้เลือกจาก Dropdown (กรอกรหัสลงในช่องโดยตรง)
                         if (!matchedBoothByCode) {
                             Swal.showValidationMessage(
-                                `❌ ไม่พบรหัสกิจกรรม "${enteredCode}"<br>` +
-                                `<span class="text-xs font-normal text-rose-600 block mt-1">กรุณาตรวจสอบตัวสะกด หรือดูรหัสบนป้ายประจำบูธ</span>`
+                                currentLang === 'en'
+                                    ? `❌ Booth code "${enteredCode}" not found.<br><span class="text-xs font-normal text-rose-600 block mt-1">Please check your spelling or see the booth sign.</span>`
+                                    : `❌ ไม่พบรหัสกิจกรรม "${enteredCode}"<br>` +
+                                      `<span class="text-xs font-normal text-rose-600 block mt-1">กรุณาตรวจสอบตัวสะกด หรือดูรหัสบนป้ายประจำบูธ</span>`
                             );
                             return false;
                         }
@@ -2927,17 +3469,17 @@
                             if (navigator.vibrate) navigator.vibrate([150, 100, 150]);
                             Swal.fire({
                                 icon: 'warning',
-                                title: 'คุณได้รับคะแนนจากบูธนี้ไปแล้ว',
+                                title: currentLang === 'en' ? 'Already Checked In' : 'คุณได้รับคะแนนจากบูธนี้ไปแล้ว',
                                 html: `
                                     <div class="text-center py-2">
                                         <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
                                             <i class="fas fa-ban"></i>
                                         </div>
                                         <h4 class="font-bold text-slate-800 text-base mb-1">${boothData.event}</h4>
-                                        <p class="text-sm text-slate-500">ท่านเคยรับคะแนนจากกิจกรรมนี้ไปแล้ว<br><span class="text-amber-600 font-semibold">ไม่สามารถรับคะแนนซ้ำจากบูธเดียวกันได้</span></p>
+                                        <p class="text-sm text-slate-500">${currentLang === 'en' ? 'You have already earned points from this booth.<br><span class="text-amber-600 font-semibold">Duplicate claims are not allowed.</span>' : 'ท่านเคยรับคะแนนจากกิจกรรมนี้ไปแล้ว<br><span class="text-amber-600 font-semibold">ไม่สามารถรับคะแนนซ้ำจากบูธเดียวกันได้</span>'}</p>
                                     </div>
                                 `,
-                                confirmButtonText: 'ตกลง',
+                                confirmButtonText: currentLang === 'en' ? 'OK' : 'ตกลง',
                                 confirmButtonColor: '#4f46e5'
                             });
                             return;
@@ -2972,25 +3514,25 @@
                 // ต้องเปิดผ่าน Safari / Chrome ด้วย liff.openWindow({ external: true })
                 if (isInLine) {
                     Swal.fire({
-                        title: 'ดาวน์โหลดเกียรติบัตร (PDF)',
+                        title: currentLang === 'en' ? 'Download Certificate (PDF)' : 'ดาวน์โหลดเกียรติบัตร (PDF)',
                         html: `
                             <div class="text-left text-sm text-slate-600 space-y-3 pt-1">
                                 <div class="p-3.5 bg-blue-50 border border-blue-200/90 rounded-2xl flex items-start gap-3 shadow-xs">
                                     <i class="fas fa-circle-info text-blue-600 text-lg mt-0.5 flex-shrink-0"></i>
                                     <div class="text-xs text-blue-900 leading-relaxed">
-                                        เนื่องจากระบบของแอป LINE ไม่อนุญาตให้บันทึกไฟล์ PDF ลงในเครื่องโดยตรงภายในแชท ระบบจะเปิดผ่าน <b>Safari หรือ Chrome</b> เพื่อให้คุณดาวน์โหลดและบันทึกไฟล์ PDF ได้ทันที
+                                        ${currentLang === 'en' ? 'LINE in-app browser restricts direct PDF downloads. We will open <b>Safari or Chrome</b> so you can save your PDF certificate right away.' : 'เนื่องจากระบบของแอป LINE ไม่อนุญาตให้บันทึกไฟล์ PDF ลงในเครื่องโดยตรงภายในแชท ระบบจะเปิดผ่าน <b>Safari หรือ Chrome</b> เพื่อให้คุณดาวน์โหลดและบันทึกไฟล์ PDF ได้ทันที'}
                                     </div>
                                 </div>
                                 <div class="p-3 bg-slate-50 border border-slate-200/70 rounded-xl text-xs space-y-1 text-slate-700">
-                                    <div><span class="font-semibold text-slate-900">ชื่อผู้รับ:</span> ${currentUser.name}</div>
-                                    <div><span class="font-semibold text-slate-900">สถานศึกษา:</span> ${currentUser.school || '-'}</div>
+                                    <div><span class="font-semibold text-slate-900">${t('certDirectRecipient')}</span> ${currentUser.name}</div>
+                                    <div><span class="font-semibold text-slate-900">${t('certDirectSchool')}</span> ${translateSchool(currentUser.school || '-')}</div>
                                 </div>
                             </div>
                         `,
                         icon: 'info',
                         showCancelButton: true,
-                        confirmButtonText: '<i class="fas fa-arrow-up-right-from-square mr-1.5"></i> เปิดเพื่อดาวน์โหลด (PDF)',
-                        cancelButtonText: 'ยกเลิก',
+                        confirmButtonText: `<i class="fas fa-arrow-up-right-from-square mr-1.5"></i> ${currentLang === 'en' ? 'Open to Download (PDF)' : 'เปิดเพื่อดาวน์โหลด (PDF)'}`,
+                        cancelButtonText: currentLang === 'en' ? 'Cancel' : 'ยกเลิก',
                         confirmButtonColor: '#0062b8',
                         cancelButtonColor: '#94a3b8'
                     }).then((result) => {
@@ -3005,7 +3547,7 @@
                 }
 
                 // กรณีเปิดจาก Browser ปกติ (Safari / Chrome / คอมพิวเตอร์)
-                $('body').LoadingOverlay('show', { text: 'กำลังสร้างเกียรติบัตร PDF...' });
+                $('body').LoadingOverlay('show', { text: currentLang === 'en' ? 'Generating Certificate PDF...' : 'กำลังสร้างเกียรติบัตร PDF...' });
 
                 const totalPts = userScans.reduce((sum, item) => sum + (parseInt(item.points) || 0), 0);
                 const certId = 'OH-' + (currentUser.uid.length > 6 ? currentUser.uid.slice(-6).toUpperCase() : currentUser.uid) + '-2569';
@@ -3028,8 +3570,8 @@
                     } catch(e) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'สร้างเกียรติบัตรไม่สำเร็จ',
-                            text: 'ไม่สามารถโหลดรูปภาพหรือสร้างไฟล์ PDF ได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง'
+                            title: currentLang === 'en' ? 'Certificate Generation Failed' : 'สร้างเกียรติบัตรไม่สำเร็จ',
+                            text: currentLang === 'en' ? 'Unable to generate PDF at this time. Please try again.' : 'ไม่สามารถโหลดรูปภาพหรือสร้างไฟล์ PDF ได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง'
                         });
                     }
                 }
@@ -3107,17 +3649,25 @@
 
             const totalPts = userScans.reduce((sum, item) => sum + (parseInt(item.points) || 0), 0);
             const certId = 'OH-' + (currentUser.uid.length > 6 ? currentUser.uid.slice(-6).toUpperCase() : currentUser.uid) + '-2569';
-            const todayThai = new Date().toLocaleDateString('th-TH', { 
+            const todayFormatted = new Date().toLocaleDateString(currentLang === 'en' ? 'en-US' : 'th-TH', { 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric' 
             });
 
-            $('#certModalId').text('เลขที่: ' + certId);
+            $('#certModalId').text((currentLang === 'en' ? 'No: ' : 'เลขที่: ') + certId);
             $('#certModalName').text(currentUser.name);
-            $('#certModalSchool').text(`${currentUser.school || '-'} จังหวัด${currentUser.province || ''}`);
-            $('#certModalEvent').text(`ได้เข้าร่วม${CERT_ASSETS.eventName} และสะสมคะแนนรวมทั้งสิ้น ${totalPts} คะแนน`);
-            $('#certModalDate').text('ให้ไว้ ณ วันที่ ' + todayThai);
+            $('#certModalSchool').text(
+                currentLang === 'en'
+                    ? `${translateSchool(currentUser.school || '-')}, ${translateProvince(currentUser.province || '')}`
+                    : `${currentUser.school || '-'} จังหวัด${currentUser.province || ''}`
+            );
+            $('#certModalEvent').text(
+                currentLang === 'en'
+                    ? `Has participated in PSU Phuket Open House 2026 and earned a total of ${totalPts} points`
+                    : `ได้เข้าร่วม${CERT_ASSETS.eventName} และสะสมคะแนนรวมทั้งสิ้น ${totalPts} คะแนน`
+            );
+            $('#certModalDate').text((currentLang === 'en' ? 'Given on ' : 'ให้ไว้ ณ วันที่ ') + todayFormatted);
 
             $('#certificatePreviewModal').removeClass('hidden');
         }
@@ -3127,7 +3677,7 @@
          */
         async function handleDirectCertificateDownload(uid) {
             $('#certDirectScreen').removeClass('hidden');
-            $('body').LoadingOverlay('show', { text: 'กำลังดึงข้อมูลและเตรียมเกียรติบัตร...' });
+            $('body').LoadingOverlay('show', { text: currentLang === 'en' ? 'Fetching data and preparing certificate...' : 'กำลังดึงข้อมูลและเตรียมเกียรติบัตร...' });
 
             try {
                 let targetUser = null;
@@ -3159,8 +3709,8 @@
                     $('body').LoadingOverlay('hide');
                     Swal.fire({
                         icon: 'error',
-                        title: 'ไม่พบข้อมูลผู้รับเกียรติบัตร',
-                        text: 'ไม่สามารถค้นหาข้อมูลในระบบได้ กรุณาลองใหม่อีกครั้ง'
+                        title: currentLang === 'en' ? 'Recipient Not Found' : 'ไม่พบข้อมูลผู้รับเกียรติบัตร',
+                        text: currentLang === 'en' ? 'Could not find user data in the system. Please try again.' : 'ไม่สามารถค้นหาข้อมูลในระบบได้ กรุณาลองใหม่อีกครั้ง'
                     });
                     return;
                 }
@@ -3175,9 +3725,11 @@
 
                 // อัปเดตข้อมูลบนหน้าจอ
                 $('#directCertName').text(targetUser.name);
-                const schoolInfo = (targetUser.school && targetUser.school !== '-') ? `${targetUser.school} (${targetUser.province || ''})` : (targetUser.province || '-');
+                const schoolDisplay = translateSchool(targetUser.school || '-');
+                const provDisplay = translateProvince(targetUser.province || '');
+                const schoolInfo = (targetUser.school && targetUser.school !== '-') ? `${schoolDisplay} (${provDisplay})` : (provDisplay || '-');
                 $('#directCertSchool').text(schoolInfo);
-                $('#directCertScore').text(totalPts + ' คะแนน');
+                $('#directCertScore').text(`${totalPts} ${t('pointsUnit')}`);
                 $('#directCertId').text(certId);
 
                 // สร้าง Document Definition
@@ -3214,8 +3766,8 @@
                 console.error("Direct certificate handler error:", err);
                 Swal.fire({
                     icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'ไม่สามารถเตรียมไฟล์เกียรติบัตรได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง'
+                    title: currentLang === 'en' ? 'Error' : 'เกิดข้อผิดพลาด',
+                    text: currentLang === 'en' ? 'Unable to prepare certificate file right now. Please try again.' : 'ไม่สามารถเตรียมไฟล์เกียรติบัตรได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง'
                 });
             }
         }
